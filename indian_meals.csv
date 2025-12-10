@@ -1,0 +1,87 @@
+id,name,course,portion_desc,kcal,carbs_g,protein_g,fat_g,fiber_g,sodium_mg,gi,cost_score,prep_time_min,diet_type,veg_type,tags
+B1,Idli (2) + Sambar,breakfast,2 idli + 1 cup sambar,280,48,10,4,5,480,50,2,15,veg,veg,veg
+B2,Masala Dosa (light oil),breakfast,1 dosa + chutney,360,56,10,10,4,520,55,2,15,veg,veg,veg
+B3,Ragi Dosa + Chutney,breakfast,1 dosa + chutney,340,50,11,9,6,500,45,3,15,veg,veg,veg
+B4,Poha (No Peanuts),breakfast,1 plate,270,45,6,6,3,420,60,2,15,veg,veg,veg
+B5,Upma (Rava),breakfast,1 bowl,300,42,7,10,3,450,65,2,15,veg,veg,veg
+B6,Millet Upma,breakfast,1 bowl,290,40,7,8,5,420,50,3,15,veg,veg,veg
+B7,Oats Porridge (Milk),breakfast,1 bowl,350,54,12,8,5,180,50,3,15,veg,veg,veg
+B8,Moong Chilla + Mint Chutney,breakfast,2 pieces,320,36,18,6,4,350,40,3,15,veg,veg,veg
+B9,Veg Uttapam,breakfast,1 large,330,50,8,7,4,480,58,2,15,veg,veg,veg
+B10,Khaman Dhokla,breakfast,4 pieces,250,40,9,5,4,420,43,3,15,veg,veg,veg
+B11,Aloo Paratha (minimal oil),breakfast,1 paratha + curd,420,56,9,14,5,600,65,3,15,veg,veg,veg
+B12,Sabudana Khichdi,breakfast,1 bowl,380,68,5,8,3,520,70,3,15,veg,veg,veg
+B13,Egg Bhurji + Toast,breakfast,1 plate,360,30,20,18,4,520,55,3,15,eggetarian,nonveg,"eggetarian,high_protein"
+B14,Ven Pongal + Sambar,breakfast,1 bowl + 1/2 cup sambar,340,54,10,7,4,520,55,3,15,veg,veg,veg
+B15,Paneer Bhurji,breakfast,1 cup,380,20,22,22,3,680,35,3,15,veg,veg,veg
+B16,Ragi Dosa (No Onion) - Jain,breakfast,1 dosa + chutney,340,50,11,9,6,500,45,3,15,jain,veg,"jain,low_gi,gf,jain_safe"
+B17,Moong Chilla (Jain),breakfast,2 pieces,320,36,18,6,4,350,40,3,15,jain,veg,"jain,high_protein,jain_safe"
+B18,Oats + Curd (No Onion/Garlic),breakfast,1 bowl,350,54,12,8,5,180,50,3,15,jain,veg,"jain,low_gi,jain_safe"
+B19,Egg White Omelette,breakfast,1 omelette,180,6,24,6,0,420,40,3,15,eggetarian,nonveg,"eggetarian,high_protein,quick"
+B20,Boiled Eggs (2),breakfast,2 eggs,140,2,12,10,0,120,40,3,15,eggetarian,nonveg,"eggetarian,high_protein,quick"
+B21,Ragi Idli + Sambar,breakfast,3 small idli + 1 cup sambar,300,48,13,6,5,480,48,3,20,veg,veg,"low_gi,gf"
+B22,Kanda Poha (No Peanut),breakfast,1 plate,290,45,9,8,3,420,58,3,20,veg,veg,"budget,quick"
+B23,Stuffed Moong Chilla (Paneer),breakfast,2 pieces,340,36,21,8,4,350,38,3,20,veg,veg,high_protein
+L1,Rajma + Brown Rice,lunch,1 cup rajma + 1 cup rice,520,78,18,8,10,620,52,3,35,veg,veg,low_gi
+L2,Chole + Phulka (2),lunch,1 cup chole + 2 phulka,480,65,14,9,9,760,55,3,35,veg,veg,standard
+L3,Bajra Roti (2) + Dal,lunch,2 roti + 1 cup dal,480,62,18,10,8,600,48,3,35,veg,veg,"gf,low_gi"
+L4,Jowar Roti (2) + Dal,lunch,2 roti + 1 cup dal,470,60,17,9,8,590,49,3,35,veg,veg,"gf,low_gi"
+L5,Brown Rice + Kadhi,lunch,1 cup rice + 1 cup kadhi,460,72,14,9,4,640,55,3,35,veg,veg,standard
+L6,Vegetable Khichdi,lunch,1.5 cups,420,70,14,6,6,530,50,3,35,veg,veg,comfort
+L7,Millet Khichdi (GF),lunch,1 bowl,380,56,12,8,5,420,47,3,35,veg,veg,"gf,low_gi"
+L8,Vegetable Pulao + Raita,lunch,1 cup pulao + 1/2 cup raita,480,78,10,10,5,700,62,3,35,veg,veg,standard
+L9,Palak Paneer + Roti (2),lunch,1 cup + 2 roti,560,52,22,26,5,780,50,3,35,veg,veg,high_protein
+L10,Paneer Tikka + Roti (2),lunch,6 pcs + 2 roti,540,50,24,24,5,750,50,3,35,veg,veg,high_protein
+L11,Veg Korma + Paratha (1),lunch,1 cup + 1 paratha,590,60,14,24,6,820,58,3,35,veg,veg,standard
+L12,Sambar Rice + Curd,lunch,1 bowl + 1/2 cup curd,480,82,14,6,6,680,60,3,35,veg,veg,comfort
+L13,Dal Makhani + Rice,lunch,1 cup + 1 cup rice,580,72,18,18,10,760,55,3,35,veg,veg,standard
+L14,Tawa Subzi + Roti (2),lunch,1 cup + 2 roti,430,60,10,10,7,600,58,3,35,veg,veg,standard
+L15,Veg Stew + Appam (2),lunch,1 cup + 2 appam,500,72,8,14,4,640,63,3,35,veg,veg,standard
+L16,Dal Tadka + Roti (2),lunch,1 cup + 2 roti,460,65,16,9,7,620,57,3,35,veg,veg,standard
+L17,Curd + Millet,lunch,1 bowl,380,56,12,8,5,420,49,3,35,veg,veg,gf
+L18,Fish Curry + Rice,lunch,1 cup curry + 1 cup rice,540,60,32,14,3,700,55,3,35,nonveg,nonveg,standard
+L19,Chicken Curry + Rice,lunch,1 cup curry + 1 cup rice,560,62,34,16,3,720,55,3,35,nonveg,nonveg,standard
+L20,Egg Curry + Rice,lunch,2 eggs + 1 cup gravy + 1 cup rice,520,58,26,18,3,690,55,3,35,eggetarian,nonveg,standard
+D1,Rajma + Brown Rice (Dinner),dinner,1 cup rajma + 1 cup rice,490,73,18,6,10,580,52,3,35,veg,veg,"low_gi,light_dinner"
+D2,Chole + Phulka (2) (Dinner),dinner,1 cup chole + 2 phulka,450,60,14,7,9,720,55,3,35,veg,veg,light_dinner
+D3,Bajra Roti (2) + Dal (Dinner),dinner,2 roti + 1 cup dal,450,57,18,8,8,560,48,3,35,veg,veg,"gf,low_gi,light_dinner"
+D4,Jowar Roti (2) + Dal (Dinner),dinner,2 roti + 1 cup dal,440,55,17,7,8,550,49,3,35,veg,veg,"gf,low_gi,light_dinner"
+D5,Brown Rice + Kadhi (Dinner),dinner,1 cup rice + 1 cup kadhi,430,67,14,7,4,600,55,3,35,veg,veg,light_dinner
+D6,Vegetable Khichdi (Dinner),dinner,1.5 cups,390,65,14,4,6,490,50,3,35,veg,veg,"comfort,light_dinner"
+D7,Millet Khichdi (GF) (Dinner),dinner,1 bowl,350,51,12,6,5,380,47,3,35,veg,veg,"gf,low_gi,light_dinner"
+D8,Vegetable Pulao + Raita (Dinner),dinner,1 cup pulao + 1/2 cup raita,450,73,10,8,5,660,62,3,35,veg,veg,light_dinner
+D9,Palak Paneer + Roti (2) (Dinner),dinner,1 cup + 2 roti,530,47,22,24,5,740,50,3,35,veg,veg,"high_protein,light_dinner"
+D10,Paneer Tikka + Roti (2) (Dinner),dinner,6 pcs + 2 roti,510,45,24,22,5,710,50,3,35,veg,veg,"high_protein,light_dinner"
+D11,Veg Korma + Paratha (1) (Dinner),dinner,1 cup + 1 paratha,560,55,14,22,6,780,58,3,35,veg,veg,light_dinner
+D12,Sambar Rice + Curd (Dinner),dinner,1 bowl + 1/2 cup curd,450,77,14,4,6,640,60,3,35,veg,veg,"comfort,light_dinner"
+D13,Dal Makhani + Rice (Dinner),dinner,1 cup + 1 cup rice,550,67,18,16,10,720,55,3,35,veg,veg,light_dinner
+D14,Tawa Subzi + Roti (2) (Dinner),dinner,1 cup + 2 roti,400,55,10,8,7,560,58,3,35,veg,veg,light_dinner
+D15,Veg Stew + Appam (2) (Dinner),dinner,1 cup + 2 appam,470,67,8,12,4,600,63,3,35,veg,veg,light_dinner
+D16,Dal Tadka + Roti (2) (Dinner),dinner,1 cup + 2 roti,430,60,16,7,7,580,57,3,35,veg,veg,light_dinner
+D17,Curd + Millet (Dinner),dinner,1 bowl,350,51,12,6,5,380,49,3,35,veg,veg,"gf,light_dinner"
+D18,Fish Curry + Rice (Dinner),dinner,1 cup curry + 1 cup rice,510,55,32,12,3,660,55,3,35,nonveg,nonveg,light_dinner
+D19,Chicken Curry + Rice (Dinner),dinner,1 cup curry + 1 cup rice,530,57,34,14,3,680,55,3,35,nonveg,nonveg,light_dinner
+D20,Egg Curry + Rice (Dinner),dinner,2 eggs + 1 cup gravy + 1 cup rice,490,53,26,16,3,650,55,3,35,eggetarian,nonveg,light_dinner
+J1,Bajra Roti + Dal (Jain),lunch,2 roti + 1 cup dal,480,62,18,10,8,600,46,3,30,jain,veg,"jain_safe,low_gi"
+J2,Vegetable Khichdi (Jain),lunch,1.5 cups,420,70,14,6,6,530,48,3,30,jain,veg,"jain_safe,low_gi"
+J3,Millet Khichdi (Jain),lunch,1 bowl,380,56,12,8,5,420,45,3,30,jain,veg,"jain_safe,low_gi"
+J4,Dal Tadka + Roti (Jain),lunch,1 cup + 2 roti,460,65,16,9,7,620,55,3,30,jain,veg,"jain_safe,low_gi"
+S1,Paneer Tikka,snack,6 pieces,300,10,22,18,1,520,35,2,10,veg,veg,high_protein
+S2,Chicken Tikka (Grilled),snack,150 g,280,6,36,11,1,520,35,2,10,nonveg,nonveg,high_protein
+S3,Roasted Chana,snack,30 g,160,26,9,2,6,120,35,1,10,veg,veg,"high_protein,budget"
+S4,Sprouts Salad,snack,1 bowl,180,32,12,2,6,200,35,2,10,veg,veg,"high_protein,low_gi"
+S5,Fruit Bowl (Apple/Guava),snack,1 bowl,150,38,1,0,4,10,55,2,10,veg,veg,low_gi
+S6,Buttermilk (Low Salt),snack,1 glass,80,12,3,1,0,80,35,2,10,veg,veg,hydrating
+S7,Sweet Lassi,snack,1 glass,180,26,7,5,0,150,45,2,10,veg,veg,
+S8,Bhel Puri,snack,1 plate,260,44,7,6,4,820,60,2,10,veg,veg,"street,high_sodium"
+S9,Samosa,snack,1 piece,300,36,6,14,3,560,63,2,10,veg,veg,fried
+S10,Masala Corn,snack,1 cup,190,36,5,2,4,240,60,2,10,veg,veg,quick
+S11,Dahi Vada,snack,2 pieces,320,42,12,10,4,520,55,2,10,veg,veg,
+S12,Paneer Tikka (Spiced),snack,8 pieces,300,10,22,18,1,520,35,2,10,veg,veg,high_protein
+S13,Grilled Chicken Strips,snack,150 g,280,6,36,11,1,520,35,2,10,nonveg,nonveg,high_protein
+S14,Masala Roasted Chana,snack,35 g,160,26,9,2,6,120,35,2,12,veg,veg,"high_protein,spicy"
+S15,Sprouts + Cucumber,snack,1 bowl,180,32,12,2,6,200,35,2,12,veg,veg,"high_protein,low_gi"
+S16,Seasonal Fruit Plate,snack,1 plate,150,38,1,0,4,10,55,2,12,veg,veg,
+S17,Spiced Buttermilk,snack,1 glass,80,12,3,1,0,80,35,2,12,veg,veg,hydrating
+S18,Paneer Tikka (Mint),snack,6 pieces,300,10,22,18,1,520,35,2,12,veg,veg,high_protein
+S19,Chicken Tikka (Mint),snack,150 g,280,6,36,11,1,520,35,2,12,nonveg,nonveg,high_protein
