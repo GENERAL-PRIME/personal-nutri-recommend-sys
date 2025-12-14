@@ -1,0 +1,246 @@
+text,intent
+"i want to lose weight",get_plan
+"help me with a diet plan",get_plan
+"give me a daily plan",get_plan
+"create a 7 day meal plan for weight loss",get_plan
+"i want a high protein diet",get_plan
+"show me a low carb lunch",get_plan
+"make a vegetarian plan",get_plan
+"give me a calorie deficit diet",get_plan
+"suggest a dinner for muscle gain",get_plan
+"plan my meals for a week",get_plan
+"i am 22 years old",set_profile
+"i am 25 female 165 cm 60 kg",set_profile
+"i am 30 years old and weigh 70 kg",set_profile
+"i am 40 yrs male 175 cm 80 kg",set_profile
+"i'm 28 and 55kg",set_profile
+"i am 21 years old male",set_profile
+"height 160 cm weight 55 kg age 22",set_profile
+"my weight is 68 kg and height is 170 cm",set_profile
+"i am 35 years old female 158 cm 62 kg",set_profile
+"i have moderate activity level",set_profile
+"i walk a lot so my activity is active",set_profile
+"i work a desk job so sedentary",set_profile
+"i exercise 4 times a week - moderate",set_profile
+"i am lightly active",set_profile
+"i want to gain weight",set_profile
+"i want to maintain weight",set_profile
+"i want to lose 5 kg",set_profile
+"i want to gain muscle",set_profile
+"i want to bulk up",set_profile
+"make it vegetarian please",update_profile
+"i am allergic to peanuts",update_profile
+"i'm lactose intolerant",update_profile
+"no eggs for me",update_profile
+"i am vegan",update_profile
+"exclude dairy",update_profile
+"avoid gluten",update_profile
+"i have nut allergy",update_profile
+"i don't eat pork",update_profile
+"i prefer indian cuisine",update_profile
+"please make it low sodium",update_profile
+"i'm allergic to seafood",update_profile
+"add a peanut allergy",update_profile
+"i am allergic to milk and eggs",update_profile
+"change my goal to gain",update_profile
+"update my activity to active",update_profile
+"hi",greeting
+"hello",greeting
+"hey there",greeting
+"good morning",greeting
+"good evening",greeting
+"thanks",thanks
+"thank you",thanks
+"thanks a lot",thanks
+"thx",thanks
+"bye",goodbye
+"goodbye",goodbye
+"see you",goodbye
+"what is the calorie in boiled egg",food_query
+"how many calories are in a banana",food_query
+"calories in grilled chicken",food_query
+"what is the protein in paneer",food_query
+"how many carbs are in brown rice",food_query
+"calorie content of almonds",food_query
+"how many calories does a slice of bread have",food_query
+"calories in avocado",food_query
+"what's the kcal of a medium apple",food_query
+"protein in tofu",food_query
+"i want a snack under 200 calories",get_plan
+"suggest a healthy breakfast",get_plan
+"show me a high fiber lunch",get_plan
+"give me a gluten free dinner",get_plan
+"i need a low sugar diet",get_plan
+"i want a keto friendly meal",get_plan
+"vegetarian high protein breakfast",get_plan
+"give me quick meals",get_plan
+"i have no time, suggest easy meals",get_plan
+"i want 3 meals only",get_plan
+"make the servings smaller",get_plan
+"swap tofu for paneer",swap_item
+"replace chicken with tofu",swap_item
+"i don't like fish, suggest alternate",swap_item
+"can you replace rice with quinoa",swap_item
+"substitute paneer",swap_item
+"swap almond butter for peanut butter",swap_item
+"i dont like tofu",update_profile
+"i dislike mushrooms",update_profile
+"i can't eat spicy food",update_profile
+"low spice please",update_profile
+"what should i eat before workout",ask_timing
+"what to have after gym",ask_timing
+"pre workout snack suggestions",ask_timing
+"post workout meal ideas",ask_timing
+"how much protein should i eat",ask_macros
+"what are my macros",ask_macros
+"how many grams of protein per day",ask_macros
+"what should be my carb intake",ask_macros
+"calculate my protein target",ask_macros
+"how many calories should i eat to lose weight",ask_calories
+"what is my tdee",ask_calories
+"what calories for maintenance",ask_calories
+"how many kcal should i take",ask_calories
+"give me calorie target to lose",ask_calories
+"i ate a sandwich, add to diary",food_log
+"logging food: bowl of oats",food_log
+"i had an apple for snack",food_log
+"record breakfast: idli 2",food_log
+"i ate 3 idlis",food_log
+"i drank a glass of milk",food_log
+"i skipped breakfast today",food_log
+"i want vegetarian snacks",get_plan
+"i want vegan recipes",get_plan
+"show me high calorie meals",get_plan
+"show me low calorie dinners",get_plan
+"i need low fat meals",get_plan
+"what is the protein in chicken breast",food_query
+"how many calories are in salmon",food_query
+"is yogurt high in protein",food_query
+"what's the fat in peanut butter",food_query
+"do almonds have carbs",food_query
+"what is the protein in moong dal",food_query
+"i am allergic to gluten and dairy",update_profile
+"i prefer south indian breakfast",update_profile
+"i like dosa and idli",update_profile
+"i don't like rice",update_profile
+"prefer rotis over rice",update_profile
+"i want a low sodium diet",update_profile
+"i have high cholesterol advice",health_query
+"I have diabetes. suggest diet",health_query
+"I have thyroid issues. what to avoid",health_query
+"should I avoid sugar",health_query
+"is avocado good for weight loss",health_query
+"what is bmi",ask_health
+"calculate bmi for 60 kg 160 cm",ask_health
+"what is a healthy bmi range",ask_health
+"how to lose fat",advice_general
+"tips to reduce belly fat",advice_general
+"how to build muscle",advice_general
+"healthy snack ideas",advice_general
+"low calorie dessert ideas",advice_general
+"i liked the plan",feedback_like
+"this is good",feedback_like
+"i loved the meals",feedback_like
+"not helpful",feedback_dislike
+"i don't like this plan",feedback_dislike
+"too spicy",feedback_dislike
+"make it less spicy",update_profile
+"thank you, that helps",thanks
+"okay thanks",thanks
+"cool, thanks",thanks
+"what else can i eat",ask_alternatives
+"suggest substitutes for paneer",ask_alternatives
+"any alternatives to chicken",ask_alternatives
+"show low-carb alternatives",ask_alternatives
+"i want more protein today",update_profile
+"add more protein",update_profile
+"reduce carbs in dinner",update_profile
+"i want a cheat meal",get_plan
+"one cheat meal suggestion",get_plan
+"give me a grocery list for this plan",get_plan
+"grocery list",get_plan
+"add eggs to shopping list",get_plan
+"what should i prepare for next week",get_plan
+"how long to see results",advice_general
+"how many calories to lose 1 kg a week",ask_calories
+"what is a healthy rate of weight loss",advice_general
+"why is protein important",advice_general
+"how to spread protein across meals",advice_general
+"i am pregnant can i follow this",health_query
+"is this safe for kids",health_query
+"can i use this for hypertension",health_query
+"do you suggest supplements",advice_general
+"recommend whey protein",advice_general
+"where can i find recipes",ask_recipe
+"give me a recipe for oats",ask_recipe
+"show recipe for grilled chicken",ask_recipe
+"how to make masala dosa",ask_recipe
+"how to cook quinoa",ask_recipe
+"what is a serving of rice",food_query
+"how many calories is a cup of rice",food_query
+"how to count portions",advice_general
+"i want low sugar breakfast",get_plan
+"i have celiac disease",health_query
+"exclude gluten",update_profile
+"i want a pescatarian plan",update_profile
+"i prefer fish and veggies",update_profile
+"show me high fiber breakfast",get_plan
+"recommend meal for PCOS",health_query
+"suggest iron rich foods",ask_recipe
+"foods high in iron",ask_recipe
+"i am allergic to sesame",update_profile
+"i have nut allergy add",update_profile
+"does almond milk have protein",food_query
+"what is the calorie in peanut butter",food_query
+"show me a breakfast under 300 calories",get_plan
+"give me a lunch under 600 kcal",get_plan
+"show me dinner options under 500",get_plan
+"i want vegan high protein options",get_plan
+"suggest snacks for study time",get_plan
+"what to eat on rest day",advice_general
+"what to eat on workout day",advice_general
+"how to track progress",advice_general
+"should i weigh daily",advice_general
+"is intermittent fasting good",advice_general
+"help me with meal timing",ask_timing
+"what should i eat before sleep",ask_timing
+"replace butter with olive oil",swap_item
+"omit cheese",update_profile
+"reduce portion sizes",update_profile
+"i prefer small frequent meals",update_profile
+"i want three meals only",update_profile
+"show me a list of protein rich vegetarian foods",get_plan
+"how many eggs per day is ok",health_query
+"would you track my weight",food_log
+"i ate pasta for dinner",food_log
+"recorded lunch: salad",food_log
+"what about portion control",advice_general
+"i want to reduce sugar intake",update_profile
+"exclude sugary drinks",update_profile
+"how many calories burned with running",exercise_query
+"calories burned by cycling 30 minutes",exercise_query
+"i walked 5000 steps today",exercise_log
+"add 30 min walk to log",exercise_log
+"what are macros",ask_macros
+"explain macros",ask_macros
+"how to read nutrition label",advice_general
+"what is a serving size",advice_general
+"i don't want dairy",update_profile
+"add lactose intolerance",update_profile
+"what alternatives to milk",ask_alternatives
+"show low fat recipes",get_plan
+"track my progress weekly",food_log
+"show weekly summary",food_log
+"I want a maintenance plan",get_plan
+"give me a plan for bulking",get_plan
+"suggest pre workout carbohydrate snack",ask_timing
+"suggest post workout protein shake",ask_timing
+"i have gallbladder issues",health_query
+"i have kidney problems, what to avoid",health_query
+"exclude soy",update_profile
+"no soy please",update_profile
+"i want a high calorie vegetarian plan",get_plan
+"i want low cholesterol diet",get_plan
+"thank you so much",thanks
+"thanks very much",thanks
+"you are helpful",thanks
