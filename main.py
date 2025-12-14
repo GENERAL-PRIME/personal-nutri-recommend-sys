@@ -4,69 +4,101 @@ from planner import select_meals_for_day, adjust_portions_to_targets
 from targets import compute_targets
 
 
-def main():
-    meals = load_meals_from_csv("indian_meals.csv")
+def ask(prompt: str, default=None, cast=str):
+    raw = input(f"{prompt} ").strip()
+    if not raw:
+        return default
+    try:
+        return cast(raw)
+    except:
+        print(f"Invalid input, using default = {default}")
+        return default
 
-    # Example inputs (replace with your UI values)
-    age = int(input("Enter age (years): ") or 22)
-    sex = input("Enter sex (M/F): ")
-    height_cm = int(input("Enter height (cm): "))
-    weight_kg = int(input("Enter weight (kg): "))
-    diet_type = input("Enter diet type (veg/eggetarian/nonveg/jain): ")
-    activity = input(
-        "Enter activity level (sedentary/light/moderate/active/very active): "
+
+def ask_list(prompt: str) -> list[str]:
+    raw = input(prompt).strip()
+    if not raw:
+        return []
+    parts = [x.strip().lower() for x in raw.split(",") if x.strip()]
+    return parts
+
+
+def main():
+    try:
+        meals = load_meals_from_csv("indian_meals.csv")
+        if not meals:
+            print("[ERROR] Meal database is empty.")
+            return
+    except Exception as e:
+        print("[ERROR] Could not load CSV file:", e)
+        return
+
+    print("\n===== Personalized Indian Meal Planner =====\n")
+
+    age = ask("Enter age (years) :", cast=int)
+    sex = ask(
+        "Enter sex (M/F):",
+    ).upper()
+    height_cm = ask("Enter height (cm):", cast=int)
+    weight_kg = ask("Enter weight (kg):", cast=int)
+
+    diet_type = ask("Enter diet type (veg/eggetarian/nonveg/jain):").lower()
+
+    activity = ask(
+        "Enter activity (sedentary/light/moderate/active/very active):",
+    ).lower()
+
+    goal = ask(
+        "Enter goal (loss/maintain/gain):",
+    ).lower()
+
+    meal_frequency = ask("Enter meal frequency (3-5):", cast=int)
+    if meal_frequency < 3:
+        meal_frequency = 3
+    if meal_frequency > 5:
+        meal_frequency = 5
+
+    allergies = ask_list(
+        "Enter allergies (comma separated, e.g. gluten,nuts) or leave blank: "
     )
-    goal = input("Enter goal (loss/maintain/gain): ")
-    meal_frequency = int(input("Enter meal frequency (3-5): "))
-    allergies_input = input(
-        "Enter allergies (comma separated, e.g., gluten,nuts) or leave blank: "
+    diseases = ask_list(
+        "Enter diseases (comma separated, e.g. diabetes,hypertension) or leave blank: "
     )
-    allergies = (
-        [allergy.strip().lower() for allergy in allergies_input.split(",")]
-        if allergies_input
-        else []
-    )
-    diseases_input = input(
-        "Enter diseases (comma separated, e.g., diabetes,hypertension) or leave blank: "
-    )
-    diseases = (
-        [disease.strip().lower() for disease in diseases_input.split(",")]
-        if diseases_input
-        else []
-    )
-    disliked_foods_input = input(
-        "Enter disliked foods (comma separated) or leave blank: "
-    )
-    disliked_foods = (
-        [food.strip().lower() for food in disliked_foods_input.split(",")]
-        if disliked_foods_input
-        else []
-    )
+    disliked_foods = ask_list("Enter disliked foods (comma separated) or leave blank: ")
+
     rules = disease_rules(diseases)
+
     day_meals = select_meals_for_day(
         meals,
         rules,
         allergies,
-        diet_type.lower(),
+        diet_type,
         meal_frequency,
         disliked_foods=disliked_foods,
     )
-    targets = compute_targets(
-        age, sex, height_cm, weight_kg, activity.lower(), goal.lower()
-    )
+
+    if not day_meals:
+        print("\n[ERROR] No meals matched your restriction filters!")
+        return
+
+    targets = compute_targets(age, sex, height_cm, weight_kg, activity, goal)
+
     adjusted_plan, summary = adjust_portions_to_targets(day_meals, targets)
 
-    print("\n--- Suggested Indian Meal Plan ---\n")
+    print("\n===== Suggested Meal Plan =====\n")
     for meal in adjusted_plan:
         print(f"{meal['course'].upper()}: {meal['name']}  ({meal['portion_note']})")
 
-    print("\n--- Nutrition Summary ---")
+    print("\n===== Nutrition Summary (Daily) =====")
     for k, v in summary.items():
-        print(f"{k}: {v}")
+        print(f"{k:12}: {v}")
+
+    print("\n======================================\n")
+    print("Meal plan generated successfully!\n")
 
 
 if __name__ == "__main__":
     try:
         main()
     except Exception as e:
-        print("\n[ERROR]", e)
+        print("\n[FATAL ERROR]", e)
