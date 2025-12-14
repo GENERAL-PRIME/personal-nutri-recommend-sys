@@ -5,9 +5,6 @@ from allergies import build_allergen_ontology, is_meal_allergy_safe
 from diseases import is_meal_disease_suitable
 
 
-# -----------------------------
-# Diet Filter
-# -----------------------------
 def _diet_gate(meal: Meal, requested: str) -> bool:
     requested = requested.lower()
 
@@ -26,9 +23,6 @@ def _diet_gate(meal: Meal, requested: str) -> bool:
     return True
 
 
-# -----------------------------
-# Disliked foods filter
-# -----------------------------
 def _norm(s: str) -> str:
     return " ".join(s.lower().strip().split())
 
@@ -47,9 +41,6 @@ def _dislikes_gate(meal: Meal, disliked: list[str] | None) -> bool:
     return True
 
 
-# -----------------------------
-# Meal scoring
-# -----------------------------
 def _score_meal(meal: Meal, rules: Dict[str, Dict]) -> float:
     prefer_low_gi = rules.get("soft", {}).get("prefer_low_gi", False)
     score = 0.0
@@ -65,9 +56,6 @@ def _score_meal(meal: Meal, rules: Dict[str, Dict]) -> float:
     return score
 
 
-# -----------------------------
-# Main Meal Selector
-# -----------------------------
 def select_meals_for_day(
     meals: List[Meal],
     rules: Dict[str, Dict],
@@ -108,9 +96,7 @@ def select_meals_for_day(
 
     used_ids = set()
 
-    # ---- PICKER FUNCTIONS ----
     def pick_best_unique(course: str):
-        """Pick unique meal from course (top 3 shuffled for variety)."""
         items = buckets[course]
         if items:
             top_k = items[: min(3, len(items))]
@@ -122,7 +108,6 @@ def select_meals_for_day(
         return None
 
     def pick_any_unique():
-        """Fallback: best remaining meal across all courses."""
         all_items = [
             (m, sc)
             for lst in buckets.values()
@@ -136,9 +121,6 @@ def select_meals_for_day(
         used_ids.add(best.id)
         return best
 
-    # -----------------------------
-    # STRICT FINAL PLAN STRUCTURE
-    # -----------------------------
     plan = []
 
     # 1 breakfast
@@ -181,9 +163,6 @@ def select_meals_for_day(
     return plan
 
 
-# -----------------------------
-# Portion Adjuster
-# -----------------------------
 def adjust_portions_to_targets(
     day_meals: List[Meal], targets: Dict[str, float]
 ) -> Tuple[List[Dict], Dict[str, float]]:

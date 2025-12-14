@@ -4,9 +4,6 @@ from planner import select_meals_for_day, adjust_portions_to_targets
 from targets import compute_targets
 
 
-# ---------------------------------------
-# Utility: safe input with defaults
-# ---------------------------------------
 def ask(prompt: str, default=None, cast=str):
     raw = input(f"{prompt} ").strip()
     if not raw:
