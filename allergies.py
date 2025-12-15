@@ -33,7 +33,7 @@ def build_allergen_ontology() -> Dict[str, List[str]]:
             "buttermilk",
             "kadhi",
         ],
-        "peanut": ["peanut", "groundnut", "chikki", "peanut chutney"],
+        "peanut": ["peanut", "groundnut", "chikki", "peanut chutney", "nut"],
         "tree_nut": ["cashew", "kaju", "almond", "badam", "pista", "pistachio"],
         "egg": ["egg", "omelette", "anda", "bhurji"],
         "soy": ["soy", "soya", "tofu", "soy milk"],
