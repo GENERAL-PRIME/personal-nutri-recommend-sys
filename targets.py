@@ -10,7 +10,7 @@ def compute_targets(
         activity, 1.55
     )
     tdee = bmr * act
-    delta = {"loss": -500, "maint": 0, "gain": +350}.get(goal, 0)
+    delta = {"loss": -500, "maintain": 0, "gain": +350}.get(goal, 0)
     kcal = max(1200, tdee + delta)
     protein_g = max(
         0.9 * weight_kg, 1.2 * weight_kg if goal == "loss" else 1.0 * weight_kg
