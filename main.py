@@ -80,12 +80,21 @@ def main():
         return
 
     # --------- Compute calorie/macros targets ----------
-    targets = compute_targets(age, sex, height_cm, weight_kg, activity, goal)
+    targets = compute_targets(
+        age=age,
+        sex=sex,
+        height_cm=height_cm,
+        weight_kg=weight_kg,
+        activity=activity,
+        goal=goal,
+    )
 
     # --------- Adjust portions ----------
     adjusted_plan, summary = adjust_portions_to_targets(day_meals, targets)
 
     # --------- Display ----------
+    order = {"breakfast": 0, "lunch": 1, "dinner": 2, "snack": 3}
+    adjusted_plan.sort(key=lambda m: order.get(m["course"], 99))
     print("\n===== Suggested Meal Plan =====\n")
     for meal in adjusted_plan:
         print(f"{meal['course'].upper()}: {meal['name']}  ({meal['portion_note']})")
