@@ -69,7 +69,6 @@ def main():
     )
     disliked_foods = ask_list("Enter disliked foods (comma separated) or leave blank: ")
 
-    # --------- Build diet constraints ----------
     rules = disease_rules(diseases)
 
     # --------- Select meals ----------
