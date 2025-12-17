@@ -39,6 +39,11 @@ def build_allergen_ontology() -> Dict[str, List[str]]:
         "soy": ["soy", "soya", "tofu", "soy milk"],
         "fish": ["fish", "prawn", "shrimp", "crab"],
         "sesame": ["sesame", "til"],
+        "chicken": ["chicken", "murgh", "broiler"],
+        "mutton": ["mutton", "goat", "lamb", "bakra"],
+        "beef": ["beef", "buff", "buffalo"],
+        "pork": ["pork", "bacon", "ham"],
+        "meat": ["chicken", "mutton", "beef", "pork", "bacon", "ham", "goat", "lamb"],
     }
 
 
