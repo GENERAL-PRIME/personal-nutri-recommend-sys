@@ -1,12 +1,12 @@
 import random
 from typing import Dict, List, Tuple
-from models import Meal
-from allergies import build_allergen_ontology, is_meal_allergy_safe
-from diseases import is_meal_disease_suitable
+from nrs.models import Meal
+from nrs.allergies import build_allergen_ontology, is_meal_allergy_safe
+from nrs.diseases import is_meal_disease_suitable
 
-from planner.diet import diet_gate
-from planner.dislikes import dislikes_gate
-from planner.scoring import score_meal
+from nrs.planner.diet import diet_gate
+from nrs.planner.dislikes import dislikes_gate
+from nrs.planner.scoring import score_meal
 
 
 def select_meals_for_day(

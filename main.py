@@ -1,7 +1,10 @@
-from io_csv import load_meals_from_csv
-from diseases import disease_rules
-from planner import select_meals_for_day, adjust_portions_to_targets
-from targets import compute_targets
+from nrs.io_csv import load_meals_from_csv
+from nrs.diseases import disease_rules
+from nrs.planner.selector import select_meals_for_day
+from nrs.planner.portions import adjust_portions_to_targets
+from nrs.targets import compute_targets
+from middleware.acm.predict import predict_activity_class
+from middleware.gcm.src.predict import classify_goal
 
 
 def ask(prompt: str, default=None, cast=str):
@@ -25,7 +28,7 @@ def ask_list(prompt: str) -> list[str]:
 
 def main():
     try:
-        meals = load_meals_from_csv("indian_meals.csv")
+        meals = load_meals_from_csv("nrs/indian_meals.csv")
         if not meals:
             print("[ERROR] Meal database is empty.")
             return
@@ -42,11 +45,15 @@ def main():
 
     diet_type = ask("Enter diet type (veg/eggetarian/nonveg/jain):").lower()
 
-    activity = ask(
-        "Enter activity (sedentary/light/moderate/active/very active):"
-    ).lower()
+    activity_text = ask(
+        "Describe your physical activity (e.g. 'I walk for 1 hour 5 days a week'):"
+    )
+    activity = predict_activity_class(age, sex, activity_text)
+    print(f"Predicted activity level: {activity}")
 
-    goal = ask("Enter goal (loss/maintain/gain):").lower()
+    goal_text = ask("Describe your goal (e.g. 'I want to lose fat and get lean'):")
+    goal = classify_goal(goal_text).lower()
+    print(f"Predicted goal: {goal}")
 
     meal_frequency = ask("Enter meal frequency (3-5) :", cast=int)
     if meal_frequency < 3:

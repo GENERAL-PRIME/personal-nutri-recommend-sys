@@ -1,5 +1,5 @@
 from typing import Dict, List, Tuple
-from models import Meal
+from nrs.models import Meal
 
 
 def adjust_portions_to_targets(
@@ -26,12 +26,12 @@ def adjust_portions_to_targets(
     ]
 
     summary = {
-        "KCal": sum(m["kcal"] for m in adjusted),
-        "Carbs (g)": round(sum(m["carbs_g"] for m in adjusted), 1),
-        "Protein (g)": round(sum(m["protein_g"] for m in adjusted), 1),
-        "Fat (g)": round(sum(m["fat_g"] for m in adjusted), 1),
-        "Fiber (g)": round(sum(m["fiber_g"] for m in adjusted), 1),
-        "Sodium (mg)": sum(m["sodium_mg"] for m in adjusted),
+        "kcal": sum(m["kcal"] for m in adjusted),
+        "carbs_g": round(sum(m["carbs_g"] for m in adjusted), 1),
+        "protein_g": round(sum(m["protein_g"] for m in adjusted), 1),
+        "fat_g": round(sum(m["fat_g"] for m in adjusted), 1),
+        "fiber_g": round(sum(m["fiber_g"] for m in adjusted), 1),
+        "sodium_mg": sum(m["sodium_mg"] for m in adjusted),
     }
 
     return adjusted, summary

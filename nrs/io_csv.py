@@ -1,6 +1,6 @@
 import csv
 from typing import List
-from models import Meal
+from nrs.models import Meal
 
 
 def load_meals_from_csv(path: str) -> List[Meal]:

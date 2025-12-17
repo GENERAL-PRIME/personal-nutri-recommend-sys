@@ -6,9 +6,13 @@ def compute_targets(
 ) -> Dict[str, float]:
     s = 5 if sex.lower().startswith("m") else -161
     bmr = 10 * weight_kg + 6.25 * height_cm - 5 * age + s
-    act = {"sedentary": 1.2, "light": 1.375, "moderate": 1.55, "active": 1.725}.get(
-        activity, 1.55
-    )
+    act = {
+        "sedentary": 1.2,
+        "light": 1.375,
+        "moderate": 1.55,
+        "active": 1.725,
+        "very active": 1.9,
+    }.get(activity, 1.55)
     tdee = bmr * act
     delta = {"loss": -500, "maintain": 0, "gain": +350}.get(goal, 0)
     kcal = max(1200, tdee + delta)

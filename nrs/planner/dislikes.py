@@ -1,4 +1,4 @@
-from models import Meal
+from nrs.models import Meal
 
 
 def _norm(s: str) -> str:

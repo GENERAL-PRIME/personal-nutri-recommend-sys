@@ -1,4 +1,4 @@
-from models import Meal
+from nrs.models import Meal
 
 
 def diet_gate(meal: Meal, requested: str) -> bool:

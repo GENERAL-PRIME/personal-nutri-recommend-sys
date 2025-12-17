@@ -1,5 +1,5 @@
 from typing import Dict
-from models import Meal
+from nrs.models import Meal
 
 
 def score_meal(meal: Meal, rules: Dict[str, Dict]) -> float:

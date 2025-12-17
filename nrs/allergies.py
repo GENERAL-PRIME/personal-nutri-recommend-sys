@@ -1,5 +1,5 @@
 from typing import Dict, List
-from models import Meal
+from nrs.models import Meal
 
 
 def build_allergen_ontology() -> Dict[str, List[str]]:
