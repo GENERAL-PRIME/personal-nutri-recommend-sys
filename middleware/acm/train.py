@@ -1,9 +1,19 @@
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import train_test_split
+from pathlib import Path
 import pandas as pd
 import joblib
 
-df = pd.read_csv("acm/data/activity_data.csv")
+
+BASE_DIR = Path(__file__).resolve().parent  # gcm/
+DATA_DIR = BASE_DIR / "data"
+MODEL_DIR = BASE_DIR / "models"
+
+MODEL_DIR.mkdir(exist_ok=True)
+
+# ---------- Load data ----------
+df = pd.read_csv(DATA_DIR / "activity_data.csv")
+
 
 X = df[["age", "gender", "met", "duration", "frequency", "weekly_met"]]
 y = df["label"]
@@ -21,4 +31,4 @@ model.fit(X_train, y_train)
 print("Training accuracy:", model.score(X_train, y_train))
 print("Testing accuracy:", model.score(X_test, y_test))
 
-joblib.dump(model, "acm/model/activity_model.pkl")
+joblib.dump(model, MODEL_DIR / "activity_model.pkl")

@@ -93,7 +93,7 @@ for _ in range(5000):
     gender = random.choice([0, 1])  # 1 = male, 0 = female
     activity, met = random.choice(activities)
     duration = random.choice([20, 30, 45, 60])
-    freq = random.randint(2, 6)
+    freq = random.randint(1, 7)
 
     weekly_met = met * duration * freq
     label = classify(age, weekly_met)
@@ -105,5 +105,5 @@ df = pd.DataFrame(
     columns=["age", "gender", "met", "duration", "frequency", "weekly_met", "label"],
 )
 
-df.to_csv("acm/data/activity_data.csv", index=False)
+df.to_csv("activity_data.csv", index=False)
 print("Dataset generated:", len(df))

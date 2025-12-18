@@ -3,7 +3,7 @@ import pandas as pd
 from middleware.acm.nlp_utils import extract_features
 from pathlib import Path
 
-MODEL_PATH = Path(__file__).resolve().parent / "model" / "activity_model.pkl"
+MODEL_PATH = Path(__file__).resolve().parent / "models" / "activity_model.pkl"
 model = joblib.load(MODEL_PATH)
 
 FEATURE_NAMES = ["age", "gender", "met", "duration", "frequency", "weekly_met"]
