@@ -53,9 +53,11 @@ activities = [
 # -------------------------------------------------
 def age_scale(age):
     if age < 30:
-        return 1.0 + (30 - age) * 0.005
+        return 1.0 + (30 - age) * 0.003  # gentler boost
+    elif age <= 60:
+        return 1.0 - (age - 30) * 0.007  # slower decline
     else:
-        return max(0.65, 1.0 - (age - 30) * 0.01)
+        return max(0.70, 0.79 - (age - 60) * 0.004)
 
 
 # -------------------------------------------------
