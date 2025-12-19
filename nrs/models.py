@@ -20,3 +20,4 @@ class Meal:
     diet_type: Literal["veg", "eggetarian", "nonveg", "jain"]
     veg_type: Literal["veg", "nonveg"]
     tags: List[str]
+    ingredients: List[str]

@@ -12,9 +12,8 @@ def build_allergen_ontology() -> Dict[str, List[str]]:
             "semolina",
             "sev",
             "seviyaan",
-            "bhatura",
-            "naan",
             "bread",
+            "naan",
             "paratha",
             "roti",
             "dalia",
@@ -33,8 +32,8 @@ def build_allergen_ontology() -> Dict[str, List[str]]:
             "buttermilk",
             "kadhi",
         ],
-        "peanut": ["peanut", "groundnut", "chikki", "peanut chutney"],
-        "tree_nut": ["cashew", "kaju", "almond", "badam", "pista", "pistachio"],
+        "peanut": ["peanut", "groundnut", "chikki"],
+        "tree_nut": ["cashew", "kaju", "almond", "badam", "pista"],
         "egg": ["egg", "omelette", "anda", "bhurji"],
         "soy": ["soy", "soya", "tofu", "soy milk"],
         "fish": ["fish", "prawn", "shrimp", "crab"],
@@ -43,28 +42,43 @@ def build_allergen_ontology() -> Dict[str, List[str]]:
         "mutton": ["mutton", "goat", "lamb", "bakra"],
         "beef": ["beef", "buff", "buffalo"],
         "pork": ["pork", "bacon", "ham"],
-        "meat": ["chicken", "mutton", "beef", "pork", "bacon", "ham", "goat", "lamb"],
+        "meat": [
+            "chicken",
+            "murgh",
+            "broiler",
+            "mutton",
+            "goat",
+            "lamb",
+            "bakra",
+            "beef",
+            "buff",
+            "buffalo",
+            "pork",
+            "bacon",
+            "ham",
+        ],
     }
 
 
 def normalize_allergies(
-    user_allergies: List[str], ontology: Dict[str, List[str]]
+    user_allergies: List[str],
+    ontology: Dict[str, List[str]],
 ) -> List[str]:
     """
-    Convert raw allergy keywords into canonical allergy categories.
-    e.g. 'wheat' → 'gluten', 'paneer' → 'dairy'
+    Maps raw inputs to canonical allergens.
+    e.g. wheat → gluten, paneer → dairy, chicken → chicken/meat
     """
     normalized = set()
 
     for raw in user_allergies:
         raw = raw.lower().strip()
 
-        # If already canonical
+        # direct canonical match
         if raw in ontology:
             normalized.add(raw)
             continue
 
-        # Match keyword to group
+        # ingredient keyword match
         for canonical, keywords in ontology.items():
             if raw in keywords:
                 normalized.add(canonical)
@@ -72,6 +86,9 @@ def normalize_allergies(
     return list(normalized)
 
 
+# -------------------------------------------------
+# Allergy safety check (ingredient-first)
+# -------------------------------------------------
 def is_meal_allergy_safe(
     meal: Meal,
     allergies: List[str],
@@ -80,30 +97,29 @@ def is_meal_allergy_safe(
     try:
         canonical_allergies = normalize_allergies(allergies, ontology)
 
+        ingredients = [i.lower() for i in meal.ingredients]
         name = meal.name.lower()
-        tagset = set(meal.tags)
+        tags = set(t.lower() for t in meal.tags)
 
-        for a in canonical_allergies:
-            keywords = ontology.get(a, [])
+        for allergen in canonical_allergies:
+            keywords = ontology.get(allergen, [])
 
-            if a == "gluten":
-                if "gf" in tagset:
+            if allergen == "gluten":
+                if "gf" in tags:
                     continue
-                if any(k in name for k in keywords):
+                if any(k in ing for ing in ingredients for k in keywords):
                     return False
                 continue
 
-            if a == "egg":
-                if meal.diet_type == "eggetarian" or any(k in name for k in keywords):
-                    return False
-
-            if a in ("fish", "shellfish"):
-                if any(k in name for k in keywords):
-                    return False
+            # -------------------------
+            # Ingredient-based check
+            # -------------------------
+            if any(k in ing for ing in ingredients for k in keywords):
+                return False
 
             if any(k in name for k in keywords):
                 return False
-            if any(a in t for t in tagset):
+            if allergen in tags:
                 return False
 
         return True

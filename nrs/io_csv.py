@@ -5,12 +5,21 @@ from nrs.models import Meal
 
 def load_meals_from_csv(path: str) -> List[Meal]:
     meals: List[Meal] = []
+
     with open(path, "r", encoding="utf-8") as f:
         reader = csv.DictReader(f)
+
         for r in reader:
             tags_list = [
                 t.strip().lower() for t in (r.get("tags") or "").split(",") if t.strip()
             ]
+
+            ingredients_list = [
+                i.strip().lower()
+                for i in (r.get("ingredients") or "").split(",")
+                if i.strip()
+            ]
+
             meals.append(
                 Meal(
                     id=r["id"].strip(),
@@ -29,6 +38,8 @@ def load_meals_from_csv(path: str) -> List[Meal]:
                     diet_type=r["diet_type"].strip().lower(),
                     veg_type=r["veg_type"].strip().lower(),
                     tags=tags_list,
+                    ingredients=ingredients_list,
                 )
             )
+
     return meals

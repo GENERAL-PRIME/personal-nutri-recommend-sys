@@ -115,6 +115,7 @@ def is_meal_disease_suitable(meal: Meal, rules: Dict[str, Dict]) -> bool:
         soft = rules.get("soft", {})
 
         name = meal.name.lower()
+        ingredients = set(meal.ingredients)
 
         # 1) Carb cap (diabetes)
         if "per_meal_carb_cap_g" in hard and meal.carbs_g > hard["per_meal_carb_cap_g"]:
@@ -139,6 +140,8 @@ def is_meal_disease_suitable(meal: Meal, rules: Dict[str, Dict]) -> bool:
 
         # 5) Keyword-based avoid rules (soft rules)
         for kw in soft.get("avoid_keywords", []):
+            if kw in ingredients:
+                return False
             if kw in name:
                 return False
 
