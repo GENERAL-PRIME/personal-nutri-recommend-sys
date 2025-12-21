@@ -115,13 +115,15 @@ def extract_features(text: str):
 
     # -------- ACTIVITY DETECTION --------
     activity = "walking"  # safe default
+    found = False
 
     for canonical, keywords in ACTIVITY_KEYWORDS.items():
         for kw in keywords:
             if kw in text:
                 activity = canonical
+                found = True
                 break
-        if activity == canonical:
+        if found:
             break
 
     met = MET_TABLE[activity]
@@ -135,7 +137,7 @@ def extract_features(text: str):
             duration *= 60
 
     # 🔒 Cap duration for classification (not physiology)
-    duration = min(duration, 120)  # max 2 hours counted
+    duration = min(duration, 120)
 
     # -------- FREQUENCY --------
     frequency = 3
