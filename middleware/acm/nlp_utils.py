@@ -130,7 +130,7 @@ def extract_features(text: str):
 
     # -------- DURATION --------
     duration = 30
-    dur_match = re.search(r"(\d+)\s*(hr|hour|hrs|hours|min|minute|minutes)", text)
+    dur_match = re.search(r"(\d+)\s*(hr|hour|hrs|hours|min|mins|minute|minutes)", text)
     if dur_match:
         duration = int(dur_match.group(1))
         if dur_match.group(2).startswith("h"):
