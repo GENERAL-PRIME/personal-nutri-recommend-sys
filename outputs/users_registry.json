@@ -1,0 +1,91 @@
+{
+  "users": {
+    "NRS0001": {
+      "user_id": "NRS0001",
+      "name": "Soumil",
+      "age": "22",
+      "sex": "M",
+      "weight_kg": "66",
+      "height_cm": "173",
+      "dietary_preference": "none",
+      "allergies": [],
+      "diseases": [],
+      "dislikes": [
+        "no beef",
+        "no pork",
+        "mushrooms",
+        "fried foods"
+      ],
+      "registered_at": "2026-04-18T21:15:52.922098",
+      "last_run": "2026-04-18T21:15:56.129166"
+    },
+    "NRS0002": {
+      "user_id": "NRS0002",
+      "name": "Abhidhan",
+      "age": "21",
+      "sex": "M",
+      "weight_kg": "65",
+      "height_cm": "170",
+      "dietary_preference": "none",
+      "allergies": [
+        "milk",
+        "sesame",
+        "peanuts"
+      ],
+      "diseases": [
+        "ibd",
+        "gerd"
+      ],
+      "dislikes": [
+        "tofu",
+        "vegan"
+      ],
+      "registered_at": "2026-04-18T21:18:28.741281",
+      "last_run": "2026-04-18T21:23:15.668308"
+    },
+    "NRS0003": {
+      "user_id": "NRS0003",
+      "name": "Sneha",
+      "age": "21",
+      "sex": "F",
+      "weight_kg": "55",
+      "height_cm": "165",
+      "dietary_preference": "jain",
+      "allergies": [
+        "soya",
+        "milk"
+      ],
+      "diseases": [],
+      "dislikes": [
+        "spicy foods",
+        "fried foods"
+      ],
+      "registered_at": "2026-04-18T21:28:52.460746",
+      "last_run": "2026-04-18T21:41:57.677903"
+    },
+    "NRS0004": {
+      "user_id": "NRS0004",
+      "name": "Ashmit",
+      "age": "21",
+      "sex": "M",
+      "weight_kg": "80",
+      "height_cm": "180",
+      "dietary_preference": "vegetarian",
+      "allergies": [
+        "lactose",
+        "nuts"
+      ],
+      "diseases": [
+        "pcos",
+        "heart disease",
+        "obesity"
+      ],
+      "dislikes": [
+        "vegan"
+      ],
+      "registered_at": "2026-04-18T21:49:17.273720",
+      "last_run": "2026-04-18T21:49:19.393451"
+    }
+  },
+  "id_counter": 4
+}

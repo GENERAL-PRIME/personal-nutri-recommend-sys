@@ -1,0 +1,51 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "▶  Run Food Filter (Interactive)",
+      "type": "debugpy",
+      "request": "launch",
+      "program": "${workspaceFolder}/main.py",
+      "console": "integratedTerminal",
+      "cwd": "${workspaceFolder}",
+      "justMyCode": false
+    },
+    {
+      "name": "▶  Run Food Filter (Demo Mode)",
+      "type": "debugpy",
+      "request": "launch",
+      "program": "${workspaceFolder}/main.py",
+      "args": ["--demo"],
+      "console": "integratedTerminal",
+      "cwd": "${workspaceFolder}",
+      "justMyCode": false
+    },
+    {
+      "name": "🔬  Test: Allergy Filter only",
+      "type": "debugpy",
+      "request": "launch",
+      "program": "${workspaceFolder}/models/allergy_filter.py",
+      "console": "integratedTerminal",
+      "cwd": "${workspaceFolder}",
+      "justMyCode": false
+    },
+    {
+      "name": "🔬  Test: Disease Filter only",
+      "type": "debugpy",
+      "request": "launch",
+      "program": "${workspaceFolder}/models/disease_filter.py",
+      "console": "integratedTerminal",
+      "cwd": "${workspaceFolder}",
+      "justMyCode": false
+    },
+    {
+      "name": "🔬  Test: Dislike Filter only",
+      "type": "debugpy",
+      "request": "launch",
+      "program": "${workspaceFolder}/models/dislike_filter.py",
+      "console": "integratedTerminal",
+      "cwd": "${workspaceFolder}",
+      "justMyCode": false
+    }
+  ]
+}
