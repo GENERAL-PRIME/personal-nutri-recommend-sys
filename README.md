@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # 🥗 Food Filtering Module — AI Personalised NRS
 
 Part of the **AI Personalised Nutrition Recommendation System (NRS)** project.
@@ -165,3 +166,6 @@ Lactose Intolerance, Cancer, Thyroid Cancer
 Seafood, Red Meat, Eggs, Dairy, Mushrooms, Nuts, Legumes, Spicy Foods,
 Bitter Foods, Fried Foods, Leafy Greens, Onion & Garlic, Bitter Gourd,
 Bottle Gourd, Jain Diet, No Beef, No Pork, Vegan, Vegetarian, and more
+=======
+# Personalized Nutrition Recommendation System
+>>>>>>> 0d6f3368a9c3c4c60df0dd093b802bf61d97a4d8
