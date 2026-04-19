@@ -145,7 +145,6 @@ F143,Ragi Mudde,Vegetable Dishes,155.0,3.5,32.5,1.2,3.8,0.5,8.0,285,348.0,3.9,0.
 F144,Kootu,Vegetable Dishes,118.0,4.5,15.5,4.8,5.2,2.5,285.0,325,52.0,2.2,8.5,0.0,0.0,0.8,30,35.0,0,False,True,False,False,False,False,False,False,False,False,True,False,Tamil Nadu,lunch_dinner
 F145,Poriyal,Vegetable Dishes,82.0,2.8,10.5,3.2,3.5,2.8,185.0,285,42.0,1.2,22.5,0.0,0.0,0.5,20,0.0,0,False,False,False,False,False,False,False,True,False,False,True,True,Tamil Nadu,lunch_dinner
 F146,Luchi,Indian Foods,285.0,6.5,38.5,12.5,1.5,0.8,385.0,125,22.0,1.8,0.0,0.0,0.0,2.8,72,0.0,0,True,False,False,False,False,False,False,False,False,False,True,False,Bengali,breakfast
-F147,Aloo Posto,Indian Foods,175.0,3.2,18.5,9.8,3.2,1.5,280.0,385,152.0,2.2,12.5,0.0,0.0,1.2,40,0.0,0,False,False,False,False,False,False,False,True,False,False,True,True,Bengali,lunch_dinner
 F148,Shorshe Ilish,Indian Foods,235.0,22.5,4.5,14.5,1.2,1.8,580.0,420,85.0,2.8,5.5,45.0,125.0,3.2,45,125.0,0,False,True,False,False,False,True,False,True,True,False,False,False,Bengali,lunch_dinner
 F149,Chingri Malai Curry,Indian Foods,225.0,20.5,5.8,13.5,1.2,3.8,520.0,360,62.0,1.8,5.5,0.0,185.0,5.2,30,55.0,0,False,True,False,False,True,False,False,False,False,False,False,False,Bengali,lunch_dinner
 F150,Mishti Doi,Indian Foods,142.0,4.5,24.5,3.2,0.0,22.5,68.0,185,148.0,0.1,0.5,2.0,14.0,2.1,45,0.0,0,False,True,False,False,False,False,False,False,False,False,True,False,Bengali,breakfast_snack
@@ -1144,8 +1143,6 @@ E041,Fara,Snacks & Street Food,158.0,4.5,28.5,3.5,2.5,1.5,285.0,125,18.0,1.5,5.5
 E042,Chila,Breakfast Cereals & Porridge,138.0,5.5,22.5,3.5,3.8,1.5,285.0,245,32.0,2.5,5.5,0.0,0.0,0.5,48,0.0,0,False,False,False,False,False,False,False,False,False,False,True,True,Chhattisgarhi,breakfast
 E043,Rugra (Mushroom) Sabzi,Vegetable Dishes,58.0,3.5,7.5,1.5,2.8,1.5,185.0,285,52.0,1.5,2.5,200.0,0.0,0.3,15,14.0,0,False,False,False,False,False,False,False,False,False,False,True,True,Jharkhand,lunch_dinner
 E044,Dhuska,Snacks & Street Food,185.0,5.5,28.5,6.5,3.5,1.5,285.0,185,32.0,1.8,5.5,0.0,0.0,1.5,55,0.0,0,False,False,False,False,False,False,False,False,False,False,True,True,Jharkhand,snack
-E045,Shukto,Vegetable Dishes,72.0,2.5,9.5,2.8,3.5,1.5,285.0,285,32.0,1.2,8.5,0.0,0.0,0.5,20,0.0,0,False,True,False,False,False,False,True,True,False,False,True,False,Bengali,lunch_dinner
-E046,Chingri Bhaate,Seafood,145.0,14.5,8.5,5.5,1.2,1.5,480.0,285,42.0,1.5,5.5,0.0,148.0,1.8,25,50.0,0,False,False,False,False,True,False,False,False,False,False,False,False,Bengali,lunch_dinner
 E047,Patishapta,Sweets & Desserts,215.0,5.5,32.5,7.5,1.2,22.5,68.0,145,128.0,0.5,0.5,2.0,12.0,2.8,62,0.0,0,False,True,False,False,False,False,False,False,False,False,True,False,Bengali,snack
 E048,Khar,Vegetable Dishes,42.0,1.5,6.5,1.2,2.8,1.5,580.0,185,22.0,0.8,5.5,0.0,0.0,0.3,20,0.0,0,False,False,False,False,False,False,False,False,False,False,True,True,Assamese,lunch_dinner
 E049,Duck Curry (Assamese),Meat Dishes,225.0,18.5,6.5,14.5,1.5,3.5,620.0,360,48.0,2.8,4.5,4.0,85.0,4.8,45,130.0,0,False,False,False,False,False,False,False,False,False,False,False,False,Assamese,lunch_dinner

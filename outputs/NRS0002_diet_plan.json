@@ -1,0 +1,1562 @@
+{
+  "user_id": "NRS0002",
+  "name": "Abhidhan",
+  "timestamp": "2026-04-19T13:35:31.343945",
+  "goal": "Weight Gain (~0.5 kg/week)",
+  "activity": "Very Active (hard exercise 6-7 days/week)",
+  "meal_count": 3,
+  "metrics": {
+    "bmi": 22.5,
+    "bmi_category": "Normal",
+    "bmr_kcal": 1612.0,
+    "tdee_kcal": 2782.0,
+    "target_kcal": 3282.0,
+    "ibw_kg": 65.9,
+    "protein_g": 205.1,
+    "carbs_g": 410.2,
+    "fat_g": 91.2,
+    "fiber_g": 38,
+    "sodium_mg": 2300,
+    "water_ml": 2538.0,
+    "calcium_mg": 1000,
+    "iron_mg": 17,
+    "vitamin_c_mg": 80,
+    "vitamin_d_iu": 600,
+    "potassium_mg": 4700
+  },
+  "weekly_plan": [
+    {
+      "day": 1,
+      "meals": {
+        "breakfast": {
+          "target_kcal": 984.0,
+          "actual_kcal": 845.1,
+          "foods": [
+            {
+              "food_id": "E002",
+              "food_name": "Siddu",
+              "category": "Breads & Flatbreads",
+              "cuisine_type": "Himachali",
+              "portion_g": 150.0,
+              "calories": 427.5,
+              "protein_g": 14.2,
+              "carbs_g": 63.8,
+              "fat_g": 13.2,
+              "fiber_g": 6.3,
+              "sodium_mg": 427.5,
+              "disease_score": 50.0
+            },
+            {
+              "food_id": "N729",
+              "food_name": "Semolina idli (Suji/Rava idli)",
+              "category": "South Indian Breakfast",
+              "cuisine_type": "Indian",
+              "portion_g": 135.0,
+              "calories": 278.6,
+              "protein_g": 12.6,
+              "carbs_g": 45.5,
+              "fat_g": 4.7,
+              "fiber_g": 7.8,
+              "sodium_mg": 249.8,
+              "disease_score": 50.0
+            },
+            {
+              "food_id": "N430",
+              "food_name": "Vegetable poha",
+              "category": "Breakfast Cereals & Porridge",
+              "cuisine_type": "Indian",
+              "portion_g": 77.0,
+              "calories": 139.0,
+              "protein_g": 3.8,
+              "carbs_g": 16.6,
+              "fat_g": 6.2,
+              "fiber_g": 2.9,
+              "sodium_mg": 321.9,
+              "disease_score": 50.0
+            }
+          ],
+          "totals": {
+            "calories": 845.1,
+            "protein_g": 30.6,
+            "carbs_g": 125.9,
+            "fat_g": 24.1,
+            "fiber_g": 17.0,
+            "sodium_mg": 999.2
+          }
+        },
+        "lunch": {
+          "target_kcal": 1313.0,
+          "actual_kcal": 1271.3,
+          "foods": [
+            {
+              "food_id": "F008",
+              "food_name": "Lentils (cooked)",
+              "category": "Dals & Legumes",
+              "cuisine_type": "Indian",
+              "portion_g": 225.0,
+              "calories": 261.0,
+              "protein_g": 20.2,
+              "carbs_g": 45.0,
+              "fat_g": 0.9,
+              "fiber_g": 18.0,
+              "sodium_mg": 4.5,
+              "disease_score": 60.0
+            },
+            {
+              "food_id": "F006",
+              "food_name": "Quinoa",
+              "category": "Breads & Flatbreads",
+              "cuisine_type": "South American",
+              "portion_g": 143.0,
+              "calories": 526.2,
+              "protein_g": 20.0,
+              "carbs_g": 91.5,
+              "fat_g": 8.6,
+              "fiber_g": 10.0,
+              "sodium_mg": 7.2,
+              "disease_score": 50.0
+            },
+            {
+              "food_id": "F070",
+              "food_name": "Rajma",
+              "category": "Indian Foods",
+              "cuisine_type": "Indian",
+              "portion_g": 207.0,
+              "calories": 262.9,
+              "protein_g": 18.0,
+              "carbs_g": 47.2,
+              "fat_g": 1.0,
+              "fiber_g": 13.2,
+              "sodium_mg": 579.6,
+              "disease_score": 60.0
+            },
+            {
+              "food_id": "F158",
+              "food_name": "Litti Chokha",
+              "category": "Indian Foods",
+              "cuisine_type": "Bihari",
+              "portion_g": 75.0,
+              "calories": 221.2,
+              "protein_g": 7.3,
+              "carbs_g": 34.1,
+              "fat_g": 7.1,
+              "fiber_g": 5.1,
+              "sodium_mg": 360.0,
+              "disease_score": 50.0
+            }
+          ],
+          "totals": {
+            "calories": 1271.3,
+            "protein_g": 65.5,
+            "carbs_g": 217.8,
+            "fat_g": 17.6,
+            "fiber_g": 46.3,
+            "sodium_mg": 951.3
+          }
+        },
+        "dinner": {
+          "target_kcal": 984.0,
+          "actual_kcal": 957.7,
+          "foods": [
+            {
+              "food_id": "N889",
+              "food_name": "Cracked wheat khichri/khichdi (Dalia khichri/khichdi)",
+              "category": "Rice Dishes",
+              "cuisine_type": "Indian",
+              "portion_g": 294.0,
+              "calories": 492.2,
+              "protein_g": 22.3,
+              "carbs_g": 65.9,
+              "fat_g": 16.2,
+              "fiber_g": 10.9,
+              "sodium_mg": 661.5,
+              "disease_score": 60.0
+            },
+            {
+              "food_id": "F039",
+              "food_name": "Carrot",
+              "category": "Vegetable Dishes",
+              "cuisine_type": "Western",
+              "portion_g": 225.0,
+              "calories": 92.2,
+              "protein_g": 2.0,
+              "carbs_g": 22.5,
+              "fat_g": 0.5,
+              "fiber_g": 6.3,
+              "sodium_mg": 155.2,
+              "disease_score": 80.0
+            },
+            {
+              "food_id": "F016",
+              "food_name": "Ground Beef (lean)",
+              "category": "Meat Dishes",
+              "cuisine_type": "Western",
+              "portion_g": 93.0,
+              "calories": 199.9,
+              "protein_g": 24.2,
+              "carbs_g": 0.0,
+              "fat_g": 11.2,
+              "fiber_g": 0.0,
+              "sodium_mg": 69.8,
+              "disease_score": 55.0
+            },
+            {
+              "food_id": "N091",
+              "food_name": "Green chickpeas pulao (Choliya pulao/Hare chane ka pulao)",
+              "category": "Rice Dishes",
+              "cuisine_type": "Indian",
+              "portion_g": 100.0,
+              "calories": 173.4,
+              "protein_g": 4.9,
+              "carbs_g": 27.6,
+              "fat_g": 4.8,
+              "fiber_g": 3.2,
+              "sodium_mg": 170.0,
+              "disease_score": 60.0
+            }
+          ],
+          "totals": {
+            "calories": 957.7,
+            "protein_g": 53.4,
+            "carbs_g": 116.0,
+            "fat_g": 32.7,
+            "fiber_g": 20.4,
+            "sodium_mg": 1056.5
+          }
+        }
+      },
+      "totals": {
+        "calories": 3074.1,
+        "protein_g": 149.5,
+        "carbs_g": 459.7,
+        "fat_g": 74.4,
+        "fiber_g": 83.7,
+        "sodium_mg": 3007.0
+      },
+      "targets": {
+        "calories": 3282.0,
+        "protein_g": 205.1,
+        "carbs_g": 410.2,
+        "fat_g": 91.2,
+        "fiber_g": 38,
+        "sodium_mg": 2300
+      },
+      "day_name": "Monday"
+    },
+    {
+      "day": 2,
+      "meals": {
+        "breakfast": {
+          "target_kcal": 984.0,
+          "actual_kcal": 827.5,
+          "foods": [
+            {
+              "food_id": "N257",
+              "food_name": "Caramel custard (steamed)",
+              "category": "Beverages",
+              "cuisine_type": "Indian",
+              "portion_g": 300.0,
+              "calories": 364.8,
+              "protein_g": 15.0,
+              "carbs_g": 45.0,
+              "fat_g": 14.7,
+              "fiber_g": 0.0,
+              "sodium_mg": 130.8,
+              "disease_score": 60.0
+            },
+            {
+              "food_id": "F003",
+              "food_name": "Whole Wheat Bread",
+              "category": "Breads & Flatbreads",
+              "cuisine_type": "Western",
+              "portion_g": 125.0,
+              "calories": 308.8,
+              "protein_g": 16.2,
+              "carbs_g": 51.2,
+              "fat_g": 4.2,
+              "fiber_g": 7.5,
+              "sodium_mg": 500.0,
+              "disease_score": 50.0
+            },
+            {
+              "food_id": "E002",
+              "food_name": "Siddu",
+              "category": "Breads & Flatbreads",
+              "cuisine_type": "Himachali",
+              "portion_g": 54.0,
+              "calories": 153.9,
+              "protein_g": 5.1,
+              "carbs_g": 22.9,
+              "fat_g": 4.8,
+              "fiber_g": 2.3,
+              "sodium_mg": 153.9,
+              "disease_score": 50.0
+            }
+          ],
+          "totals": {
+            "calories": 827.5,
+            "protein_g": 36.3,
+            "carbs_g": 119.1,
+            "fat_g": 23.7,
+            "fiber_g": 9.8,
+            "sodium_mg": 784.7
+          }
+        },
+        "lunch": {
+          "target_kcal": 1313.0,
+          "actual_kcal": 1319.0,
+          "foods": [
+            {
+              "food_id": "N833",
+              "food_name": "Moong bean dosa (Pesarattu)",
+              "category": "Dals & Legumes",
+              "cuisine_type": "Andhra",
+              "portion_g": 225.0,
+              "calories": 643.5,
+              "protein_g": 27.7,
+              "carbs_g": 71.8,
+              "fat_g": 26.3,
+              "fiber_g": 13.5,
+              "sodium_mg": 138.2,
+              "disease_score": 60.0
+            },
+            {
+              "food_id": "N877",
+              "food_name": "Maa chaane ki dal",
+              "category": "Dals & Legumes",
+              "cuisine_type": "Indian",
+              "portion_g": 97.0,
+              "calories": 334.4,
+              "protein_g": 19.2,
+              "carbs_g": 41.8,
+              "fat_g": 9.2,
+              "fiber_g": 13.0,
+              "sodium_mg": 42.0,
+              "disease_score": 60.0
+            },
+            {
+              "food_id": "F013",
+              "food_name": "Tempeh",
+              "category": "Dals & Legumes",
+              "cuisine_type": "Asian",
+              "portion_g": 86.0,
+              "calories": 167.7,
+              "protein_g": 16.3,
+              "carbs_g": 7.7,
+              "fat_g": 9.5,
+              "fiber_g": 0.0,
+              "sodium_mg": 7.7,
+              "disease_score": 60.0
+            },
+            {
+              "food_id": "N091",
+              "food_name": "Green chickpeas pulao (Choliya pulao/Hare chane ka pulao)",
+              "category": "Rice Dishes",
+              "cuisine_type": "Indian",
+              "portion_g": 100.0,
+              "calories": 173.4,
+              "protein_g": 4.9,
+              "carbs_g": 27.6,
+              "fat_g": 4.8,
+              "fiber_g": 3.2,
+              "sodium_mg": 170.0,
+              "disease_score": 60.0
+            }
+          ],
+          "totals": {
+            "calories": 1319.0,
+            "protein_g": 68.1,
+            "carbs_g": 148.9,
+            "fat_g": 49.8,
+            "fiber_g": 29.7,
+            "sodium_mg": 357.9
+          }
+        },
+        "dinner": {
+          "target_kcal": 984.0,
+          "actual_kcal": 892.7,
+          "foods": [
+            {
+              "food_id": "N287",
+              "food_name": "Hot orange souffle",
+              "category": "Indian Foods",
+              "cuisine_type": "Indian",
+              "portion_g": 225.0,
+              "calories": 405.0,
+              "protein_g": 15.5,
+              "carbs_g": 42.3,
+              "fat_g": 20.2,
+              "fiber_g": 0.7,
+              "sodium_mg": 132.3,
+              "disease_score": 60.0
+            },
+            {
+              "food_id": "P005",
+              "food_name": "Pork Chop (grilled)",
+              "category": "Meat Dishes",
+              "cuisine_type": "Continental",
+              "portion_g": 125.0,
+              "calories": 288.8,
+              "protein_g": 31.8,
+              "carbs_g": 0.0,
+              "fat_g": 17.5,
+              "fiber_g": 0.0,
+              "sodium_mg": 97.5,
+              "disease_score": 55.0
+            },
+            {
+              "food_id": "F077",
+              "food_name": "Bottle Gourd (Lauki)",
+              "category": "Vegetable Dishes",
+              "cuisine_type": "Indian",
+              "portion_g": 225.0,
+              "calories": 31.5,
+              "protein_g": 1.4,
+              "carbs_g": 7.7,
+              "fat_g": 0.0,
+              "fiber_g": 1.1,
+              "sodium_mg": 4.5,
+              "disease_score": 80.0
+            },
+            {
+              "food_id": "N889",
+              "food_name": "Cracked wheat khichri/khichdi (Dalia khichri/khichdi)",
+              "category": "Rice Dishes",
+              "cuisine_type": "Indian",
+              "portion_g": 100.0,
+              "calories": 167.4,
+              "protein_g": 7.6,
+              "carbs_g": 22.4,
+              "fat_g": 5.5,
+              "fiber_g": 3.7,
+              "sodium_mg": 225.0,
+              "disease_score": 60.0
+            }
+          ],
+          "totals": {
+            "calories": 892.7,
+            "protein_g": 56.3,
+            "carbs_g": 72.4,
+            "fat_g": 43.2,
+            "fiber_g": 5.5,
+            "sodium_mg": 459.3
+          }
+        }
+      },
+      "totals": {
+        "calories": 3039.2,
+        "protein_g": 160.7,
+        "carbs_g": 340.4,
+        "fat_g": 116.7,
+        "fiber_g": 45.0,
+        "sodium_mg": 1601.9
+      },
+      "targets": {
+        "calories": 3282.0,
+        "protein_g": 205.1,
+        "carbs_g": 410.2,
+        "fat_g": 91.2,
+        "fiber_g": 38,
+        "sodium_mg": 2300
+      },
+      "day_name": "Tuesday"
+    },
+    {
+      "day": 3,
+      "meals": {
+        "breakfast": {
+          "target_kcal": 984.0,
+          "actual_kcal": 737.4,
+          "foods": [
+            {
+              "food_id": "N874",
+              "food_name": "Jowar dosa",
+              "category": "South Indian Breakfast",
+              "cuisine_type": "Indian",
+              "portion_g": 167.0,
+              "calories": 491.6,
+              "protein_g": 14.2,
+              "carbs_g": 67.6,
+              "fat_g": 17.2,
+              "fiber_g": 9.4,
+              "sodium_mg": 162.3,
+              "disease_score": 50.0
+            },
+            {
+              "food_id": "J019",
+              "food_name": "Jain Besan Chilla",
+              "category": "Breakfast Cereals & Porridge",
+              "cuisine_type": "Jain",
+              "portion_g": 149.0,
+              "calories": 245.8,
+              "protein_g": 14.2,
+              "carbs_g": 33.5,
+              "fat_g": 6.7,
+              "fiber_g": 8.2,
+              "sodium_mg": 424.6,
+              "disease_score": 50.0
+            }
+          ],
+          "totals": {
+            "calories": 737.4,
+            "protein_g": 28.4,
+            "carbs_g": 101.1,
+            "fat_g": 23.9,
+            "fiber_g": 17.6,
+            "sodium_mg": 586.9
+          }
+        },
+        "lunch": {
+          "target_kcal": 1313.0,
+          "actual_kcal": 1249.7,
+          "foods": [
+            {
+              "food_id": "F006",
+              "food_name": "Quinoa",
+              "category": "Breads & Flatbreads",
+              "cuisine_type": "South American",
+              "portion_g": 150.0,
+              "calories": 552.0,
+              "protein_g": 21.0,
+              "carbs_g": 96.0,
+              "fat_g": 9.0,
+              "fiber_g": 10.5,
+              "sodium_mg": 7.5,
+              "disease_score": 50.0
+            },
+            {
+              "food_id": "N456",
+              "food_name": "Eggplant/Brinjal rice (Vangi bhat)",
+              "category": "Rice Dishes",
+              "cuisine_type": "Indian",
+              "portion_g": 206.0,
+              "calories": 380.7,
+              "protein_g": 10.9,
+              "carbs_g": 65.3,
+              "fat_g": 7.6,
+              "fiber_g": 9.1,
+              "sodium_mg": 121.7,
+              "disease_score": 55.0
+            },
+            {
+              "food_id": "N348",
+              "food_name": "Apple cinnamon pie",
+              "category": "Indian Foods",
+              "cuisine_type": "Indian",
+              "portion_g": 75.0,
+              "calories": 194.0,
+              "protein_g": 2.5,
+              "carbs_g": 25.3,
+              "fat_g": 9.2,
+              "fiber_g": 1.4,
+              "sodium_mg": 45.1,
+              "disease_score": 60.0
+            },
+            {
+              "food_id": "F009",
+              "food_name": "Chickpeas (cooked)",
+              "category": "Dals & Legumes",
+              "cuisine_type": "Mediterranean",
+              "portion_g": 75.0,
+              "calories": 123.0,
+              "protein_g": 6.8,
+              "carbs_g": 20.2,
+              "fat_g": 1.9,
+              "fiber_g": 6.0,
+              "sodium_mg": 5.2,
+              "disease_score": 60.0
+            }
+          ],
+          "totals": {
+            "calories": 1249.7,
+            "protein_g": 41.2,
+            "carbs_g": 206.8,
+            "fat_g": 27.7,
+            "fiber_g": 27.0,
+            "sodium_mg": 179.5
+          }
+        },
+        "dinner": {
+          "target_kcal": 984.0,
+          "actual_kcal": 995.3,
+          "foods": [
+            {
+              "food_id": "N091",
+              "food_name": "Green chickpeas pulao (Choliya pulao/Hare chane ka pulao)",
+              "category": "Rice Dishes",
+              "cuisine_type": "Indian",
+              "portion_g": 284.0,
+              "calories": 492.5,
+              "protein_g": 13.9,
+              "carbs_g": 78.4,
+              "fat_g": 13.6,
+              "fiber_g": 9.1,
+              "sodium_mg": 482.8,
+              "disease_score": 60.0
+            },
+            {
+              "food_id": "F014",
+              "food_name": "Chicken Breast (cooked)",
+              "category": "Meat Dishes",
+              "cuisine_type": "Western",
+              "portion_g": 149.0,
+              "calories": 245.8,
+              "protein_g": 46.2,
+              "carbs_g": 0.0,
+              "fat_g": 5.4,
+              "fiber_g": 0.0,
+              "sodium_mg": 110.3,
+              "disease_score": 75.0
+            },
+            {
+              "food_id": "B003",
+              "food_name": "Beef Mince (Keema)",
+              "category": "Meat Dishes",
+              "cuisine_type": "Indian",
+              "portion_g": 60.0,
+              "calories": 130.8,
+              "protein_g": 13.1,
+              "carbs_g": 0.0,
+              "fat_g": 8.5,
+              "fiber_g": 0.0,
+              "sodium_mg": 49.2,
+              "disease_score": 55.0
+            },
+            {
+              "food_id": "N265",
+              "food_name": "Orange souffle",
+              "category": "Indian Foods",
+              "cuisine_type": "Indian",
+              "portion_g": 75.0,
+              "calories": 126.2,
+              "protein_g": 5.1,
+              "carbs_g": 10.7,
+              "fat_g": 7.3,
+              "fiber_g": 0.1,
+              "sodium_mg": 36.9,
+              "disease_score": 60.0
+            }
+          ],
+          "totals": {
+            "calories": 995.3,
+            "protein_g": 78.3,
+            "carbs_g": 89.1,
+            "fat_g": 34.8,
+            "fiber_g": 9.2,
+            "sodium_mg": 679.2
+          }
+        }
+      },
+      "totals": {
+        "calories": 2982.4,
+        "protein_g": 147.9,
+        "carbs_g": 397.0,
+        "fat_g": 86.4,
+        "fiber_g": 53.8,
+        "sodium_mg": 1445.6
+      },
+      "targets": {
+        "calories": 3282.0,
+        "protein_g": 205.1,
+        "carbs_g": 410.2,
+        "fat_g": 91.2,
+        "fiber_g": 38,
+        "sodium_mg": 2300
+      },
+      "day_name": "Wednesday"
+    },
+    {
+      "day": 4,
+      "meals": {
+        "breakfast": {
+          "target_kcal": 984.0,
+          "actual_kcal": 830.3,
+          "foods": [
+            {
+              "food_id": "F003",
+              "food_name": "Whole Wheat Bread",
+              "category": "Breads & Flatbreads",
+              "cuisine_type": "Western",
+              "portion_g": 150.0,
+              "calories": 370.5,
+              "protein_g": 19.5,
+              "carbs_g": 61.5,
+              "fat_g": 5.1,
+              "fiber_g": 9.0,
+              "sodium_mg": 600.0,
+              "disease_score": 50.0
+            },
+            {
+              "food_id": "N113",
+              "food_name": "Semolina dosa (Suji/Rava dosa)",
+              "category": "South Indian Breakfast",
+              "cuisine_type": "Indian",
+              "portion_g": 135.0,
+              "calories": 306.4,
+              "protein_g": 9.9,
+              "carbs_g": 44.3,
+              "fat_g": 9.6,
+              "fiber_g": 5.4,
+              "sodium_mg": 273.2,
+              "disease_score": 50.0
+            },
+            {
+              "food_id": "N430",
+              "food_name": "Vegetable poha",
+              "category": "Breakfast Cereals & Porridge",
+              "cuisine_type": "Indian",
+              "portion_g": 85.0,
+              "calories": 153.4,
+              "protein_g": 4.2,
+              "carbs_g": 18.3,
+              "fat_g": 6.9,
+              "fiber_g": 3.2,
+              "sodium_mg": 355.3,
+              "disease_score": 50.0
+            }
+          ],
+          "totals": {
+            "calories": 830.3,
+            "protein_g": 33.6,
+            "carbs_g": 124.1,
+            "fat_g": 21.6,
+            "fiber_g": 17.6,
+            "sodium_mg": 1228.5
+          }
+        },
+        "lunch": {
+          "target_kcal": 1313.0,
+          "actual_kcal": 1140.0,
+          "foods": [
+            {
+              "food_id": "F013",
+              "food_name": "Tempeh",
+              "category": "Dals & Legumes",
+              "cuisine_type": "Asian",
+              "portion_g": 225.0,
+              "calories": 438.8,
+              "protein_g": 42.8,
+              "carbs_g": 20.2,
+              "fat_g": 24.8,
+              "fiber_g": 0.0,
+              "sodium_mg": 20.2,
+              "disease_score": 60.0
+            },
+            {
+              "food_id": "N807",
+              "food_name": "Cabbage manchurian (Pattagobhi manchurian)",
+              "category": "Indian Foods",
+              "cuisine_type": "Chinese",
+              "portion_g": 195.0,
+              "calories": 437.4,
+              "protein_g": 1.2,
+              "carbs_g": 9.4,
+              "fat_g": 43.9,
+              "fiber_g": 0.8,
+              "sodium_mg": 146.2,
+              "disease_score": 60.0
+            },
+            {
+              "food_id": "F039",
+              "food_name": "Carrot",
+              "category": "Vegetable Dishes",
+              "cuisine_type": "Western",
+              "portion_g": 225.0,
+              "calories": 92.2,
+              "protein_g": 2.0,
+              "carbs_g": 22.5,
+              "fat_g": 0.5,
+              "fiber_g": 6.3,
+              "sodium_mg": 155.2,
+              "disease_score": 80.0
+            },
+            {
+              "food_id": "F014",
+              "food_name": "Chicken Breast (cooked)",
+              "category": "Meat Dishes",
+              "cuisine_type": "Western",
+              "portion_g": 104.0,
+              "calories": 171.6,
+              "protein_g": 32.2,
+              "carbs_g": 0.0,
+              "fat_g": 3.7,
+              "fiber_g": 0.0,
+              "sodium_mg": 77.0,
+              "disease_score": 75.0
+            }
+          ],
+          "totals": {
+            "calories": 1140.0,
+            "protein_g": 78.2,
+            "carbs_g": 52.1,
+            "fat_g": 72.9,
+            "fiber_g": 7.1,
+            "sodium_mg": 398.6
+          }
+        },
+        "dinner": {
+          "target_kcal": 984.0,
+          "actual_kcal": 979.0,
+          "foods": [
+            {
+              "food_id": "F015",
+              "food_name": "Chicken Thigh (cooked)",
+              "category": "Meat Dishes",
+              "cuisine_type": "Western",
+              "portion_g": 180.0,
+              "calories": 376.2,
+              "protein_g": 46.8,
+              "carbs_g": 0.0,
+              "fat_g": 19.8,
+              "fiber_g": 0.0,
+              "sodium_mg": 167.4,
+              "disease_score": 55.0
+            },
+            {
+              "food_id": "N727",
+              "food_name": "Namkeen daliya",
+              "category": "Dals & Legumes",
+              "cuisine_type": "Indian",
+              "portion_g": 103.0,
+              "calories": 304.0,
+              "protein_g": 8.5,
+              "carbs_g": 50.8,
+              "fat_g": 8.2,
+              "fiber_g": 8.9,
+              "sodium_mg": 154.1,
+              "disease_score": 60.0
+            },
+            {
+              "food_id": "B003",
+              "food_name": "Beef Mince (Keema)",
+              "category": "Meat Dishes",
+              "cuisine_type": "Indian",
+              "portion_g": 70.0,
+              "calories": 152.6,
+              "protein_g": 15.3,
+              "carbs_g": 0.0,
+              "fat_g": 9.9,
+              "fiber_g": 0.0,
+              "sodium_mg": 57.4,
+              "disease_score": 55.0
+            },
+            {
+              "food_id": "F013",
+              "food_name": "Tempeh",
+              "category": "Dals & Legumes",
+              "cuisine_type": "Asian",
+              "portion_g": 75.0,
+              "calories": 146.2,
+              "protein_g": 14.2,
+              "carbs_g": 6.8,
+              "fat_g": 8.2,
+              "fiber_g": 0.0,
+              "sodium_mg": 6.8,
+              "disease_score": 60.0
+            }
+          ],
+          "totals": {
+            "calories": 979.0,
+            "protein_g": 84.8,
+            "carbs_g": 57.6,
+            "fat_g": 46.1,
+            "fiber_g": 8.9,
+            "sodium_mg": 385.7
+          }
+        }
+      },
+      "totals": {
+        "calories": 2949.3,
+        "protein_g": 196.6,
+        "carbs_g": 233.8,
+        "fat_g": 140.6,
+        "fiber_g": 33.6,
+        "sodium_mg": 2012.8
+      },
+      "targets": {
+        "calories": 3282.0,
+        "protein_g": 205.1,
+        "carbs_g": 410.2,
+        "fat_g": 91.2,
+        "fiber_g": 38,
+        "sodium_mg": 2300
+      },
+      "day_name": "Thursday"
+    },
+    {
+      "day": 5,
+      "meals": {
+        "breakfast": {
+          "target_kcal": 984.0,
+          "actual_kcal": 907.7,
+          "foods": [
+            {
+              "food_id": "N465",
+              "food_name": "Plain dosa",
+              "category": "South Indian Breakfast",
+              "cuisine_type": "Indian",
+              "portion_g": 129.0,
+              "calories": 491.4,
+              "protein_g": 13.3,
+              "carbs_g": 82.7,
+              "fat_g": 10.8,
+              "fiber_g": 6.7,
+              "sodium_mg": 184.5,
+              "disease_score": 50.0
+            },
+            {
+              "food_id": "E065",
+              "food_name": "Sattu Drink (Sweet)",
+              "category": "Beverages",
+              "cuisine_type": "Bihari",
+              "portion_g": 259.0,
+              "calories": 246.1,
+              "protein_g": 11.7,
+              "carbs_g": 47.9,
+              "fat_g": 2.1,
+              "fiber_g": 6.5,
+              "sodium_mg": 72.5,
+              "disease_score": 60.0
+            },
+            {
+              "food_id": "N113",
+              "food_name": "Semolina dosa (Suji/Rava dosa)",
+              "category": "South Indian Breakfast",
+              "cuisine_type": "Indian",
+              "portion_g": 75.0,
+              "calories": 170.2,
+              "protein_g": 5.5,
+              "carbs_g": 24.6,
+              "fat_g": 5.3,
+              "fiber_g": 3.0,
+              "sodium_mg": 151.8,
+              "disease_score": 50.0
+            }
+          ],
+          "totals": {
+            "calories": 907.7,
+            "protein_g": 30.5,
+            "carbs_g": 155.2,
+            "fat_g": 18.2,
+            "fiber_g": 16.2,
+            "sodium_mg": 408.8
+          }
+        },
+        "lunch": {
+          "target_kcal": 1313.0,
+          "actual_kcal": 1244.1,
+          "foods": [
+            {
+              "food_id": "N833",
+              "food_name": "Moong bean dosa (Pesarattu)",
+              "category": "Dals & Legumes",
+              "cuisine_type": "Andhra",
+              "portion_g": 225.0,
+              "calories": 643.5,
+              "protein_g": 27.7,
+              "carbs_g": 71.8,
+              "fat_g": 26.3,
+              "fiber_g": 13.5,
+              "sodium_mg": 138.2,
+              "disease_score": 60.0
+            },
+            {
+              "food_id": "F158",
+              "food_name": "Litti Chokha",
+              "category": "Indian Foods",
+              "cuisine_type": "Bihari",
+              "portion_g": 113.0,
+              "calories": 333.4,
+              "protein_g": 11.1,
+              "carbs_g": 51.4,
+              "fat_g": 10.7,
+              "fiber_g": 7.7,
+              "sodium_mg": 542.4,
+              "disease_score": 50.0
+            },
+            {
+              "food_id": "F008",
+              "food_name": "Lentils (cooked)",
+              "category": "Dals & Legumes",
+              "cuisine_type": "Indian",
+              "portion_g": 145.0,
+              "calories": 168.2,
+              "protein_g": 13.1,
+              "carbs_g": 29.0,
+              "fat_g": 0.6,
+              "fiber_g": 11.6,
+              "sodium_mg": 2.9,
+              "disease_score": 60.0
+            },
+            {
+              "food_id": "F014",
+              "food_name": "Chicken Breast (cooked)",
+              "category": "Meat Dishes",
+              "cuisine_type": "Western",
+              "portion_g": 60.0,
+              "calories": 99.0,
+              "protein_g": 18.6,
+              "carbs_g": 0.0,
+              "fat_g": 2.2,
+              "fiber_g": 0.0,
+              "sodium_mg": 44.4,
+              "disease_score": 75.0
+            }
+          ],
+          "totals": {
+            "calories": 1244.1,
+            "protein_g": 70.5,
+            "carbs_g": 152.2,
+            "fat_g": 39.8,
+            "fiber_g": 32.8,
+            "sodium_mg": 727.9
+          }
+        },
+        "dinner": {
+          "target_kcal": 984.0,
+          "actual_kcal": 995.3,
+          "foods": [
+            {
+              "food_id": "F013",
+              "food_name": "Tempeh",
+              "category": "Dals & Legumes",
+              "cuisine_type": "Asian",
+              "portion_g": 225.0,
+              "calories": 438.8,
+              "protein_g": 42.8,
+              "carbs_g": 20.2,
+              "fat_g": 24.8,
+              "fiber_g": 0.0,
+              "sodium_mg": 20.2,
+              "disease_score": 60.0
+            },
+            {
+              "food_id": "B003",
+              "food_name": "Beef Mince (Keema)",
+              "category": "Meat Dishes",
+              "cuisine_type": "Indian",
+              "portion_g": 125.0,
+              "calories": 272.5,
+              "protein_g": 27.2,
+              "carbs_g": 0.0,
+              "fat_g": 17.8,
+              "fiber_g": 0.0,
+              "sodium_mg": 102.5,
+              "disease_score": 55.0
+            },
+            {
+              "food_id": "P004",
+              "food_name": "Pork Mince (Keema)",
+              "category": "Meat Dishes",
+              "cuisine_type": "Indian",
+              "portion_g": 60.0,
+              "calories": 157.8,
+              "protein_g": 11.3,
+              "carbs_g": 0.0,
+              "fat_g": 12.3,
+              "fiber_g": 0.0,
+              "sodium_mg": 49.2,
+              "disease_score": 55.0
+            },
+            {
+              "food_id": "N265",
+              "food_name": "Orange souffle",
+              "category": "Indian Foods",
+              "cuisine_type": "Indian",
+              "portion_g": 75.0,
+              "calories": 126.2,
+              "protein_g": 5.1,
+              "carbs_g": 10.7,
+              "fat_g": 7.3,
+              "fiber_g": 0.1,
+              "sodium_mg": 36.9,
+              "disease_score": 60.0
+            }
+          ],
+          "totals": {
+            "calories": 995.3,
+            "protein_g": 86.4,
+            "carbs_g": 30.9,
+            "fat_g": 62.2,
+            "fiber_g": 0.1,
+            "sodium_mg": 208.8
+          }
+        }
+      },
+      "totals": {
+        "calories": 3147.1,
+        "protein_g": 187.4,
+        "carbs_g": 338.3,
+        "fat_g": 120.2,
+        "fiber_g": 49.1,
+        "sodium_mg": 1345.5
+      },
+      "targets": {
+        "calories": 3282.0,
+        "protein_g": 205.1,
+        "carbs_g": 410.2,
+        "fat_g": 91.2,
+        "fiber_g": 38,
+        "sodium_mg": 2300
+      },
+      "day_name": "Friday"
+    },
+    {
+      "day": 6,
+      "meals": {
+        "breakfast": {
+          "target_kcal": 984.0,
+          "actual_kcal": 843.5,
+          "foods": [
+            {
+              "food_id": "N257",
+              "food_name": "Caramel custard (steamed)",
+              "category": "Beverages",
+              "cuisine_type": "Indian",
+              "portion_g": 300.0,
+              "calories": 364.8,
+              "protein_g": 15.0,
+              "carbs_g": 45.0,
+              "fat_g": 14.7,
+              "fiber_g": 0.0,
+              "sodium_mg": 130.8,
+              "disease_score": 60.0
+            },
+            {
+              "food_id": "N465",
+              "food_name": "Plain dosa",
+              "category": "South Indian Breakfast",
+              "cuisine_type": "Indian",
+              "portion_g": 81.0,
+              "calories": 308.5,
+              "protein_g": 8.3,
+              "carbs_g": 51.9,
+              "fat_g": 6.8,
+              "fiber_g": 4.2,
+              "sodium_mg": 115.8,
+              "disease_score": 50.0
+            },
+            {
+              "food_id": "N113",
+              "food_name": "Semolina dosa (Suji/Rava dosa)",
+              "category": "South Indian Breakfast",
+              "cuisine_type": "Indian",
+              "portion_g": 75.0,
+              "calories": 170.2,
+              "protein_g": 5.5,
+              "carbs_g": 24.6,
+              "fat_g": 5.3,
+              "fiber_g": 3.0,
+              "sodium_mg": 151.8,
+              "disease_score": 50.0
+            }
+          ],
+          "totals": {
+            "calories": 843.5,
+            "protein_g": 28.8,
+            "carbs_g": 121.5,
+            "fat_g": 26.8,
+            "fiber_g": 7.2,
+            "sodium_mg": 398.4
+          }
+        },
+        "lunch": {
+          "target_kcal": 1313.0,
+          "actual_kcal": 1345.0,
+          "foods": [
+            {
+              "food_id": "N456",
+              "food_name": "Eggplant/Brinjal rice (Vangi bhat)",
+              "category": "Rice Dishes",
+              "cuisine_type": "Indian",
+              "portion_g": 300.0,
+              "calories": 554.4,
+              "protein_g": 15.9,
+              "carbs_g": 95.1,
+              "fat_g": 11.1,
+              "fiber_g": 13.2,
+              "sodium_mg": 177.3,
+              "disease_score": 55.0
+            },
+            {
+              "food_id": "N877",
+              "food_name": "Maa chaane ki dal",
+              "category": "Dals & Legumes",
+              "cuisine_type": "Indian",
+              "portion_g": 110.0,
+              "calories": 379.2,
+              "protein_g": 21.8,
+              "carbs_g": 47.4,
+              "fat_g": 10.4,
+              "fiber_g": 14.7,
+              "sodium_mg": 47.6,
+              "disease_score": 60.0
+            },
+            {
+              "food_id": "F008",
+              "food_name": "Lentils (cooked)",
+              "category": "Dals & Legumes",
+              "cuisine_type": "Indian",
+              "portion_g": 164.0,
+              "calories": 190.2,
+              "protein_g": 14.8,
+              "carbs_g": 32.8,
+              "fat_g": 0.7,
+              "fiber_g": 13.1,
+              "sodium_mg": 3.3,
+              "disease_score": 60.0
+            },
+            {
+              "food_id": "F158",
+              "food_name": "Litti Chokha",
+              "category": "Indian Foods",
+              "cuisine_type": "Bihari",
+              "portion_g": 75.0,
+              "calories": 221.2,
+              "protein_g": 7.3,
+              "carbs_g": 34.1,
+              "fat_g": 7.1,
+              "fiber_g": 5.1,
+              "sodium_mg": 360.0,
+              "disease_score": 50.0
+            }
+          ],
+          "totals": {
+            "calories": 1345.0,
+            "protein_g": 59.8,
+            "carbs_g": 209.4,
+            "fat_g": 29.3,
+            "fiber_g": 46.1,
+            "sodium_mg": 588.2
+          }
+        },
+        "dinner": {
+          "target_kcal": 984.0,
+          "actual_kcal": 935.1,
+          "foods": [
+            {
+              "food_id": "B003",
+              "food_name": "Beef Mince (Keema)",
+              "category": "Meat Dishes",
+              "cuisine_type": "Indian",
+              "portion_g": 180.0,
+              "calories": 392.4,
+              "protein_g": 39.2,
+              "carbs_g": 0.0,
+              "fat_g": 25.6,
+              "fiber_g": 0.0,
+              "sodium_mg": 147.6,
+              "disease_score": 55.0
+            },
+            {
+              "food_id": "BG013",
+              "food_name": "Dhokar Dalna",
+              "category": "Dals & Legumes",
+              "cuisine_type": "Bengali",
+              "portion_g": 179.0,
+              "calories": 295.4,
+              "protein_g": 15.2,
+              "carbs_g": 33.1,
+              "fat_g": 13.4,
+              "fiber_g": 8.1,
+              "sodium_mg": 689.1,
+              "disease_score": 60.0
+            },
+            {
+              "food_id": "F016",
+              "food_name": "Ground Beef (lean)",
+              "category": "Meat Dishes",
+              "cuisine_type": "Western",
+              "portion_g": 69.0,
+              "calories": 148.3,
+              "protein_g": 17.9,
+              "carbs_g": 0.0,
+              "fat_g": 8.3,
+              "fiber_g": 0.0,
+              "sodium_mg": 51.8,
+              "disease_score": 55.0
+            },
+            {
+              "food_id": "F014",
+              "food_name": "Chicken Breast (cooked)",
+              "category": "Meat Dishes",
+              "cuisine_type": "Western",
+              "portion_g": 60.0,
+              "calories": 99.0,
+              "protein_g": 18.6,
+              "carbs_g": 0.0,
+              "fat_g": 2.2,
+              "fiber_g": 0.0,
+              "sodium_mg": 44.4,
+              "disease_score": 75.0
+            }
+          ],
+          "totals": {
+            "calories": 935.1,
+            "protein_g": 90.9,
+            "carbs_g": 33.1,
+            "fat_g": 49.5,
+            "fiber_g": 8.1,
+            "sodium_mg": 932.9
+          }
+        }
+      },
+      "totals": {
+        "calories": 3123.6,
+        "protein_g": 179.5,
+        "carbs_g": 364.0,
+        "fat_g": 105.6,
+        "fiber_g": 61.4,
+        "sodium_mg": 1919.5
+      },
+      "targets": {
+        "calories": 3282.0,
+        "protein_g": 205.1,
+        "carbs_g": 410.2,
+        "fat_g": 91.2,
+        "fiber_g": 38,
+        "sodium_mg": 2300
+      },
+      "day_name": "Saturday"
+    },
+    {
+      "day": 7,
+      "meals": {
+        "breakfast": {
+          "target_kcal": 984.0,
+          "actual_kcal": 833.4,
+          "foods": [
+            {
+              "food_id": "F160",
+              "food_name": "Ghugni",
+              "category": "Indian Foods",
+              "cuisine_type": "Bengali",
+              "portion_g": 225.0,
+              "calories": 378.0,
+              "protein_g": 19.1,
+              "carbs_g": 50.6,
+              "fat_g": 10.8,
+              "fiber_g": 14.6,
+              "sodium_mg": 1080.0,
+              "disease_score": 60.0
+            },
+            {
+              "food_id": "N728",
+              "food_name": "Sprouts upma",
+              "category": "Breakfast Cereals & Porridge",
+              "cuisine_type": "Indian",
+              "portion_g": 96.0,
+              "calories": 303.6,
+              "protein_g": 9.1,
+              "carbs_g": 43.2,
+              "fat_g": 10.0,
+              "fiber_g": 6.9,
+              "sodium_mg": 141.9,
+              "disease_score": 60.0
+            },
+            {
+              "food_id": "J019",
+              "food_name": "Jain Besan Chilla",
+              "category": "Breakfast Cereals & Porridge",
+              "cuisine_type": "Jain",
+              "portion_g": 92.0,
+              "calories": 151.8,
+              "protein_g": 8.7,
+              "carbs_g": 20.7,
+              "fat_g": 4.1,
+              "fiber_g": 5.1,
+              "sodium_mg": 262.2,
+              "disease_score": 50.0
+            }
+          ],
+          "totals": {
+            "calories": 833.4,
+            "protein_g": 36.9,
+            "carbs_g": 114.5,
+            "fat_g": 24.9,
+            "fiber_g": 26.6,
+            "sodium_mg": 1484.1
+          }
+        },
+        "lunch": {
+          "target_kcal": 1313.0,
+          "actual_kcal": 1141.4,
+          "foods": [
+            {
+              "food_id": "F008",
+              "food_name": "Lentils (cooked)",
+              "category": "Dals & Legumes",
+              "cuisine_type": "Indian",
+              "portion_g": 225.0,
+              "calories": 261.0,
+              "protein_g": 20.2,
+              "carbs_g": 45.0,
+              "fat_g": 0.9,
+              "fiber_g": 18.0,
+              "sodium_mg": 4.5,
+              "disease_score": 60.0
+            },
+            {
+              "food_id": "N130",
+              "food_name": "Soyabean curry",
+              "category": "Vegetable Dishes",
+              "cuisine_type": "Indian",
+              "portion_g": 225.0,
+              "calories": 367.4,
+              "protein_g": 23.4,
+              "carbs_g": 15.3,
+              "fat_g": 22.9,
+              "fiber_g": 16.4,
+              "sodium_mg": 793.6,
+              "disease_score": 60.0
+            },
+            {
+              "food_id": "N727",
+              "food_name": "Namkeen daliya",
+              "category": "Dals & Legumes",
+              "cuisine_type": "Indian",
+              "portion_g": 116.0,
+              "calories": 342.3,
+              "protein_g": 9.6,
+              "carbs_g": 57.2,
+              "fat_g": 9.3,
+              "fiber_g": 10.0,
+              "sodium_mg": 173.5,
+              "disease_score": 60.0
+            },
+            {
+              "food_id": "N889",
+              "food_name": "Cracked wheat khichri/khichdi (Dalia khichri/khichdi)",
+              "category": "Rice Dishes",
+              "cuisine_type": "Indian",
+              "portion_g": 102.0,
+              "calories": 170.7,
+              "protein_g": 7.8,
+              "carbs_g": 22.8,
+              "fat_g": 5.6,
+              "fiber_g": 3.8,
+              "sodium_mg": 229.5,
+              "disease_score": 60.0
+            }
+          ],
+          "totals": {
+            "calories": 1141.4,
+            "protein_g": 61.0,
+            "carbs_g": 140.3,
+            "fat_g": 38.7,
+            "fiber_g": 48.2,
+            "sodium_mg": 1201.1
+          }
+        },
+        "dinner": {
+          "target_kcal": 984.0,
+          "actual_kcal": 820.1,
+          "foods": [
+            {
+              "food_id": "P004",
+              "food_name": "Pork Mince (Keema)",
+              "category": "Meat Dishes",
+              "cuisine_type": "Indian",
+              "portion_g": 180.0,
+              "calories": 473.4,
+              "protein_g": 33.8,
+              "carbs_g": 0.0,
+              "fat_g": 36.9,
+              "fiber_g": 0.0,
+              "sodium_mg": 147.6,
+              "disease_score": 55.0
+            },
+            {
+              "food_id": "N833",
+              "food_name": "Moong bean dosa (Pesarattu)",
+              "category": "Dals & Legumes",
+              "cuisine_type": "Andhra",
+              "portion_g": 89.0,
+              "calories": 254.5,
+              "protein_g": 10.9,
+              "carbs_g": 28.4,
+              "fat_g": 10.4,
+              "fiber_g": 5.3,
+              "sodium_mg": 54.6,
+              "disease_score": 60.0
+            },
+            {
+              "food_id": "F039",
+              "food_name": "Carrot",
+              "category": "Vegetable Dishes",
+              "cuisine_type": "Western",
+              "portion_g": 225.0,
+              "calories": 92.2,
+              "protein_g": 2.0,
+              "carbs_g": 22.5,
+              "fat_g": 0.5,
+              "fiber_g": 6.3,
+              "sodium_mg": 155.2,
+              "disease_score": 80.0
+            }
+          ],
+          "totals": {
+            "calories": 820.1,
+            "protein_g": 46.7,
+            "carbs_g": 50.9,
+            "fat_g": 47.8,
+            "fiber_g": 11.6,
+            "sodium_mg": 357.4
+          }
+        }
+      },
+      "totals": {
+        "calories": 2794.9,
+        "protein_g": 144.6,
+        "carbs_g": 305.7,
+        "fat_g": 111.4,
+        "fiber_g": 86.4,
+        "sodium_mg": 3042.6
+      },
+      "targets": {
+        "calories": 3282.0,
+        "protein_g": 205.1,
+        "carbs_g": 410.2,
+        "fat_g": 91.2,
+        "fiber_g": 38,
+        "sodium_mg": 2300
+      },
+      "day_name": "Sunday"
+    }
+  ],
+  "weekly_avg": {
+    "calories": 3015.8,
+    "protein_g": 166.6,
+    "carbs_g": 348.4,
+    "fat_g": 107.9,
+    "fiber_g": 59.0,
+    "sodium_mg": 2053.6
+  },
+  "nutritional_gaps": [
+    "Calories: 3016kcal (below target 3282kcal by 266kcal)",
+    "Protein: 167g (below target 205g by 38g)",
+    "Carbs: 348g (below target 410g by 62g)",
+    "Fat: 108g (above target 91g by 17g)",
+    "Fiber: 59g (above target 38g by 21g)",
+    "Sodium: 2054mg (below target 2300mg by 246mg)"
+  ],
+  "insights": [
+    "BMI: 22.5 (Normal). Healthy weight range. Maintain with balanced diet and activity.",
+    "Your Basal Metabolic Rate is 1612 kcal/day \u2014 calories your body burns at complete rest.",
+    "Your TDEE is 2782 kcal/day \u2014 total daily burn at your activity level (Very Active (hard exercise 6-7 days/week)).",
+    "Your personalised calorie target is 3282 kcal/day to weight gain (~0.5 kg/week).",
+    "Daily macro targets \u2014 Protein: 205.1g | Carbs: 410.2g | Fat: 91.2g.",
+    "Ideal body weight (Devine formula): 65.9 kg. Your current weight is 65.0 kg.",
+    "Recommended daily water intake: 2538 ml (2.5 litres)."
+  ],
+  "tips": [
+    "Add calorie-dense whole foods: nuts, avocado, whole grains, paneer.",
+    "Eat every 3-4 hours and include a high-calorie pre-bedtime snack.",
+    "Don't drink water right before meals \u2014 it can suppress appetite.",
+    "Aim for 38g fibre/day \u2014 include vegetables, dals, and whole grains.",
+    "Target 2.5 litres of water daily, more if exercising.",
+    "Include a source of colour at every meal \u2014 red/orange/green vegetables.",
+    "Limit ultra-processed foods \u2014 they are high in sodium, sugar, and unhealthy fats.",
+    "Plan meals in advance to avoid last-minute poor food choices."
+  ]
+}

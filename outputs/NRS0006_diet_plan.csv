@@ -1,0 +1,87 @@
+day,meal_slot,food_name,category,portion_g,calories,protein_g,carbs_g,fat_g,fiber_g,sodium_mg
+Monday,breakfast,Black forest gateau,Beverages,184.0,400.8,10.9,56.3,15.8,0.6,146.1
+Monday,breakfast,Orange gateau,Beverages,113.0,201.1,5.4,30.5,6.8,0.8,90.9
+Monday,breakfast,Semolina dosa (Suji/Rava dosa),South Indian Breakfast,75.0,170.2,5.5,24.6,5.3,3.0,151.8
+Monday,mid_morning,Sattu Drink (Sweet),Beverages,254.0,241.3,11.4,47.0,2.0,6.3,71.1
+Monday,mid_morning,Roasted cauliflower steak,Beverages,153.0,120.4,3.1,3.1,10.3,5.4,183.9
+Monday,lunch,Orange chiffon pie,Indian Foods,225.0,467.1,8.8,52.0,25.2,1.6,164.7
+Monday,lunch,Green chickpeas pulao (Choliya pulao/Hare chane ka pulao),Rice Dishes,190.0,329.5,9.3,52.4,9.1,6.1,323.0
+Monday,lunch,Tempeh,Dals & Legumes,84.0,163.8,16.0,7.6,9.2,0.0,7.6
+Monday,lunch,Maa chaane ki dal,Dals & Legumes,75.0,258.5,14.8,32.3,7.1,10.1,32.5
+Monday,dinner,Jain Chole,Dals & Legumes,225.0,348.8,19.1,55.1,7.9,16.2,866.2
+Monday,dinner,Dhokar Dalna,Dals & Legumes,138.0,227.7,11.7,25.5,10.3,6.2,531.3
+Monday,dinner,Dal Makhani,Indian Foods,75.0,116.2,6.2,13.9,4.3,4.0,360.0
+Monday,dinner,Broccoli,Vegetable Dishes,162.0,55.1,4.5,11.3,0.6,4.2,53.5
+Tuesday,breakfast,Amritsari Kulcha,Breads & Flatbreads,135.0,402.3,10.5,57.4,15.5,4.7,783.0
+Tuesday,breakfast,Siddu,Breads & Flatbreads,70.0,199.5,6.7,29.8,6.2,2.9,199.5
+Tuesday,breakfast,Black forest gateau,Beverages,100.0,217.8,5.9,30.6,8.6,0.3,79.4
+Tuesday,mid_morning,Apple,Fruits,225.0,117.0,0.7,31.5,0.5,5.4,2.2
+Tuesday,mid_morning,Banana,Fruits,205.0,182.4,2.3,47.1,0.6,5.3,2.0
+Tuesday,lunch,Quinoa,Breads & Flatbreads,150.0,552.0,21.0,96.0,9.0,10.5,7.5
+Tuesday,lunch,Methi thepla,Breads & Flatbreads,83.0,287.3,7.5,34.3,13.3,6.3,450.9
+Tuesday,lunch,Peanut pulao,Rice Dishes,100.0,193.3,5.3,21.2,9.5,2.9,168.4
+Tuesday,lunch,Khatta channa,Dals & Legumes,75.0,151.9,4.7,15.8,8.0,4.0,385.0
+Tuesday,dinner,Spinach,Vegetable Dishes,225.0,51.8,6.5,8.1,0.9,5.0,177.8
+Tuesday,dinner,Methi thepla,Breads & Flatbreads,108.0,373.9,9.7,44.6,17.3,8.2,586.8
+Tuesday,dinner,Soyabean curry,Vegetable Dishes,116.0,189.4,12.1,7.9,11.8,8.5,409.1
+Tuesday,dinner,Tempeh,Dals & Legumes,75.0,146.2,14.2,6.8,8.2,0.0,6.8
+Wednesday,breakfast,Coffee pear alaska,Beverages,197.0,401.9,5.7,38.2,26.0,0.4,100.7
+Wednesday,breakfast,Caramel custard (steamed),Beverages,165.0,200.6,8.2,24.8,8.1,0.0,71.9
+Wednesday,mid_morning,Roasted cauliflower steak,Beverages,300.0,236.1,6.0,6.0,20.1,10.5,360.6
+Wednesday,lunch,Namkeen daliya,Dals & Legumes,191.0,563.6,15.9,94.2,15.3,16.4,285.7
+Wednesday,lunch,Brown Rice,Breads & Flatbreads,130.0,280.8,5.8,58.2,2.3,4.5,9.1
+Wednesday,lunch,Green chickpeas pulao (Choliya pulao/Hare chane ka pulao),Rice Dishes,100.0,173.4,4.9,27.6,4.8,3.2,170.0
+Wednesday,lunch,Lentils (cooked),Dals & Legumes,75.0,87.0,6.8,15.0,0.3,6.0,1.5
+Wednesday,dinner,Chainsoo,Dals & Legumes,225.0,326.2,19.1,41.6,10.1,15.3,720.0
+Wednesday,dinner,Cracked wheat khichri/khichdi (Dalia khichri/khichdi),Rice Dishes,142.0,237.7,10.8,31.8,7.8,5.3,319.5
+Wednesday,dinner,Soyabean curry,Vegetable Dishes,75.0,122.5,7.8,5.1,7.7,5.5,264.5
+Thursday,breakfast,Siddu,Breads & Flatbreads,141.0,401.9,13.4,59.9,12.4,5.9,401.9
+Thursday,breakfast,Jain Besan Chilla,Breakfast Cereals & Porridge,122.0,201.3,11.6,27.4,5.5,6.7,347.7
+Thursday,breakfast,Semolina dosa (Suji/Rava dosa),South Indian Breakfast,75.0,170.2,5.5,24.6,5.3,3.0,151.8
+Thursday,mid_morning,Sattu Drink (Salted),Beverages,300.0,216.0,13.5,37.5,2.4,7.5,855.0
+Thursday,mid_morning,Paneer kaathi roll,Dairy & Paneer,50.0,142.9,3.5,10.1,9.8,1.2,110.5
+Thursday,lunch,Maa chaane ki dal,Dals & Legumes,163.0,561.9,32.3,70.3,15.5,21.8,70.6
+Thursday,lunch,Lentils (cooked),Dals & Legumes,225.0,261.0,20.2,45.0,0.9,18.0,4.5
+Thursday,lunch,Namkeen daliya,Dals & Legumes,75.0,221.3,6.2,37.0,6.0,6.5,112.2
+Thursday,lunch,Carrot,Vegetable Dishes,99.0,40.6,0.9,9.9,0.2,2.8,68.3
+Thursday,dinner,Chainsoo,Dals & Legumes,225.0,326.2,19.1,41.6,10.1,15.3,720.0
+Thursday,dinner,Spinach,Vegetable Dishes,225.0,51.8,6.5,8.1,0.9,5.0,177.8
+Thursday,dinner,Methi thepla,Breads & Flatbreads,61.0,211.2,5.5,25.2,9.8,4.6,331.4
+Thursday,dinner,Chole (Chickpea Curry),Indian Foods,75.0,114.0,5.6,18.4,2.6,4.7,292.5
+Friday,breakfast,Black forest gateau,Beverages,184.0,400.8,10.9,56.3,15.8,0.6,146.1
+Friday,breakfast,Chila,Breakfast Cereals & Porridge,146.0,201.5,8.0,32.9,5.1,5.5,416.1
+Friday,breakfast,Jain Besan Chilla,Breakfast Cereals & Porridge,75.0,123.8,7.1,16.9,3.4,4.1,213.8
+Friday,mid_morning,Apple,Fruits,225.0,117.0,0.7,31.5,0.5,5.4,2.2
+Friday,mid_morning,Caramel custard (steamed),Beverages,150.0,182.4,7.5,22.5,7.3,0.0,65.4
+Friday,lunch,Peanut pulao,Rice Dishes,291.0,562.5,15.4,61.7,27.6,8.4,490.0
+Friday,lunch,Lentils (cooked),Dals & Legumes,225.0,261.0,20.2,45.0,0.9,18.0,4.5
+Friday,lunch,Spinach,Vegetable Dishes,225.0,51.8,6.5,8.1,0.9,5.0,177.8
+Friday,lunch,Brown Rice,Breads & Flatbreads,58.0,125.3,2.6,26.0,1.0,2.0,4.1
+Friday,dinner,Namkeen daliya,Dals & Legumes,136.0,401.3,11.3,67.0,10.9,11.7,203.5
+Friday,dinner,Cracked wheat khichri/khichdi (Dalia khichri/khichdi),Rice Dishes,120.0,200.9,9.1,26.9,6.6,4.4,270.0
+Friday,dinner,Chainsoo,Dals & Legumes,75.0,108.8,6.4,13.9,3.4,5.1,240.0
+Friday,dinner,Jain Chole,Dals & Legumes,75.0,116.2,6.4,18.4,2.6,5.4,288.8
+Saturday,breakfast,Amritsari Kulcha,Breads & Flatbreads,135.0,402.3,10.5,57.4,15.5,4.7,783.0
+Saturday,breakfast,Oats,Breads & Flatbreads,52.0,202.3,8.8,34.3,3.6,5.2,1.0
+Saturday,breakfast,Jain Besan Chilla,Breakfast Cereals & Porridge,75.0,123.8,7.1,16.9,3.4,4.1,213.8
+Saturday,mid_morning,Roasted cauliflower steak,Beverages,300.0,236.1,6.0,6.0,20.1,10.5,360.6
+Saturday,mid_morning,Apple,Fruits,225.0,117.0,0.7,31.5,0.5,5.4,2.2
+Saturday,lunch,Peanut pulao,Rice Dishes,291.0,562.5,15.4,61.7,27.6,8.4,490.0
+Saturday,lunch,Green chickpeas pulao (Choliya pulao/Hare chane ka pulao),Rice Dishes,162.0,280.9,7.9,44.7,7.8,5.2,275.4
+Saturday,lunch,Brown Rice,Breads & Flatbreads,65.0,140.4,2.9,29.1,1.2,2.3,4.5
+Saturday,lunch,Carrot,Vegetable Dishes,172.0,70.5,1.5,17.2,0.3,4.8,118.7
+Saturday,dinner,Jain Chole,Dals & Legumes,225.0,348.8,19.1,55.1,7.9,16.2,866.2
+Saturday,dinner,Chickpeas (cooked),Dals & Legumes,138.0,226.3,12.4,37.3,3.6,11.0,9.7
+Saturday,dinner,Pindi Chole,Indian Foods,75.0,123.8,6.4,18.6,3.6,5.4,390.0
+Sunday,breakfast,Jowar dosa,South Indian Breakfast,136.0,400.4,11.6,55.1,14.0,7.6,132.2
+Sunday,breakfast,Masala dosa paneer fillings,South Indian Breakfast,83.0,201.8,8.5,24.7,7.3,2.6,133.1
+Sunday,breakfast,Caramel custard (steamed),Beverages,100.0,121.6,5.0,15.0,4.9,0.0,43.6
+Sunday,mid_morning,Sattu Drink (Sweet),Beverages,254.0,241.3,11.4,47.0,2.0,6.3,71.1
+Sunday,mid_morning,Paneer kaathi roll,Dairy & Paneer,50.0,142.9,3.5,10.1,9.8,1.2,110.5
+Sunday,lunch,Moong bean dosa (Pesarattu),Dals & Legumes,197.0,563.4,24.2,62.8,23.0,11.8,121.0
+Sunday,lunch,Curd rice (Dahi bhaat/Dahi chawal/ Perugu annam/Daddojanam/Thayir saadam),Rice Dishes,143.0,279.9,8.3,47.0,6.1,3.0,305.0
+Sunday,lunch,Kale,Vegetable Dishes,225.0,110.2,9.7,20.2,2.0,8.1,85.5
+Sunday,dinner,Brown Rice,Breads & Flatbreads,150.0,324.0,6.8,67.2,2.7,5.2,10.5
+Sunday,dinner,Kale,Vegetable Dishes,225.0,110.2,9.7,20.2,2.0,8.1,85.5
+Sunday,dinner,Methi thepla,Breads & Flatbreads,53.0,183.5,4.8,21.9,8.5,4.0,287.9
+Sunday,dinner,Matar Paneer,Indian Foods,75.0,126.0,6.6,9.4,7.3,2.6,360.0

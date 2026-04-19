@@ -17,7 +17,7 @@
         "fried foods"
       ],
       "registered_at": "2026-04-18T21:15:52.922098",
-      "last_run": "2026-04-18T21:15:56.129166"
+      "last_run": "2026-04-19T13:06:41.431596"
     },
     "NRS0002": {
       "user_id": "NRS0002",
@@ -26,22 +26,19 @@
       "sex": "M",
       "weight_kg": "65",
       "height_cm": "170",
-      "dietary_preference": "none",
+      "dietary_preference": "halal",
       "allergies": [
         "milk",
-        "sesame",
         "peanuts"
       ],
       "diseases": [
         "ibd",
-        "gerd"
+        "gerd",
+        "cancer"
       ],
-      "dislikes": [
-        "tofu",
-        "vegan"
-      ],
+      "dislikes": [],
       "registered_at": "2026-04-18T21:18:28.741281",
-      "last_run": "2026-04-18T21:23:15.668308"
+      "last_run": "2026-04-19T13:35:03.535435"
     },
     "NRS0003": {
       "user_id": "NRS0003",
@@ -85,7 +82,41 @@
       ],
       "registered_at": "2026-04-18T21:49:17.273720",
       "last_run": "2026-04-18T21:49:19.393451"
+    },
+    "NRS0005": {
+      "user_id": "NRS0005",
+      "name": "Adi",
+      "age": "22",
+      "sex": "M",
+      "weight_kg": "80",
+      "height_cm": "180",
+      "dietary_preference": "none",
+      "allergies": [
+        "milk"
+      ],
+      "diseases": [],
+      "dislikes": [],
+      "registered_at": "2026-04-18T23:41:40.806738",
+      "last_run": "2026-04-18T23:47:56.668907"
+    },
+    "NRS0006": {
+      "user_id": "NRS0006",
+      "name": "Amborish Sen",
+      "age": "22",
+      "sex": "M",
+      "weight_kg": "70",
+      "height_cm": "175",
+      "dietary_preference": "vegetarian",
+      "allergies": [
+        "nuts"
+      ],
+      "diseases": [
+        "hypertension"
+      ],
+      "dislikes": [],
+      "registered_at": "2026-04-19T13:23:17.167661",
+      "last_run": "2026-04-19T13:23:21.375328"
     }
   },
-  "id_counter": 4
+  "id_counter": 6
 }
