@@ -341,6 +341,7 @@ select option{background:var(--s2)}
     </div>
     <div class="auth-panel active" id="panNew">
       <div class="fg"><label>Full Name</label><input type="text" id="an" placeholder="e.g. Rahul Sharma"></div>
+      <div class="fg"><label>Password</label><input type="password" id="ap" placeholder="Choose a password"></div>
       <div class="fr2">
         <div class="fg"><label>Age</label><input type="number" id="aa" placeholder="30" min="5" max="100"></div>
         <div class="fg"><label>Sex</label><select id="as"><option value="male">Male</option><option value="female">Female</option><option value="other">Other</option></select></div>
@@ -354,6 +355,7 @@ select option{background:var(--s2)}
     <div class="auth-panel" id="panRet">
       <p style="font-size:11px;color:var(--mu)">Enter your User ID (e.g. NRS0001)</p>
       <div class="fg"><label>User ID</label><input type="text" id="auid" placeholder="NRS0001" style="text-transform:uppercase;font-family:monospace"></div>
+      <div class="fg"><label>Password</label><input type="password" id="aup" placeholder="Your password"></div>
       <button class="btn btn-p" onclick="doLogin()">Sign In →</button>
     </div>
   </div>
@@ -503,9 +505,10 @@ async function doRegister(){
   const s=document.getElementById('as').value;
   const w=document.getElementById('aw').value;
   const h=document.getElementById('ah').value;
+  const p=document.getElementById('ap')?document.getElementById('ap').value:'';
   if(!n||!a||!w||!h){alert('Please fill in all fields.');return;}
   const r=await fetch('/api/user/new',{method:'POST',headers:{'Content-Type':'application/json'},
-    body:JSON.stringify({name:n,age:a,sex:s,weight_kg:w,height_cm:h})});
+    body:JSON.stringify({name:n,age:a,sex:s,weight_kg:w,height_cm:h,password:p})});
   const d=await r.json();
   if(d.error){alert(d.error);return;}
   CU={user_id:d.user_id,name:d.name,age:a,sex:s,weight_kg:w,height_cm:h};
@@ -514,13 +517,16 @@ async function doRegister(){
 
 async function doLogin(){
   const uid=document.getElementById('auid').value.trim().toUpperCase();
+  const p=document.getElementById('aup')?document.getElementById('aup').value:'';
   if(!uid){alert('Enter your User ID.');return;}
   const r=await fetch('/api/user/login',{method:'POST',headers:{'Content-Type':'application/json'},
-    body:JSON.stringify({user_id:uid})});
+    body:JSON.stringify({user_id:uid,password:p})});
   const d=await r.json();
   if(d.error){alert(d.error);return;}
   CU=d.user;
   SEL.a=d.user.allergies||[];SEL.d=d.user.diseases||[];SEL.l=d.user.dislikes||[];
+  // if server returned last_plan, render it immediately
+  if(d.last_plan){LR=d.last_plan;onLogin();renderOut(d.last_plan);return;}
   onLogin();
 }
 
@@ -537,7 +543,7 @@ function onLogin(){
   document.getElementById('fh').value=CU.height_cm||'';
   if(CU.dietary_preference)document.getElementById('fd').value=CU.dietary_preference;
   document.getElementById('navUser').innerHTML=
-    `<div class="ubadge"><div class="uav">${(CU.name||'U')[0].toUpperCase()}</div><span>${CU.name||CU.user_id}</span></div>`;
+    `<div class="ubadge"><div class="uav">${(CU.name||'U')[0].toUpperCase()}</div><span>${CU.name||CU.user_id}</div>`;
   ['a','d','l'].forEach(k=>renderChips(k));
 }
 

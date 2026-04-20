@@ -9,6 +9,18 @@ if _HERE not in sys.path:
 
 from flask import Flask, render_template, request, jsonify
 import pandas as pd
+from dotenv import load_dotenv
+load_dotenv()
+from utils import db as mdb
+# Per user request: store passwords as plain text (INSECURE).
+# Provide passthrough functions so existing code paths continue to work.
+def generate_password_hash(p):
+    return p
+
+def check_password_hash(stored, candidate):
+    return stored == candidate
+from bson.objectid import ObjectId
+from datetime import datetime
 
 from models.food_filter_pipeline import FoodFilteringPipeline
 from recommendation_model.recommender import DietRecommender
@@ -45,7 +57,7 @@ def index():
 
 @app.route("/api/user/new", methods=["POST"])
 def new_user():
-    """Register a new user and return their auto-generated ID."""
+    """Register a new user and return their auto-generated ID. Accepts optional password and stores in Mongo if available."""
     try:
         data      = request.get_json(force=True)
         name      = _str(data,"name","User")
@@ -53,21 +65,109 @@ def new_user():
         sex       = _str(data,"sex","male")
         weight_kg = _str(data,"weight_kg","70")
         height_cm = _str(data,"height_cm","170")
+        password  = _str(data,"password","")
 
         user_id = generate_user_id()
+        # require password for new users
+        if not password:
+            return jsonify({"error":"Password is required when registering."}), 400
+        # Save to local registry (fallback)
         register_user(user_id, name, age, sex,
                       weight_kg=weight_kg, height_cm=height_cm)
+
+        # If Mongo is configured, save user there too
+        try:
+            if mdb.users_col is not None:
+                doc = {
+                    "user_id": user_id,
+                    "name": name,
+                    "age": age,
+                    "sex": sex,
+                    "weight_kg": weight_kg,
+                    "height_cm": height_cm,
+                    "dietary_preference": _str(data,"dietary_preference","none"),
+                    "allergies": _list(data,'allergies'),
+                    "diseases": _list(data,'diseases'),
+                    "dislikes": _list(data,'dislikes'),
+                    "registered_at": datetime.utcnow(),
+                    "last_run": None,
+                }
+                if password:
+                    doc['password_hash'] = generate_password_hash(password)
+                mdb.users_col.insert_one(doc)
+        except Exception:
+            traceback.print_exc()
+
         return jsonify({"status":"ok","user_id":user_id,"name":name})
     except Exception as e:
         traceback.print_exc()
         return jsonify({"error":str(e)}), 500
 
+
 @app.route("/api/user/login", methods=["POST"])
 def login_user():
-    """Validate returning user ID and return their saved profile."""
+    """Validate returning user ID and return their saved profile. If Mongo is configured authenticate and return last saved plan."""
     try:
         data    = request.get_json(force=True)
         user_id = _str(data,"user_id","").upper()
+        password = _str(data,"password","")
+
+        # Try Mongo first if available
+        try:
+            if mdb.users_col is not None:
+                u = mdb.users_col.find_one({"user_id": user_id})
+                if not u:
+                    # fall back to file-based registry
+                    if not user_exists(user_id):
+                        return jsonify({"error":f"User ID '{user_id}' not found."}), 404
+                    record = get_user(user_id)
+                    return jsonify({"status":"ok","user":record})
+                # verify password if set
+                ph = u.get('password_hash')
+                if ph:
+                    # account has a password — require a password and verify it
+                    if not password:
+                        return jsonify({"error":"Password required."}), 401
+                    if not check_password_hash(ph, password):
+                        return jsonify({"error":"Invalid credentials."}), 401
+                else:
+                    # account has no password set (legacy/migrated). If caller provided a password,
+                    # treat it as an invalid attempt to avoid allowing arbitrary passwords.
+                    if password:
+                        return jsonify({"error":"Invalid credentials."}), 401
+                # build safe user object to return (no password hash) and convert ObjectId to str
+                safe_user = {}
+                for k, v in u.items():
+                    if k == 'password_hash':
+                        continue
+                    if isinstance(v, ObjectId):
+                        safe_user[k] = str(v)
+                    else:
+                        safe_user[k] = v
+                # fetch last plan if exists
+                last_plan = None
+                # last_plan id may be stored as ObjectId or string
+                last_pid = u.get('last_plan_id') or safe_user.get('last_plan_id')
+                if last_pid and mdb.plans_col is not None:
+                    try:
+                        p = None
+                        if isinstance(last_pid, ObjectId):
+                            p = mdb.plans_col.find_one({"_id": last_pid})
+                        else:
+                            # try as ObjectId string first, then raw value
+                            try:
+                                p = mdb.plans_col.find_one({"_id": ObjectId(str(last_pid))})
+                            except Exception:
+                                p = mdb.plans_col.find_one({"_id": last_pid})
+                        if p:
+                            last_plan = p.get('payload')
+                    except Exception:
+                        traceback.print_exc()
+                return jsonify({"status":"ok","user":safe_user,"last_plan":last_plan})
+        except Exception:
+            traceback.print_exc()
+
+        # Fallback to file registry
         if not user_exists(user_id):
             return jsonify({"error":f"User ID '{user_id}' not found."}), 404
         record = get_user(user_id)
@@ -76,14 +176,27 @@ def login_user():
         traceback.print_exc()
         return jsonify({"error":str(e)}), 500
 
+
 @app.route("/api/user/update_meta", methods=["POST"])
 def update_meta():
-    """Update basic info for an existing user."""
+    """Update basic info for an existing user (also update Mongo if available)."""
     try:
         data    = request.get_json(force=True)
         user_id = _str(data,"user_id","").upper()
-        if not user_exists(user_id):
-            return jsonify({"error":"User not found"}), 404
+        if mdb.users_col:
+            # try update in Mongo
+            try:
+                upd = {}
+                if _str(data,'name'): upd['name'] = _str(data,'name')
+                if _str(data,'age'): upd['age'] = _str(data,'age')
+                if _str(data,'sex'): upd['sex'] = _str(data,'sex')
+                if _str(data,'weight_kg'): upd['weight_kg'] = _str(data,'weight_kg')
+                if _str(data,'height_cm'): upd['height_cm'] = _str(data,'height_cm')
+                if upd:
+                    mdb.users_col.update_one({"user_id":user_id},{"$set":upd})
+            except Exception:
+                traceback.print_exc()
+        # keep file registry in sync
         from utils.user_registry import update_user_meta
         update_user_meta(user_id,
             name      = _str(data,"name") or None,
@@ -96,6 +209,42 @@ def update_meta():
     except Exception as e:
         traceback.print_exc()
         return jsonify({"error":str(e)}), 500
+
+
+@app.route("/api/user/set_password", methods=["POST"])
+def set_password():
+    """Set or update a user's password in Mongo. If the account already has a password, the current password must be provided and verified."""
+    try:
+        data = request.get_json(force=True)
+        user_id = _str(data, 'user_id', '').upper()
+        current = _str(data, 'current_password', '')
+        new_pw = _str(data, 'new_password', '')
+        if not user_id or not new_pw:
+            return jsonify({"error":"user_id and new_password are required."}), 400
+
+        if mdb.users_col is None:
+            return jsonify({"error":"Database not configured."}), 500
+
+        u = mdb.users_col.find_one({"user_id": user_id})
+        if not u:
+            return jsonify({"error":f"User ID '{user_id}' not found."}), 404
+
+        ph = u.get('password_hash')
+        if ph:
+            # require current password when account already has a password
+            if not current:
+                return jsonify({"error":"Current password required to change password."}), 401
+            if not check_password_hash(ph, current):
+                return jsonify({"error":"Invalid current password."}), 401
+
+        # set new password hash
+        new_hash = generate_password_hash(new_pw)
+        mdb.users_col.update_one({"user_id": user_id}, {"$set": {"password_hash": new_hash}})
+        return jsonify({"status":"ok","message":"Password set/updated."})
+    except Exception as e:
+        traceback.print_exc()
+        return jsonify({"error":str(e)}), 500
+
 
 # ── Options ─────────────────────────────────────────────────────────────────
 
@@ -186,6 +335,45 @@ def recommend():
         if user_exists(uid):
             save_user_profile(uid, profile)
             touch_last_run(uid)
+
+        # Save plan to Mongo if available
+        try:
+            if mdb.plans_col is not None and uid and uid != 'WEB_USER':
+                plan_doc = {
+                    "user_id": uid,
+                    "created_at": datetime.utcnow(),
+                    "payload": {
+                        "user": {"name": profile['name'], "user_id": uid},
+                        "filter_summary": {
+                            "total_foods":1352,
+                            "safe_food_count":len(safe_df),
+                            "allergy_removed":fr["stage_reports"]["allergy"].get("total_removed",0),
+                            "disease_removed":fr["stage_reports"]["disease"].get("total_removed",0),
+                            "dislike_removed":fr["stage_reports"]["dislike"].get("total_removed",0),
+                            "severity_warnings":fr["severity_warnings"],
+                        },
+                        "metrics": rec["metrics"].__dict__ if hasattr(rec["metrics"], '__dict__') else rec["metrics"],
+                        "recommendation_context": {k:v for k,v in ctx.items() if k!="safe_food_ids"},
+                        "weekly_plan": rec["weekly_plan"],
+                        "weekly_avg": rec["weekly_avg"],
+                        "nutritional_gaps": rec["nutritional_gaps"],
+                        "insights": rec["insights"],
+                        "tips": rec["tips"],
+                        "goal_label": rec["goal_label"],
+                        "activity_label": rec["activity_label"],
+                        "region_zone": rec_inputs["region_zone"],
+                    }
+                }
+                res = mdb.plans_col.insert_one(plan_doc)
+                # update user's last_plan_id
+                try:
+                    if mdb.users_col is not None:
+                        mdb.users_col.update_one({"user_id": uid}, {"$set": {"last_plan_id": res.inserted_id, "last_run": datetime.utcnow()}})
+                except Exception:
+                    # fallback if users_col update fails
+                    pass
+        except Exception:
+            traceback.print_exc()
 
         m = rec["metrics"]
         return jsonify({
