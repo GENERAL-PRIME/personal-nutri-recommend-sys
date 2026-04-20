@@ -64,6 +64,7 @@ class DietRecommender:
         goal:                   str,
         activity_level:         str,
         meal_count:             int = 3,
+        region_zone:            str = 'any',
         seed:                   int = 42,
     ) -> Dict:
         """
@@ -123,7 +124,9 @@ class DietRecommender:
         )
 
         # ── Build 7-day meal plan ──────────────────────────────────────────────
-        weekly_plan = build_weekly_plan(safe_foods_df, metrics, seed=seed)
+        from recommendation_model.meal_planner import filter_by_region
+        regional_df = filter_by_region(safe_foods_df, region_zone)
+        weekly_plan = build_weekly_plan(regional_df, metrics, seed=42)
 
         # ── Nutritional gap analysis ───────────────────────────────────────────
         day1_gaps    = check_nutritional_gaps(weekly_plan[0], metrics)
@@ -141,6 +144,7 @@ class DietRecommender:
             "name":             name,
             "timestamp":        datetime.now().isoformat(),
             "goal":             goal,
+            "region_zone":       region_zone,
             "goal_label":       GOAL_LABELS.get(goal, goal),
             "activity_level":   activity_level,
             "activity_label":   ACTIVITY_LABELS.get(activity_level, activity_level),

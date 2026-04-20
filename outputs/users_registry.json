@@ -4,7 +4,7 @@
       "user_id": "NRS0001",
       "name": "Soumil",
       "age": "22",
-      "sex": "M",
+      "sex": "male",
       "weight_kg": "66",
       "height_cm": "173",
       "dietary_preference": "none",
@@ -17,28 +17,27 @@
         "fried foods"
       ],
       "registered_at": "2026-04-18T21:15:52.922098",
-      "last_run": "2026-04-19T13:06:41.431596"
+      "last_run": "2026-04-20T13:57:34.483075"
     },
     "NRS0002": {
       "user_id": "NRS0002",
       "name": "Abhidhan",
       "age": "21",
-      "sex": "M",
+      "sex": "male",
       "weight_kg": "65",
       "height_cm": "170",
-      "dietary_preference": "halal",
+      "dietary_preference": "none",
       "allergies": [
         "milk",
         "peanuts"
       ],
       "diseases": [
         "ibd",
-        "gerd",
-        "cancer"
+        "gerd"
       ],
       "dislikes": [],
       "registered_at": "2026-04-18T21:18:28.741281",
-      "last_run": "2026-04-19T13:35:03.535435"
+      "last_run": "2026-04-20T03:04:09.716513"
     },
     "NRS0003": {
       "user_id": "NRS0003",
@@ -116,7 +115,25 @@
       "dislikes": [],
       "registered_at": "2026-04-19T13:23:17.167661",
       "last_run": "2026-04-19T13:23:21.375328"
+    },
+    "NRS0007": {
+      "user_id": "NRS0007",
+      "name": "Soumil",
+      "age": "22",
+      "sex": "male",
+      "weight_kg": "66",
+      "height_cm": "173",
+      "dietary_preference": "none",
+      "allergies": [],
+      "diseases": [],
+      "dislikes": [
+        "Mushrooms",
+        "No Beef",
+        "No Pork"
+      ],
+      "registered_at": "2026-04-20T02:55:49.997830",
+      "last_run": "2026-04-20T02:56:32.849314"
     }
   },
-  "id_counter": 6
+  "id_counter": 7
 }
