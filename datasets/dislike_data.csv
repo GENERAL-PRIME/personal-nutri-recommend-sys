@@ -1,0 +1,31 @@
+dislike_id,dislike_name,dislike_type,related_food_ids,related_categories,notes
+DL001,Spicy Foods,Taste Preference,,spicy_tag,Filter foods marked as spicy; includes chilli-based dishes
+DL002,Bitter Foods,Taste Preference,"F038,F078,F080",,"Includes kale,bitter gourd,methi,brussels sprouts"
+DL003,Sour Foods,Taste Preference,"F032,F030",,"Includes citrus fruits,tamarind,fermented foods"
+DL004,Seafood,Food Category,"F017,F018,F019,F020,F066",seafood,All types of fish and shellfish
+DL005,Red Meat,Food Category,"F016,F071",,"Beef,mutton,pork,lamb"
+DL006,Eggs,Food Category,"F026,F027",,Whole eggs and egg whites
+DL007,Dairy Products,Food Category,"F021,F022,F023,F024,F025,F055,F061,F062,F095,F096",dairy,"All dairy including milk,yogurt,cheese,butter,paneer"
+DL008,Mushrooms,Food Category,F074,,All mushroom varieties
+DL009,Onion & Garlic,Ingredient,"F044,F045",,Common in many dishes; check ingredient lists
+DL010,Nuts & Seeds,Food Category,"F046,F047,F048,F049,F050,F051,F052",nuts,All nuts and seeds
+DL011,Raw Vegetables,Food Texture,,raw_veg,Prefers cooked vegetables; filter raw salad items
+DL012,Leafy Greens,Food Category,"F037,F038,F080",,"Spinach,kale,fenugreek leaves,chard"
+DL013,Legumes / Beans,Food Category,"F008,F009,F010,F011,F057,F063,F097",legumes,"All dals,beans,lentils,chickpeas"
+DL014,Tofu / Soy Products,Food Category,"F012,F013,F086",soy,All soy-based products
+DL015,Coconut,Ingredient,"F084,F054,F088",,"Coconut flesh,oil,water,milk"
+DL016,Okra (Bhindi),Vegetable,,,Specific vegetable dislike
+DL017,Bitter Gourd (Karela),Vegetable,F078,,Specific vegetable dislike
+DL018,Bottle Gourd (Lauki),Vegetable,F077,,Specific vegetable dislike
+DL019,Sprouts,Food Category,F094,,Raw sprouts
+DL020,Processed / Packaged Foods,Food Type,,processed,Prefers whole foods; filter heavily processed items
+DL021,Fried Foods,Cooking Method,F065,,Filter foods typically prepared by frying
+DL022,Very Sweet Foods,Taste Preference,"F085,F031,F034",,High sugar content foods
+DL023,Gluten-free Preference,Dietary Preference,"F003,F004,F005,F007,F060,F065,F068,F100",,Non-medical gluten avoidance
+DL024,Vegan,Dietary Choice,,non_vegan,Filter all animal-derived products
+DL025,Vegetarian,Dietary Choice,"F014,F015,F016,F017,F018,F019,F020,F064,F066,F071,F072",non_vegetarian,Filter all meat and seafood
+DL026,No Pork,Religious/Cultural,"P001,P002,P003,P004,P005,P006,P007,P008,P009,P010,P011,P012,P013,P014,P015,P016,P017,P018,P019,P020",pork,Pork and pork-derived products (Halal/Hindu). Covers all pork cuts and dishes.
+DL027,No Beef,Religious/Cultural,"B001,B002,B003,B004,B005,B006,B007,B008,B009,B010,B011,B012,B013,B014,B015,B016,B017,B018,B019,B020",,Beef and beef-derived products (Hindu/Jain). Covers all beef cuts and dishes.
+DL028,Jain Diet,Religious/Cultural,"F044,F045,F039,F075",root_vegetables,Avoid root vegetables and night-blooming vegetables
+DL029,Bland Food Preference,Taste Preference,,"spicy,strong_flavor","Prefers mild,lightly seasoned foods"
+DL030,No Raw Onion/Garlic,Ingredient,"F044,F045",,May tolerate cooked forms
