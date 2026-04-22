@@ -435,13 +435,38 @@ select option{background:var(--s2)}
 .match-hi{background:rgba(16,185,129,.2);color:var(--a2)}
 .match-md{background:rgba(245,158,11,.2);color:var(--a3)}
 .match-lo{background:rgba(100,116,139,.2);color:var(--mu)}
+.swap-opt-selected{border-color:var(--a2)!important;background:rgba(16,185,129,.08)!important}
+.swap-opt-selected .swap-opt-name{color:var(--a2)}
+.swap-confirm-btn{
+  display:block;width:100%;margin-top:12px;padding:11px;border:none;
+  border-radius:9px;background:linear-gradient(135deg,var(--a2),#059669);
+  color:#fff;font-size:13px;font-weight:700;cursor:pointer;transition:.2s;
+}
+.swap-confirm-btn:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(16,185,129,.4)}
 .swap-close{
-  width:100%;margin-top:14px;padding:8px;border-radius:8px;
+  width:100%;margin-top:8px;padding:8px;border-radius:8px;
   background:var(--s2);border:1px solid var(--bd);color:var(--mu);
   cursor:pointer;font-size:12px;
 }
 .swap-close:hover{border-color:var(--a4);color:var(--a4)}
 .swap-loading{text-align:center;padding:20px;color:var(--mu);font-size:12px}
+.remove-food-card{
+  display:flex;align-items:center;gap:12px;
+  background:rgba(239,68,68,.07);border:1px solid rgba(239,68,68,.2);
+  border-radius:10px;padding:14px 16px;margin:8px 0 12px;
+}
+.remove-food-ico{font-size:1.4rem}
+.remove-food-nm{font-size:13px;font-weight:600;color:var(--tx)}
+.remove-warning{
+  background:rgba(245,158,11,.09);border:1px solid rgba(245,158,11,.3);
+  border-radius:8px;padding:10px 14px;font-size:12px;color:var(--a3);margin-bottom:10px;
+}
+.remove-confirm-btn{
+  display:block;width:100%;margin-top:4px;padding:11px;border:none;
+  border-radius:9px;background:linear-gradient(135deg,var(--a4),#dc2626);
+  color:#fff;font-size:13px;font-weight:700;cursor:pointer;transition:.2s;
+}
+.remove-confirm-btn:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(239,68,68,.4)}
 </style>
 </head>
 <body>
@@ -477,21 +502,6 @@ select option{background:var(--s2)}
   </div>
 
 
-  <!-- Last Plan Banner: shown when returning user has a saved plan -->
-  <div class="lp-banner" id="lpBanner" style="display:none">
-    <div class="lp-banner-row">
-      <div class="lp-ico">📋</div>
-      <div>
-        <div class="lp-title">Your last diet plan is ready!</div>
-        <div class="lp-sub" id="lpMeta">Loading plan details...</div>
-      </div>
-    </div>
-    <div class="lp-actions">
-      <button class="lp-btn lp-btn-view" onclick="viewLastPlan()">👁 View Last Plan</button>
-      <button class="lp-btn lp-btn-modify" onclick="enterModifyMode()">✏️ Modify / Update</button>
-    </div>
-  </div>
-
   <div class="auth-screen" id="authScreen">
     <div>
       <h2 class="auth-title">Start Your<br>Nutrition Journey</h2>
@@ -505,11 +515,11 @@ select option{background:var(--s2)}
       <div class="fg"><label>Full Name</label><input type="text" id="an" placeholder="e.g. Rahul Sharma"></div>
       <div class="fg"><label>Password</label><div class="pwd-wrapper"><input type="password" id="ap" placeholder="Choose a password"><button type="button" class="pwd-toggle" onclick="togglePwdVis('ap')"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg></button></div></div>
       <div class="fr2">
-        <div class="fg"><label>Age</label><input type="number" id="aa" placeholder="30" min="5" max="100"></div>
+        <div class="fg"><label>Age</label><input type="number" id="aa" placeholder="30" min="5" max="100" oninput="if(this.value>100)this.value=100"></div>
         <div class="fg"><label>Sex</label><select id="as"><option value="male">Male</option><option value="female">Female</option><option value="other">Other</option></select></div>
       </div>
       <div class="fr2">
-        <div class="fg"><label>Weight (kg)</label><input type="number" id="aw" placeholder="70" min="20" max="300"></div>
+        <div class="fg"><label>Weight (kg)</label><input type="number" id="aw" placeholder="70" min="20" max="300" oninput="if(this.value>300)this.value=300"></div>
         <div class="fg"><label>Height (cm)</label><input type="number" id="ah" placeholder="170" min="100" max="250"></div>
       </div>
       <button class="btn btn-g" onclick="doRegister()">Create Account →</button>
@@ -526,11 +536,11 @@ select option{background:var(--s2)}
     <div class="div" style="margin-bottom:14px">Personal Info</div>
     <div class="fr2" style="margin-bottom:10px">
       <div class="fg"><label>Name</label><input type="text" id="fn"></div>
-      <div class="fg"><label>Age</label><input type="number" id="fa" min="5" max="100"></div>
+      <div class="fg"><label>Age</label><input type="number" id="fa" min="5" max="100" oninput="if(this.value>100)this.value=100"></div>
     </div>
     <div class="fr2" style="margin-bottom:10px">
       <div class="fg"><label>Sex</label><select id="fs"><option value="male">Male</option><option value="female">Female</option><option value="other">Other</option></select></div>
-      <div class="fg"><label>Weight (kg)</label><input type="number" id="fw" min="20" max="300"></div>
+      <div class="fg"><label>Weight (kg)</label><input type="number" id="fw" min="20" max="300" oninput="if(this.value>300)this.value=300"></div>
     </div>
     <div class="fr2" style="margin-bottom:14px">
       <div class="fg"><label>Height (cm)</label><input type="number" id="fh" min="100" max="250"></div>
@@ -585,7 +595,6 @@ select option{background:var(--s2)}
 
   <div class="sfooter" id="sfooter" style="display:none">
     <button class="btn btn-p" id="genBtn" onclick="gen()">✦ Generate My Diet Plan</button>
-    <div id="modifyHint" style="display:none;font-size:10px;color:var(--a3);margin-top:6px;text-align:center">⚡ Will regenerate with your updated preferences</div>
   </div>
 </aside>
 
@@ -602,11 +611,6 @@ select option{background:var(--s2)}
   </div>
 
   <div id="output" style="display:none">
-    <!-- Modify bar: shown when user clicks "Modify Plan" -->
-    <div class="modify-bar" id="modifyBar">
-      <span class="modify-bar-text">✏️ Modify mode — update your preferences in the sidebar and click <strong>Regenerate</strong></span>
-      <button class="modify-bar-close" onclick="exitModifyMode()">✕ Cancel</button>
-    </div>
     <div class="ohdr">
       <h2 id="oh-title">Diet Plan</h2>
       <div class="ohsub" id="oh-sub"></div>
@@ -807,22 +811,14 @@ function onLogin(hasLastPlan){
   document.getElementById('navUser').innerHTML=
     `<div class="ubadge"><div class="uav">${(CU.name||'U')[0].toUpperCase()}</div><span>${CU.name||CU.user_id}</span></div>`;
 
+  // Pre-fill chip selections from saved user profile
+  if(CU.allergies && CU.allergies.length)   SEL.a = [...CU.allergies];
+  if(CU.diseases  && CU.diseases.length)    SEL.d = [...CU.diseases];
+  if(CU.dislikes  && CU.dislikes.length)    SEL.l = [...CU.dislikes];
+
   // Chip boxes
   ['a','d','l'].forEach(k=>renderChips(k));
 
-  // Show last plan banner if plan exists
-  const lpBanner=document.getElementById('lpBanner');
-  if(hasLastPlan && LR){
-    const planGoal=LR.goal_label||'—';
-    const planDate=LR.timestamp? new Date(LR.timestamp).toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'}) : '';
-    const metaCal=LR.metrics? Math.round(LR.metrics.target_calories||0) : '';
-    const region=ZNAMES[LR.region_zone||'any']||'Pan-Indian';
-    document.getElementById('lpMeta').textContent=
-      (planDate?planDate+' · ':'')+planGoal+(metaCal?' · '+metaCal+' kcal':'')+' · '+region;
-    lpBanner.style.display='block';
-  } else {
-    lpBanner.style.display='none';
-  }
 }
 
 function signOut(){
@@ -831,11 +827,6 @@ function signOut(){
   document.getElementById('fscreen').style.display='none';
   document.getElementById('sfooter').style.display='none';
   document.getElementById('uidBanner').style.display='none';
-  document.getElementById('lpBanner').style.display='none';
-  const mb=document.getElementById('modifyBar');
-  if(mb)mb.classList.remove('show');
-  const mh=document.getElementById('modifyHint');
-  if(mh)mh.style.display='none';
   document.getElementById('navUser').innerHTML=`
     <button class="nbtn" onclick="switchAuth('new')">Register</button>
     <button class="nbtn p" onclick="switchAuth('ret')">Sign In</button>
@@ -919,12 +910,9 @@ async function gen(){
   }catch(e){showErr('Network error: '+e.message)}
   finally{
     btn.disabled=false;
-    btn.textContent=document.getElementById('modifyBar')&&document.getElementById('modifyBar').classList.contains('show')
-      ? '✦ Regenerate Diet Plan' : '✦ Update Diet Plan';
+    btn.textContent='✦ Generate My Diet Plan';
     lov.classList.add('off');
     steps.forEach(s=>document.getElementById(s).classList.remove('active'));
-    // Exit modify mode after successful generation
-    exitModifyMode();
   }
 }
 
@@ -932,49 +920,6 @@ function showErr(msg){
   document.getElementById('welcome').style.display='none';
   document.getElementById('output').style.display='block';
   const eb=document.getElementById('ebar');eb.textContent='⚠ '+msg;eb.classList.remove('off');
-}
-
-// ── Last Plan & Modify Mode ────────────────────────────────────────────────────
-
-function viewLastPlan(){
-  if(!LR){return;}
-  // Ensure output is visible
-  document.getElementById('welcome').style.display='none';
-  document.getElementById('output').style.display='block';
-  document.getElementById('ebar').classList.add('off');
-  // Hide modify-bar (just viewing)
-  const mb=document.getElementById('modifyBar');
-  if(mb)mb.classList.remove('show');
-  renderOut(LR);
-  // Scroll to output
-  document.getElementById('output').scrollIntoView({behavior:'smooth'});
-}
-
-function enterModifyMode(){
-  // Show the modify-bar at top of output
-  document.getElementById('welcome').style.display='none';
-  document.getElementById('output').style.display='block';
-  const mb=document.getElementById('modifyBar');
-  if(mb)mb.classList.add('show');
-  // Update button label
-  const btn=document.getElementById('genBtn');
-  if(btn)btn.textContent='✦ Regenerate Diet Plan';
-  const mh=document.getElementById('modifyHint');
-  if(mh)mh.style.display='block';
-  // Show last plan first so user can compare
-  if(LR)renderOut(LR);
-  // Scroll sidebar to top so user can see form
-  const sidebar=document.querySelector('.sidebar');
-  if(sidebar)sidebar.scrollTo({top:0,behavior:'smooth'});
-}
-
-function exitModifyMode(){
-  const mb=document.getElementById('modifyBar');
-  if(mb)mb.classList.remove('show');
-  const mh=document.getElementById('modifyHint');
-  if(mh)mh.style.display='none';
-  const btn=document.getElementById('genBtn');
-  if(btn && btn.textContent.includes('Regenerate'))btn.textContent='✦ Update Diet Plan';
 }
 
 function renderOut(data){
@@ -990,7 +935,8 @@ function renderOut(data){
   // Header
   const userName = (data.user && data.user.name) ? data.user.name : (CU && CU.name) || 'Your';
   const mealCnt  = data.meal_count || Object.keys(m.meal_calories).length || '—';
-  document.getElementById('oh-title').textContent = userName + "'s Diet Plan";
+  const planTs = data.timestamp ? new Date(data.timestamp).toLocaleString('en-IN',{day:'numeric',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'}) : '';
+  document.getElementById('oh-title').innerHTML = userName + "'s Diet Plan" + (planTs ? ' <span style="font-size:11px;font-weight:400;color:var(--mu);margin-left:10px">\u{1F550} ' + planTs + '</span>' : '');
   document.getElementById('oh-sub').innerHTML=
     `<span class="otag">${data.goal_label||''}</span>`+
     `<span class="otag">${data.activity_label||''}</span>`+
@@ -1148,6 +1094,25 @@ function showDay(idx){
 
 // ── SWAP / REMOVE FOOD ─────────────────────────────────────────────────────────
 let _swapCtx = null; // { dayIdx, slot, foodIdx, foodId }
+let _swapOptions = [];
+let _selectedSwapOpt = null;
+
+function selectSwapOption(idx){
+  _selectedSwapOpt = _swapOptions[idx];
+  // Highlight selected
+  document.querySelectorAll('.swap-opt').forEach((el,i)=>{
+    el.classList.toggle('swap-opt-selected', i===idx);
+  });
+  // Show confirm button
+  const btn = document.getElementById('swapConfirmBtn');
+  btn.textContent = '✓ Swap with ' + _selectedSwapOpt.food_name;
+  btn.style.display = 'block';
+}
+
+function confirmSwapAction(){
+  if(!_selectedSwapOpt) return;
+  doSwap(_selectedSwapOpt.food_id, _selectedSwapOpt);
+}
 
 function openSwap(dayIdx, slot, foodIdx, foodId, safeIds){
   const food = LR.weekly_plan[dayIdx].meals[slot].foods[foodIdx];
@@ -1174,11 +1139,14 @@ function openSwap(dayIdx, slot, foodIdx, foodId, safeIds){
   .then(data=>{
     if(data.error){ document.getElementById('swapOptions').innerHTML=`<div class="swap-none">⚠ ${data.error}</div>`; return; }
     if(!data.options || !data.options.length){ document.getElementById('swapOptions').innerHTML='<div class="swap-none">No suitable alternatives found for this food.</div>'; return; }
-    document.getElementById('swapModalSub').textContent = data.options.length + ' alternative' + (data.options.length>1?'s':'') + ' found — click one to swap';
-    document.getElementById('swapOptions').innerHTML = data.options.map(opt=>{
+    document.getElementById('swapModalSub').textContent = data.options.length + ' alternative' + (data.options.length>1?'s':'') + ' found — select one, then confirm';
+    _swapOptions = data.options;
+    _selectedSwapOpt = null;
+    document.getElementById('swapConfirmBtn').style.display='none';
+    document.getElementById('swapOptions').innerHTML = data.options.map((opt,i)=>{
       const matchCls = opt.match_pct >= 75 ? 'match-hi' : opt.match_pct >= 50 ? 'match-md' : 'match-lo';
       const hindi = opt.food_name_hindi ? `<div class="swap-opt-hindi">${opt.food_name_hindi}</div>` : '';
-      return `<div class="swap-opt" onclick="doSwap('${opt.food_id}',${JSON.stringify(opt).replace(/'/g,"&#39;")})">
+      return `<div class="swap-opt" id="swapopt-${i}" onclick="selectSwapOption(${i})">
         <div class="swap-opt-info">
           <div class="swap-opt-name">${opt.food_name}</div>
           ${hindi}
@@ -1243,12 +1211,32 @@ function doSwap(newFoodId, newFoodData){
   st('plan');            // switch to plan tab
 }
 
+let _removeCtx = null;
+
 function removeFood(dayIdx, slot, foodIdx){
   if(!LR) return;
   const meal = LR.weekly_plan[dayIdx].meals[slot];
-  if(meal.foods.length <= 1){ alert('Cannot remove the last item in a meal.'); return; }
+  if(meal.foods.length <= 1){
+    // reuse swap modal styling for the "last item" warning too
+    document.getElementById('removeFoodName').textContent = meal.foods[foodIdx].food_name || 'this item';
+    document.getElementById('removeWarning').style.display = 'block';
+    document.getElementById('removeConfirmBtn').style.display = 'none';
+    document.getElementById('removeFoodBg').classList.remove('off');
+    return;
+  }
+  _removeCtx = {dayIdx, slot, foodIdx};
+  const foodName = meal.foods[foodIdx].food_name || 'this item';
+  document.getElementById('removeFoodName').textContent = foodName;
+  document.getElementById('removeWarning').style.display = 'none';
+  document.getElementById('removeConfirmBtn').style.display = 'block';
+  document.getElementById('removeFoodBg').classList.remove('off');
+}
+
+function confirmRemoveFood(){
+  if(!_removeCtx || !LR) return;
+  const {dayIdx, slot, foodIdx} = _removeCtx;
+  const meal = LR.weekly_plan[dayIdx].meals[slot];
   meal.foods.splice(foodIdx, 1);
-  // Recalculate totals
   meal.totals = {
     calories:  parseFloat(meal.foods.reduce((s,f)=>s+f.calories,0).toFixed(1)),
     protein_g: parseFloat(meal.foods.reduce((s,f)=>s+f.protein_g,0).toFixed(1)),
@@ -1258,8 +1246,15 @@ function removeFood(dayIdx, slot, foodIdx){
     sodium_mg: parseFloat(meal.foods.reduce((s,f)=>s+(f.sodium_mg||0),0).toFixed(1)),
   };
   meal.actual_kcal = meal.totals.calories;
+  closeRemoveModal();
   showDay(dayIdx);
   st('plan');
+}
+
+function closeRemoveModal(e){
+  if(e && e.target && e.target !== document.getElementById('removeFoodBg')) return;
+  document.getElementById('removeFoodBg').classList.add('off');
+  _removeCtx = null;
 }
 
 function closeSwapModal(e){
@@ -1290,7 +1285,24 @@ function st(name){
     <div class="swap-options" id="swapOptions">
       <div class="swap-loading"><span class="spinner"></span> Loading alternatives...</div>
     </div>
+    <button id="swapConfirmBtn" class="swap-confirm-btn" style="display:none" onclick="confirmSwapAction()">✓ Confirm Swap</button>
     <button class="swap-close" onclick="closeSwapModal()">✕ Cancel</button>
+  </div>
+</div>
+<!-- Remove Food Modal -->
+<div class="swap-modal-bg off" id="removeFoodBg" onclick="closeRemoveModal(event)">
+  <div class="swap-modal">
+    <h3>🗑 Remove Food</h3>
+    <div class="swap-sub">Are you sure you want to remove this item from your meal?</div>
+    <div class="remove-food-card">
+      <span class="remove-food-ico">🍽</span>
+      <span class="remove-food-nm" id="removeFoodName"></span>
+    </div>
+    <div id="removeWarning" class="remove-warning" style="display:none">
+      ⚠ This is the only item in this meal and cannot be removed.
+    </div>
+    <button id="removeConfirmBtn" class="remove-confirm-btn" onclick="confirmRemoveFood()">🗑 Yes, Remove</button>
+    <button class="swap-close" onclick="closeRemoveModal()">✕ Cancel</button>
   </div>
 </div>
 </body>
