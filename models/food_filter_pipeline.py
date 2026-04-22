@@ -22,14 +22,13 @@ from utils.helpers import dataset_path, output_path, export_json, timestamp_str
 class FoodFilteringPipeline:
 
     def __init__(self):
-        food_path    = dataset_path("food_data.csv")
-        allergy_path = dataset_path("allergy_data.csv")
-        disease_path = dataset_path("disease_diet_data.csv")
-        dislike_path = dataset_path("dislike_data.csv")
+        # Load all datasets — tries MongoDB first, falls back to CSV
+        from utils.data_loader import load_datasets
+        food_df, allergy_df, disease_df, dislike_df = load_datasets()
 
-        self.allergy_filter = AllergyFoodFilter(food_path, allergy_path)
-        self.disease_filter = DiseaseFoodFilter(food_path, disease_path)
-        self.dislike_filter = DislikeFoodFilter(food_path, dislike_path)
+        self.allergy_filter = AllergyFoodFilter(food_df=food_df, allergy_df=allergy_df)
+        self.disease_filter = DiseaseFoodFilter(food_df=food_df, disease_df=disease_df)
+        self.dislike_filter = DislikeFoodFilter(food_df=food_df, dislike_df=dislike_df)
 
     def run(self, user_profile: Dict) -> Dict:
         user_id   = user_profile.get("user_id",  "anonymous")

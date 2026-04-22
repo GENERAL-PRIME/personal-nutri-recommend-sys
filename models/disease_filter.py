@@ -41,9 +41,17 @@ class DiseaseFoodFilter:
         'max_phosphorus_mg':    'phosphorus_mg',
     }
 
-    def __init__(self, food_data_path: str, disease_data_path: str):
-        self.food_df = pd.read_csv(food_data_path)
-        self.disease_df = pd.read_csv(disease_data_path)
+    def __init__(self, food_data_path=None, disease_data_path=None,
+                 food_df=None, disease_df=None):
+        """Accept either file paths OR pre-loaded DataFrames (from MongoDB)."""
+        if food_df is not None and disease_df is not None:
+            self.food_df    = food_df.copy()
+            self.disease_df = disease_df.copy()
+        elif food_data_path and disease_data_path:
+            self.food_df    = pd.read_csv(food_data_path)
+            self.disease_df = pd.read_csv(disease_data_path)
+        else:
+            raise ValueError("Provide either DataFrames or file paths to DiseaseFoodFilter")
         self._preprocess_food_df()
         self._preprocess_disease_df()
 

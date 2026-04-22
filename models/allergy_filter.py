@@ -69,9 +69,17 @@ class AllergyFoodFilter:
         }
     }
 
-    def __init__(self, food_data_path: str, allergy_data_path: str):
-        self.food_df = pd.read_csv(food_data_path)
-        self.allergy_df = pd.read_csv(allergy_data_path)
+    def __init__(self, food_data_path=None, allergy_data_path=None,
+                 food_df=None, allergy_df=None):
+        """Accept either file paths OR pre-loaded DataFrames (from MongoDB)."""
+        if food_df is not None and allergy_df is not None:
+            self.food_df    = food_df.copy()
+            self.allergy_df = allergy_df.copy()
+        elif food_data_path and allergy_data_path:
+            self.food_df    = pd.read_csv(food_data_path)
+            self.allergy_df = pd.read_csv(allergy_data_path)
+        else:
+            raise ValueError("Provide either DataFrames or file paths to AllergyFoodFilter")
         self._preprocess()
 
     def _preprocess(self):

@@ -145,7 +145,7 @@ def _calc_serving(row: pd.Series, target_kcal: float) -> Tuple[float, float, str
 
 # ── Food scoring ──────────────────────────────────────────────────────────────
 
-def _score_food(row, slot, metrics, used_yesterday):
+def _score_food(row, slot, metrics, used_yesterday, preferred_region=None):
     score  = float(row.get("disease_score", 50))
     gi     = float(row.get("glycemic_index", 0))
     fiber  = float(row.get("fiber_g", 0))
@@ -153,25 +153,53 @@ def _score_food(row, slot, metrics, used_yesterday):
     sodium = float(row.get("sodium_mg", 0))
     cal    = float(row.get("calories_per_100g", 100))
 
+    # Fiber bonus
     if fiber >= 3: score += 8
     if fiber >= 6: score += 5
-    if 0 < gi <= 40:  score += 10
-    elif gi > 70:     score -= 8
+
+    # GI-based scoring (critical for diabetes)
+    if 0 < gi <= 40:   score += 12
+    elif 41 <= gi <= 55: score += 5
+    elif gi > 70:       score -= 10
+
+    # Sodium penalty
     if sodium > 400:  score -= 10
-    if sodium > 800:  score -= 20
+    if sodium > 800:  score -= 22
+
+    # Snack slot: penalise calorie-dense items
     if slot in ("mid_morning", "afternoon", "evening_snack") and cal > 400:
-        score -= 15
+        score -= 18
+
+    # Goal-specific adjustments
     if metrics.goal in ("weight_loss", "weight_loss_aggressive", "muscle_gain"):
-        score += prot * 0.8
+        score += prot * 1.0   # reward protein for these goals
     if metrics.goal in ("weight_gain", "weight_gain_mild", "muscle_gain") and cal > 150:
-        score += 5
+        score += 7
+    if metrics.goal in ("weight_loss", "weight_loss_aggressive") and cal > 350:
+        score -= 8            # penalise calorie-dense foods for weight loss
+
+    # Regional coherence: if a preferred region is set, boost matching foods
+    if preferred_region and preferred_region != "pan_indian":
+        if row.get("region_zone") == preferred_region:
+            score += 18
+        elif row.get("cuisine_type","") in ("Indian",""):
+            score -= 5   # mild penalty for generic Indian when region is set
+
+    # Variety: penalise yesterday's foods
     if row["food_id"] in used_yesterday:
-        score -= 15
+        score -= 18
+
+    # Realistic slot suitability
+    meal_type = str(row.get("meal_type","")).lower()
+    if slot == "breakfast" and "breakfast" in meal_type:
+        score += 8
+    if slot in ("lunch","dinner") and "lunch_dinner" in meal_type:
+        score += 5
 
     return max(round(score, 2), 1)
 
 
-def _pick_role(safe_df, role, slot, metrics, used_today, used_yesterday, rng):
+def _pick_role(safe_df, role, slot, metrics, used_today, used_yesterday, rng, preferred_region=None):
     roles_to_try = [role] + ROLE_FALLBACKS.get(role, [])
     exhausted    = {fid for fid, cnt in used_today.items() if cnt >= 1}
 
@@ -187,7 +215,7 @@ def _pick_role(safe_df, role, slot, metrics, used_today, used_yesterday, rng):
             continue
 
         candidates["_score"] = candidates.apply(
-            lambda r: _score_food(r, slot, metrics, used_yesterday), axis=1
+            lambda r: _score_food(r, slot, metrics, used_yesterday, preferred_region), axis=1
         )
         pool    = candidates.nlargest(min(20, len(candidates)), "_score")
         weights = pool["_score"].values
@@ -246,7 +274,7 @@ def _build_item(row, target_slot_kcal, slot_def):
 
 # ── Build daily plan ──────────────────────────────────────────────────────────
 
-def build_daily_plan(safe_df, metrics, day_num, used_yesterday=None, seed=42):
+def build_daily_plan(safe_df, metrics, day_num, used_yesterday=None, seed=42, preferred_region=None):
     rng            = random.Random(seed + day_num * 997)
     used_today     = {}
     used_yesterday = used_yesterday or set()
@@ -260,7 +288,7 @@ def build_daily_plan(safe_df, metrics, day_num, used_yesterday=None, seed=42):
         for slot_def in template:
             chosen = _pick_role(
                 safe_df, slot_def["role"], slot, metrics,
-                used_today, used_yesterday, rng
+                used_today, used_yesterday, rng, preferred_region=preferred_region
             )
             if chosen is not None:
                 items.append(_build_item(chosen, target_kcal, slot_def))
@@ -322,7 +350,7 @@ def _build_meal_description(items, slot):
 
 # ── Build weekly plan ─────────────────────────────────────────────────────────
 
-def build_weekly_plan(safe_df, metrics, seed=42):
+def build_weekly_plan(safe_df, metrics, seed=42, preferred_region=None):
     DAY_NAMES      = ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"]
     weekly         = []
     used_yesterday = set()
@@ -332,7 +360,8 @@ def build_weekly_plan(safe_df, metrics, seed=42):
             safe_df, metrics,
             day_num=i + 1,
             used_yesterday=used_yesterday,
-            seed=seed
+            seed=seed,
+            preferred_region=preferred_region
         )
         plan["day_name"] = day_name
         used_yesterday   = {

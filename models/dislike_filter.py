@@ -109,9 +109,17 @@ class DislikeFoodFilter:
         'onion','pyaaz','garlic','lahasun',
     ]
 
-    def __init__(self, food_data_path: str, dislike_data_path: str):
-        self.food_df    = pd.read_csv(food_data_path)
-        self.dislike_df = pd.read_csv(dislike_data_path)
+    def __init__(self, food_data_path=None, dislike_data_path=None,
+                 food_df=None, dislike_df=None):
+        """Accept either file paths OR pre-loaded DataFrames (from MongoDB)."""
+        if food_df is not None and dislike_df is not None:
+            self.food_df    = food_df.copy()
+            self.dislike_df = dislike_df.copy()
+        elif food_data_path and dislike_data_path:
+            self.food_df    = pd.read_csv(food_data_path)
+            self.dislike_df = pd.read_csv(dislike_data_path)
+        else:
+            raise ValueError("Provide either DataFrames or file paths to DislikeFoodFilter")
         self._preprocess()
 
     def _preprocess(self):

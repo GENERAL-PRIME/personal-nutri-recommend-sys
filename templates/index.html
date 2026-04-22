@@ -71,6 +71,13 @@ input:focus,select:focus{border-color:var(--a1);box-shadow:0 0 0 3px rgba(59,130
 input::placeholder{color:var(--mu2)}
 select option{background:var(--s2)}
 
+/* Password input wrapper */
+.pwd-wrapper{position:relative;width:100%}
+.pwd-wrapper input{width:100%;padding-right:38px;padding-left:11px}
+.pwd-wrapper input:focus{border-color:var(--a1);box-shadow:0 0 0 3px rgba(59,130,246,.15)}
+.pwd-toggle{position:absolute;right:8px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:var(--mu);font-size:18px;padding:4px 6px;transition:.2s;display:flex;align-items:center;justify-content:center}
+.pwd-toggle:hover{color:var(--a1)}
+
 /* Chip boxes */
 .cw{position:relative}
 .cbox{display:flex;flex-wrap:wrap;gap:5px;padding:6px 9px;background:var(--s2);
@@ -250,12 +257,101 @@ select option{background:var(--s2)}
 .rb-bv{background:rgba(139,92,246,.13);color:#c4b5fd}.rb-sn{background:rgba(239,68,68,.13);color:#fca5a5}
 .rb-fr{background:rgba(251,146,60,.13);color:#fdba74}.rb-ot{background:rgba(100,116,139,.13);color:#94a3b8}
 .trw td{background:rgba(59,130,246,.04);font-weight:700;font-size:10px;color:var(--mu)}
+
+/* ── Swap / Remove food buttons ── */
+.food-actions{display:flex;gap:5px;margin-top:5px}
+.btn-swap,.btn-remove{
+  padding:2px 8px;border-radius:5px;border:none;cursor:pointer;
+  font-size:9px;font-weight:600;letter-spacing:.03em;transition:.2s;
+}
+.btn-swap{background:rgba(59,130,246,.12);color:var(--a1);border:1px solid rgba(59,130,246,.25)}
+.btn-swap:hover{background:rgba(59,130,246,.25)}
+.btn-remove{background:rgba(239,68,68,.1);color:var(--a4);border:1px solid rgba(239,68,68,.2)}
+.btn-remove:hover{background:rgba(239,68,68,.2)}
+
+/* ── Swap modal ── */
+.swap-modal-bg{
+  position:fixed;inset:0;background:rgba(8,12,20,.85);backdrop-filter:blur(8px);
+  z-index:500;display:flex;align-items:center;justify-content:center;
+}
+.swap-modal-bg.off{display:none}
+.swap-modal{
+  background:var(--surface);border:1px solid var(--bd2);border-radius:16px;
+  padding:24px;width:min(520px,95vw);max-height:80vh;overflow-y:auto;
+  box-shadow:0 24px 64px rgba(0,0,0,.6);
+}
+.swap-modal h3{font-size:1rem;margin-bottom:4px}
+.swap-modal-sub{font-size:11px;color:var(--mu);margin-bottom:18px}
+.swap-option{
+  display:flex;align-items:center;justify-content:space-between;gap:12px;
+  background:var(--card);border:1px solid var(--bd);border-radius:10px;
+  padding:12px 14px;margin-bottom:8px;cursor:pointer;transition:.2s;
+}
+.swap-option:hover{border-color:var(--a1);background:rgba(59,130,246,.05)}
+.swap-opt-name{font-weight:600;font-size:12px}
+.swap-opt-hindi{font-size:10px;color:var(--a6);margin-top:1px}
+.swap-opt-meta{font-size:10px;color:var(--mu)}
+.match-badge{
+  padding:3px 10px;border-radius:12px;font-size:10px;font-weight:700;white-space:nowrap;
+  flex-shrink:0;
+}
+.match-hi{background:rgba(16,185,129,.15);color:var(--a2)}
+.match-md{background:rgba(245,158,11,.15);color:var(--a3)}
+.match-lo{background:rgba(239,68,68,.12);color:var(--a4)}
+.swap-loading{text-align:center;padding:24px;color:var(--mu);font-size:13px}
+.swap-none{text-align:center;padding:20px;color:var(--mu);font-size:12px}
+.swap-modal-close{
+  display:block;width:100%;margin-top:14px;padding:9px;border:1px solid var(--bd);
+  border-radius:8px;background:none;color:var(--mu);cursor:pointer;font-size:12px;
+}
+.swap-modal-close:hover{border-color:var(--a4);color:var(--a4)}
 .fsub-hindi{font-size:11px;color:var(--a6);font-weight:500;margin-top:1px;letter-spacing:.01em}
 .qty-main{font-weight:700;font-size:12px;color:var(--tx)}
 .qty-sub{font-size:9px;color:var(--mu);margin-top:1px}
 .cuis-tag{display:inline-block;padding:1px 5px;border-radius:4px;font-size:8px;
   background:rgba(6,182,212,.1);color:var(--a6);border:1px solid rgba(6,182,212,.2);margin-left:4px}
 .meal-desc{font-size:11px;color:var(--mu2);margin-top:3px;font-style:italic}
+
+/* ── Password field with show/hide toggle ── */
+.pw-wrap{position:relative}
+.pw-wrap input{padding-right:38px}
+.pw-eye{position:absolute;right:10px;top:50%;transform:translateY(-50%);
+  cursor:pointer;color:var(--mu);font-size:14px;user-select:none;line-height:1}
+.pw-eye:hover{color:var(--tx)}
+
+/* ── Last Plan auto-load banner ── */
+.lp-banner{
+  background:linear-gradient(135deg,rgba(16,185,129,.12),rgba(59,130,246,.08));
+  border:1px solid rgba(16,185,129,.3);border-radius:12px;
+  padding:16px 18px;margin:16px 28px 0;
+}
+.lp-banner-row{display:flex;align-items:center;gap:12px}
+.lp-ico{font-size:1.6rem;flex-shrink:0}
+.lp-title{font-size:13px;font-weight:700;color:var(--a2);margin-bottom:2px}
+.lp-sub{font-size:11px;color:var(--mu)}
+.lp-actions{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}
+.lp-btn{
+  padding:7px 14px;border-radius:8px;border:none;cursor:pointer;
+  font-size:12px;font-weight:600;transition:.2s;
+}
+.lp-btn-view{background:var(--a2);color:#fff}
+.lp-btn-view:hover{background:#059669}
+.lp-btn-modify{background:rgba(59,130,246,.15);color:var(--a1);
+  border:1px solid rgba(59,130,246,.3)}
+.lp-btn-modify:hover{background:rgba(59,130,246,.25)}
+
+/* ── Modify plan top bar (shows in output when editing) ── */
+.modify-bar{
+  display:none;background:rgba(245,158,11,.08);border-bottom:1px solid rgba(245,158,11,.2);
+  padding:10px 28px;align-items:center;gap:12px;
+}
+.modify-bar.show{display:flex}
+.modify-bar-text{font-size:12px;color:var(--a3);flex:1}
+.modify-bar-close{
+  padding:5px 12px;border-radius:7px;background:none;border:1px solid var(--bd);
+  color:var(--mu);cursor:pointer;font-size:11px;
+}
+.modify-bar-close:hover{border-color:var(--a3);color:var(--a3)}
 
 /* Gaps */
 .gitem{display:flex;align-items:center;gap:9px;background:rgba(245,158,11,.07);
@@ -296,6 +392,56 @@ select option{background:var(--s2)}
 }
 .fade-in{animation:fadeIn .45s ease both}
 @keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+
+/* ── Swap / Remove food ─────────────────────────────────── */
+.food-actions{display:flex;gap:6px;margin-top:5px}
+.btn-swap,.btn-remove{
+  padding:2px 8px;border-radius:5px;border:none;
+  font-size:10px;font-weight:600;cursor:pointer;transition:.15s;
+}
+.btn-swap{background:rgba(59,130,246,.15);color:#93c5fd;border:1px solid rgba(59,130,246,.3)}
+.btn-swap:hover{background:rgba(59,130,246,.3)}
+.btn-remove{background:rgba(239,68,68,.1);color:#fca5a5;border:1px solid rgba(239,68,68,.3)}
+.btn-remove:hover{background:rgba(239,68,68,.25)}
+
+/* Swap modal */
+.swap-modal-bg{
+  position:fixed;inset:0;background:rgba(0,0,0,.7);backdrop-filter:blur(4px);
+  z-index:500;display:flex;align-items:center;justify-content:center;
+}
+.swap-modal-bg.off{display:none}
+.swap-modal{
+  background:var(--surface);border:1px solid var(--bd2);border-radius:14px;
+  padding:24px;width:min(560px,95vw);max-height:80vh;overflow-y:auto;
+  box-shadow:0 24px 64px rgba(0,0,0,.6);
+}
+.swap-modal h3{font-size:1rem;margin-bottom:4px}
+.swap-sub{font-size:11px;color:var(--mu);margin-bottom:16px}
+.swap-options{display:flex;flex-direction:column;gap:8px}
+.swap-opt{
+  display:flex;align-items:center;gap:12px;padding:10px 14px;
+  background:var(--card);border:1px solid var(--bd);border-radius:9px;
+  cursor:pointer;transition:.2s;
+}
+.swap-opt:hover{border-color:var(--a1);background:var(--s2)}
+.swap-opt-info{flex:1}
+.swap-opt-name{font-size:12px;font-weight:600}
+.swap-opt-hindi{font-size:10px;color:var(--a6);margin-top:1px}
+.swap-opt-meta{font-size:10px;color:var(--mu);margin-top:2px}
+.match-badge{
+  padding:3px 8px;border-radius:10px;font-size:10px;font-weight:700;
+  white-space:nowrap;flex-shrink:0;
+}
+.match-hi{background:rgba(16,185,129,.2);color:var(--a2)}
+.match-md{background:rgba(245,158,11,.2);color:var(--a3)}
+.match-lo{background:rgba(100,116,139,.2);color:var(--mu)}
+.swap-close{
+  width:100%;margin-top:14px;padding:8px;border-radius:8px;
+  background:var(--s2);border:1px solid var(--bd);color:var(--mu);
+  cursor:pointer;font-size:12px;
+}
+.swap-close:hover{border-color:var(--a4);color:var(--a4)}
+.swap-loading{text-align:center;padding:20px;color:var(--mu);font-size:12px}
 </style>
 </head>
 <body>
@@ -330,6 +476,22 @@ select option{background:var(--s2)}
     <button class="btn btn-sm" onclick="signOut()" style="margin-left:auto;background:rgba(239,68,68,.15);color:var(--a4);border:1px solid rgba(239,68,68,.3);cursor:pointer;padding:5px 10px;border-radius:7px;font-size:11px">Sign out</button>
   </div>
 
+
+  <!-- Last Plan Banner: shown when returning user has a saved plan -->
+  <div class="lp-banner" id="lpBanner" style="display:none">
+    <div class="lp-banner-row">
+      <div class="lp-ico">📋</div>
+      <div>
+        <div class="lp-title">Your last diet plan is ready!</div>
+        <div class="lp-sub" id="lpMeta">Loading plan details...</div>
+      </div>
+    </div>
+    <div class="lp-actions">
+      <button class="lp-btn lp-btn-view" onclick="viewLastPlan()">👁 View Last Plan</button>
+      <button class="lp-btn lp-btn-modify" onclick="enterModifyMode()">✏️ Modify / Update</button>
+    </div>
+  </div>
+
   <div class="auth-screen" id="authScreen">
     <div>
       <h2 class="auth-title">Start Your<br>Nutrition Journey</h2>
@@ -341,7 +503,7 @@ select option{background:var(--s2)}
     </div>
     <div class="auth-panel active" id="panNew">
       <div class="fg"><label>Full Name</label><input type="text" id="an" placeholder="e.g. Rahul Sharma"></div>
-      <div class="fg"><label>Password</label><input type="password" id="ap" placeholder="Choose a password"></div>
+      <div class="fg"><label>Password</label><div class="pwd-wrapper"><input type="password" id="ap" placeholder="Choose a password"><button type="button" class="pwd-toggle" onclick="togglePwdVis('ap')"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg></button></div></div>
       <div class="fr2">
         <div class="fg"><label>Age</label><input type="number" id="aa" placeholder="30" min="5" max="100"></div>
         <div class="fg"><label>Sex</label><select id="as"><option value="male">Male</option><option value="female">Female</option><option value="other">Other</option></select></div>
@@ -355,7 +517,7 @@ select option{background:var(--s2)}
     <div class="auth-panel" id="panRet">
       <p style="font-size:11px;color:var(--mu)">Enter your User ID (e.g. NRS0001)</p>
       <div class="fg"><label>User ID</label><input type="text" id="auid" placeholder="NRS0001" style="text-transform:uppercase;font-family:monospace"></div>
-      <div class="fg"><label>Password</label><input type="password" id="aup" placeholder="Your password"></div>
+      <div class="fg"><label>Password</label><div class="pwd-wrapper"><input type="password" id="aup" placeholder="Your password"><button type="button" class="pwd-toggle" onclick="togglePwdVis('aup')"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg></button></div></div>
       <button class="btn btn-p" onclick="doLogin()">Sign In →</button>
     </div>
   </div>
@@ -423,6 +585,7 @@ select option{background:var(--s2)}
 
   <div class="sfooter" id="sfooter" style="display:none">
     <button class="btn btn-p" id="genBtn" onclick="gen()">✦ Generate My Diet Plan</button>
+    <div id="modifyHint" style="display:none;font-size:10px;color:var(--a3);margin-top:6px;text-align:center">⚡ Will regenerate with your updated preferences</div>
   </div>
 </aside>
 
@@ -439,6 +602,11 @@ select option{background:var(--s2)}
   </div>
 
   <div id="output" style="display:none">
+    <!-- Modify bar: shown when user clicks "Modify Plan" -->
+    <div class="modify-bar" id="modifyBar">
+      <span class="modify-bar-text">✏️ Modify mode — update your preferences in the sidebar and click <strong>Regenerate</strong></span>
+      <button class="modify-bar-close" onclick="exitModifyMode()">✕ Cancel</button>
+    </div>
     <div class="ohdr">
       <h2 id="oh-title">Diet Plan</h2>
       <div class="ohsub" id="oh-sub"></div>
@@ -499,62 +667,176 @@ function switchAuth(t){
   document.getElementById('panRet').classList.toggle('active',t==='ret');
 }
 
+function togglePwdVis(id){
+  const input = document.getElementById(id);
+  input.type = input.type === "password" ? "text" : "password";
+}
+
 async function doRegister(){
   const n=document.getElementById('an').value.trim();
   const a=document.getElementById('aa').value;
   const s=document.getElementById('as').value;
   const w=document.getElementById('aw').value;
   const h=document.getElementById('ah').value;
-  const p=document.getElementById('ap')?document.getElementById('ap').value:'';
-  if(!n||!a||!w||!h){alert('Please fill in all fields.');return;}
-  const r=await fetch('/api/user/new',{method:'POST',headers:{'Content-Type':'application/json'},
-    body:JSON.stringify({name:n,age:a,sex:s,weight_kg:w,height_cm:h,password:p})});
-  const d=await r.json();
-  if(d.error){alert(d.error);return;}
-  CU={user_id:d.user_id,name:d.name,age:a,sex:s,weight_kg:w,height_cm:h};
-  onLogin();
+  const p=document.getElementById('ap').value;
+
+  if(!n || !a || !w || !h || !p){
+    alert("Please fill all fields");
+    return;
+  }
+
+  try{
+    const res = await fetch('/api/user/new', {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        name:n,
+        age:a,
+        sex:s,
+        weight_kg:w,
+        height_cm:h,
+        password:p
+      })
+    });
+
+    const data = await res.json();
+
+    if(data.error){
+      alert(data.error);
+    } else {
+      // Set CU from registration response so onLogin fills correct data
+      CU = {user_id: data.user_id, name: document.getElementById('an').value.trim(),
+            age: document.getElementById('aa').value, sex: document.getElementById('as').value,
+            weight_kg: document.getElementById('aw').value, height_cm: document.getElementById('ah').value,
+            dietary_preference:'none'};
+      LR = null;
+      alert('Registered! Your User ID: ' + data.user_id + ' — Please save this for future sign-ins.');
+      onLogin(false);
+    }
+  }catch(e){
+    console.error(e);
+    alert("Server error");
+  }
 }
 
 async function doLogin(){
-  const uid=document.getElementById('auid').value.trim().toUpperCase();
-  const p=document.getElementById('aup')?document.getElementById('aup').value:'';
-  if(!uid){alert('Enter your User ID.');return;}
-  const r=await fetch('/api/user/login',{method:'POST',headers:{'Content-Type':'application/json'},
-    body:JSON.stringify({user_id:uid,password:p})});
-  const d=await r.json();
-  if(d.error){alert(d.error);return;}
-  CU=d.user;
-  SEL.a=d.user.allergies||[];SEL.d=d.user.diseases||[];SEL.l=d.user.dislikes||[];
-  // if server returned last_plan, render it immediately
-  if(d.last_plan){LR=d.last_plan;onLogin();renderOut(d.last_plan);return;}
-  onLogin();
+  const uid=document.getElementById('auid').value.trim();
+  const pw=document.getElementById('aup').value;
+
+  if(!uid){
+    alert("Enter User ID");
+    return;
+  }
+
+  try{
+    const res = await fetch('/api/user/login', {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        user_id:uid,
+        password:pw
+      })
+    });
+
+    const data = await res.json();
+
+    if(data.error){
+      alert(data.error);
+    } else {
+      CU = data.user;
+      LR = data.last_plan || null;
+      const hasLastPlan = !!LR;
+      onLogin(hasLastPlan);
+      if(hasLastPlan){
+        document.getElementById('welcome').style.display='none';
+        document.getElementById('output').style.display='block';
+        document.getElementById('ebar').classList.add('off');
+        renderOut(LR);
+      }
+    }
+
+  }catch(e){
+    console.error(e);
+    alert("Server error");
+  }
 }
 
-function onLogin(){
+function onLogin(hasLastPlan){
+  // Switch sidebar from auth to form
   document.getElementById('authScreen').style.display='none';
   document.getElementById('fscreen').style.display='block';
   document.getElementById('sfooter').style.display='block';
-  const ub=document.getElementById('uidBanner');ub.style.display='flex';
+  document.getElementById('uidBanner').style.display='flex';
   document.getElementById('uidVal').textContent=CU.user_id;
+
+  // Fill personal info
   document.getElementById('fn').value=CU.name||'';
   document.getElementById('fa').value=CU.age||'';
   document.getElementById('fs').value=CU.sex||'male';
   document.getElementById('fw').value=CU.weight_kg||'';
   document.getElementById('fh').value=CU.height_cm||'';
   if(CU.dietary_preference)document.getElementById('fd').value=CU.dietary_preference;
+
+  // Pre-fill goal / activity / meals / region from last plan if available
+  if(LR){
+    const m=LR.metrics||{};
+    const rz=LR.region_zone||'any';
+    // goal
+    const goal=LR.goal_label? Object.entries({
+      weight_loss_aggressive:'Aggressive',weight_loss:'Weight Loss (~0.5',
+      weight_loss_mild:'Mild Weight Loss',maintain:'Maintain',
+      weight_gain_mild:'Mild Weight Gain',weight_gain:'Weight Gain (~0.5',muscle_gain:'Muscle'
+    }).find(([k,v])=>LR.goal_label.includes(v))?.[0]||'maintain' : 'maintain';
+    try{document.getElementById('fg2').value=goal;}catch(e){}
+    // activity
+    const act=LR.activity_label? Object.entries({
+      sedentary:'Sedentary',lightly_active:'Lightly',moderately_active:'Moderately',
+      very_active:'Very Active',extra_active:'Extra'
+    }).find(([k,v])=>LR.activity_label.includes(v))?.[0]||'moderately_active' : 'moderately_active';
+    try{document.getElementById('fact').value=act;}catch(e){}
+    // meal count
+    if(LR.meal_count) try{document.getElementById('fml').value=LR.meal_count;}catch(e){}
+    // region
+    ZONE=rz;
+    document.querySelectorAll('.rcard').forEach(c=>{
+      c.classList.toggle('sel',c.dataset.zone===rz);
+    });
+  }
+
+  // Update nav badge
   document.getElementById('navUser').innerHTML=
-    `<div class="ubadge"><div class="uav">${(CU.name||'U')[0].toUpperCase()}</div><span>${CU.name||CU.user_id}</div>`;
+    `<div class="ubadge"><div class="uav">${(CU.name||'U')[0].toUpperCase()}</div><span>${CU.name||CU.user_id}</span></div>`;
+
+  // Chip boxes
   ['a','d','l'].forEach(k=>renderChips(k));
+
+  // Show last plan banner if plan exists
+  const lpBanner=document.getElementById('lpBanner');
+  if(hasLastPlan && LR){
+    const planGoal=LR.goal_label||'—';
+    const planDate=LR.timestamp? new Date(LR.timestamp).toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'}) : '';
+    const metaCal=LR.metrics? Math.round(LR.metrics.target_calories||0) : '';
+    const region=ZNAMES[LR.region_zone||'any']||'Pan-Indian';
+    document.getElementById('lpMeta').textContent=
+      (planDate?planDate+' · ':'')+planGoal+(metaCal?' · '+metaCal+' kcal':'')+' · '+region;
+    lpBanner.style.display='block';
+  } else {
+    lpBanner.style.display='none';
+  }
 }
 
 function signOut(){
-  CU=null;SEL.a=[];SEL.d=[];SEL.l=[];ZONE='any';
+  CU=null;LR=null;SEL.a=[];SEL.d=[];SEL.l=[];ZONE='any';
   document.getElementById('authScreen').style.display='flex';
   document.getElementById('fscreen').style.display='none';
   document.getElementById('sfooter').style.display='none';
   document.getElementById('uidBanner').style.display='none';
-  // use template string so inner onclick quotes don't break the script
-  document.getElementById('navUser').innerHTML = `
+  document.getElementById('lpBanner').style.display='none';
+  const mb=document.getElementById('modifyBar');
+  if(mb)mb.classList.remove('show');
+  const mh=document.getElementById('modifyHint');
+  if(mh)mh.style.display='none';
+  document.getElementById('navUser').innerHTML=`
     <button class="nbtn" onclick="switchAuth('new')">Register</button>
     <button class="nbtn p" onclick="switchAuth('ret')">Sign In</button>
   `;
@@ -635,7 +917,15 @@ async function gen(){
     if(!res.ok||data.error){showErr(data.error||'Server error');return;}
     LR=data;renderOut(data);
   }catch(e){showErr('Network error: '+e.message)}
-  finally{btn.disabled=false;btn.textContent='✦ Update Diet Plan';lov.classList.add('off');steps.forEach(s=>document.getElementById(s).classList.remove('active'));}
+  finally{
+    btn.disabled=false;
+    btn.textContent=document.getElementById('modifyBar')&&document.getElementById('modifyBar').classList.contains('show')
+      ? '✦ Regenerate Diet Plan' : '✦ Update Diet Plan';
+    lov.classList.add('off');
+    steps.forEach(s=>document.getElementById(s).classList.remove('active'));
+    // Exit modify mode after successful generation
+    exitModifyMode();
+  }
 }
 
 function showErr(msg){
@@ -644,19 +934,81 @@ function showErr(msg){
   const eb=document.getElementById('ebar');eb.textContent='⚠ '+msg;eb.classList.remove('off');
 }
 
+// ── Last Plan & Modify Mode ────────────────────────────────────────────────────
+
+function viewLastPlan(){
+  if(!LR){return;}
+  // Ensure output is visible
+  document.getElementById('welcome').style.display='none';
+  document.getElementById('output').style.display='block';
+  document.getElementById('ebar').classList.add('off');
+  // Hide modify-bar (just viewing)
+  const mb=document.getElementById('modifyBar');
+  if(mb)mb.classList.remove('show');
+  renderOut(LR);
+  // Scroll to output
+  document.getElementById('output').scrollIntoView({behavior:'smooth'});
+}
+
+function enterModifyMode(){
+  // Show the modify-bar at top of output
+  document.getElementById('welcome').style.display='none';
+  document.getElementById('output').style.display='block';
+  const mb=document.getElementById('modifyBar');
+  if(mb)mb.classList.add('show');
+  // Update button label
+  const btn=document.getElementById('genBtn');
+  if(btn)btn.textContent='✦ Regenerate Diet Plan';
+  const mh=document.getElementById('modifyHint');
+  if(mh)mh.style.display='block';
+  // Show last plan first so user can compare
+  if(LR)renderOut(LR);
+  // Scroll sidebar to top so user can see form
+  const sidebar=document.querySelector('.sidebar');
+  if(sidebar)sidebar.scrollTo({top:0,behavior:'smooth'});
+}
+
+function exitModifyMode(){
+  const mb=document.getElementById('modifyBar');
+  if(mb)mb.classList.remove('show');
+  const mh=document.getElementById('modifyHint');
+  if(mh)mh.style.display='none';
+  const btn=document.getElementById('genBtn');
+  if(btn && btn.textContent.includes('Regenerate'))btn.textContent='✦ Update Diet Plan';
+}
+
 function renderOut(data){
   document.getElementById('welcome').style.display='none';
   document.getElementById('output').style.display='block';
   document.getElementById('ebar').classList.add('off');
-  const m=data.metrics;
-  document.getElementById('oh-title').textContent=data.user.name+"'s Diet Plan";
+
+  // Normalise metrics — can be a class __dict__ from MongoDB or a fresh API response
+  const m = data.metrics || {};
+  // Ensure meal_calories exists (may be stored as object)
+  if(!m.meal_calories) m.meal_calories = {};
+
+  // Header
+  const userName = (data.user && data.user.name) ? data.user.name : (CU && CU.name) || 'Your';
+  const mealCnt  = data.meal_count || Object.keys(m.meal_calories).length || '—';
+  document.getElementById('oh-title').textContent = userName + "'s Diet Plan";
   document.getElementById('oh-sub').innerHTML=
-    `<span class="otag">${data.goal_label}</span><span class="otag">${data.activity_label}</span>`+
-    `<span class="otag">${data.meal_count} meals/day</span><span class="otag">${ZNAMES[data.region_zone]||'Pan-Indian'} Cuisine</span>`;
+    `<span class="otag">${data.goal_label||''}</span>`+
+    `<span class="otag">${data.activity_label||''}</span>`+
+    `<span class="otag">${mealCnt} meals/day</span>`+
+    `<span class="otag">${ZNAMES[data.region_zone||'any']||'Pan-Indian'} Cuisine</span>`;
+
   renderMC(m);renderMacros(m);renderMealCal(m);renderMicros(m);
-  renderWT(data.weekly_plan,data.weekly_avg,data.weekly_plan[0].targets);
-  renderGaps(data.nutritional_gaps);renderPlan(data.weekly_plan);
-  renderIns(data.insights);renderTips(data.tips);
+
+  if(data.weekly_plan && data.weekly_plan.length>0){
+    renderWT(data.weekly_plan, data.weekly_avg||{}, data.weekly_plan[0].targets||{});
+    renderGaps(data.nutritional_gaps||[]);
+    renderPlan(data.weekly_plan);
+  }
+  renderIns(data.insights||[]);
+  renderTips(data.tips||[]);
+
+  // Scroll to output
+  document.getElementById('output').scrollIntoView({behavior:'smooth'});
 }
 
 function renderMC(m){
@@ -745,16 +1097,21 @@ function showDay(idx){
   const meals = order.map(k=>[k, day.meals && day.meals[k]]).filter(([k,m])=>m);
 
   document.getElementById('dayC').innerHTML = meals.map(([slot,meal])=>{
+    // idx and slot are available in closure for swap/remove buttons
     const ic = SIC[slot] || '🍽';
-    const rows = (meal.foods||[]).map(f=>{
+    const rows = (meal.foods||[]).map((f,fi)=>{
       const hindi = f.food_name_hindi ? `<div class="fsub-hindi">${f.food_name_hindi}</div>` : '';
       const cuisine = f.cuisine_type ? `<span class="cuis-tag">${f.cuisine_type}</span>` : '';
-      // Food name cell: English name with Hindi underneath (if present). Other metadata remain in English.
-      return `<tr>
+      const safeIds = (LR.recommendation_context && LR.recommendation_context.safe_food_ids) || [];
+      return `<tr id="foodrow-${idx}-${slot}-${fi}">
         <td>
           <div class="fnm">${f.food_name}</div>
           ${hindi}
           <div class="fsub">${f.category || ''} ${cuisine}</div>
+          <div class="food-actions">
+            <button class="btn-swap" onclick="openSwap(${idx},'${slot}',${fi},'${f.food_id}',${JSON.stringify(safeIds).replace(/'/g,'\'')})">⇄ Swap</button>
+            <button class="btn-remove" onclick="removeFood(${idx},'${slot}',${fi})">✕ Remove</button>
+          </div>
         </td>
         <td><span class="rb ${RBC[f.meal_role]||'rb-ot'}">${f.meal_role||f.slot_label||'—'}</span></td>
         <td style="text-align:right">
@@ -788,6 +1145,130 @@ function showDay(idx){
    }).join('');
 }
 
+
+// ── SWAP / REMOVE FOOD ─────────────────────────────────────────────────────────
+let _swapCtx = null; // { dayIdx, slot, foodIdx, foodId }
+
+function openSwap(dayIdx, slot, foodIdx, foodId, safeIds){
+  const food = LR.weekly_plan[dayIdx].meals[slot].foods[foodIdx];
+  _swapCtx = {dayIdx, slot, foodIdx, foodId};
+  document.getElementById('swapModalSub').textContent = 'Finding alternatives for: ' + food.food_name;
+  document.getElementById('swapOptions').innerHTML = '<div class="swap-loading"><span class="spinner"></span> Loading...</div>';
+  document.getElementById('swapModalBg').classList.remove('off');
+
+  // Collect safe food IDs from current plan if not passed
+  let safeFoodIds = safeIds && safeIds.length ? safeIds : [];
+  if(!safeFoodIds.length && LR && LR.weekly_plan){
+    LR.weekly_plan.forEach(day=>{
+      Object.values(day.meals||{}).forEach(meal=>{
+        (meal.foods||[]).forEach(f=>{ if(!safeFoodIds.includes(f.food_id)) safeFoodIds.push(f.food_id); });
+      });
+    });
+  }
+
+  fetch('/api/food/swap_options', {
+    method:'POST', headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({food_id: foodId, safe_food_ids: safeFoodIds})
+  })
+  .then(r=>r.json())
+  .then(data=>{
+    if(data.error){ document.getElementById('swapOptions').innerHTML=`<div class="swap-none">⚠ ${data.error}</div>`; return; }
+    if(!data.options || !data.options.length){ document.getElementById('swapOptions').innerHTML='<div class="swap-none">No suitable alternatives found for this food.</div>'; return; }
+    document.getElementById('swapModalSub').textContent = data.options.length + ' alternative' + (data.options.length>1?'s':'') + ' found — click one to swap';
+    document.getElementById('swapOptions').innerHTML = data.options.map(opt=>{
+      const matchCls = opt.match_pct >= 75 ? 'match-hi' : opt.match_pct >= 50 ? 'match-md' : 'match-lo';
+      const hindi = opt.food_name_hindi ? `<div class="swap-opt-hindi">${opt.food_name_hindi}</div>` : '';
+      return `<div class="swap-opt" onclick="doSwap('${opt.food_id}',${JSON.stringify(opt).replace(/'/g,"&#39;")})">
+        <div class="swap-opt-info">
+          <div class="swap-opt-name">${opt.food_name}</div>
+          ${hindi}
+          <div class="swap-opt-meta">${opt.category} · ${opt.cuisine_type||''} · ${opt.calories_per_100g.toFixed(0)} kcal/100g · P:${opt.protein_g.toFixed(1)}g C:${opt.carbs_g.toFixed(1)}g F:${opt.fat_g.toFixed(1)}g</div>
+        </div>
+        <span class="match-badge ${matchCls}">${opt.match_pct.toFixed(0)}% match</span>
+      </div>`;
+    }).join('');
+  })
+  .catch(e=>{ document.getElementById('swapOptions').innerHTML=`<div class="swap-none">Network error: ${e.message}</div>`; });
+}
+
+function doSwap(newFoodId, newFoodData){
+  if(!_swapCtx || !LR) return;
+  const {dayIdx, slot, foodIdx} = _swapCtx;
+  const meal = LR.weekly_plan[dayIdx].meals[slot];
+  const oldItem = meal.foods[foodIdx];
+
+  // Build new item using same portion logic
+  const portionG = oldItem.portion_g || 100;
+  const factor   = portionG / 100;
+  const newItem  = {
+    food_id:          newFoodData.food_id,
+    food_name:        newFoodData.food_name,
+    food_name_hindi:  newFoodData.food_name_hindi || '',
+    food_name_bilingual: newFoodData.food_name_hindi
+      ? newFoodData.food_name + ' / ' + newFoodData.food_name_hindi
+      : newFoodData.food_name,
+    category:         newFoodData.category,
+    cuisine_type:     newFoodData.cuisine_type,
+    meal_role:        newFoodData.meal_role,
+    slot_label:       oldItem.slot_label,
+    serving_unit:     newFoodData.serving_unit,
+    piece_weight_g:   newFoodData.piece_weight_g,
+    portion_g:        portionG,
+    qty_display:      oldItem.qty_display,
+    qty_label:        oldItem.qty_label,
+    calories:         parseFloat((newFoodData.calories_per_100g  * factor).toFixed(1)),
+    protein_g:        parseFloat((newFoodData.protein_g          * factor).toFixed(1)),
+    carbs_g:          parseFloat((newFoodData.carbs_g            * factor).toFixed(1)),
+    fat_g:            parseFloat((newFoodData.fat_g              * factor).toFixed(1)),
+    fiber_g:          parseFloat((newFoodData.fiber_g            * factor).toFixed(1)),
+    sodium_mg:        0,
+    disease_score:    newFoodData.disease_score || 50,
+  };
+
+  // Update in-memory plan
+  meal.foods[foodIdx] = newItem;
+  // Recalculate meal totals
+  meal.totals = {
+    calories:  parseFloat(meal.foods.reduce((s,f)=>s+f.calories,0).toFixed(1)),
+    protein_g: parseFloat(meal.foods.reduce((s,f)=>s+f.protein_g,0).toFixed(1)),
+    carbs_g:   parseFloat(meal.foods.reduce((s,f)=>s+f.carbs_g,0).toFixed(1)),
+    fat_g:     parseFloat(meal.foods.reduce((s,f)=>s+f.fat_g,0).toFixed(1)),
+    fiber_g:   parseFloat(meal.foods.reduce((s,f)=>s+f.fiber_g,0).toFixed(1)),
+    sodium_mg: parseFloat(meal.foods.reduce((s,f)=>s+(f.sodium_mg||0),0).toFixed(1)),
+  };
+  meal.actual_kcal = meal.totals.calories;
+
+  closeSwapModal();
+  showDay(dayIdx);       // re-render the day
+  st('plan');            // switch to plan tab
+}
+
+function removeFood(dayIdx, slot, foodIdx){
+  if(!LR) return;
+  const meal = LR.weekly_plan[dayIdx].meals[slot];
+  if(meal.foods.length <= 1){ alert('Cannot remove the last item in a meal.'); return; }
+  meal.foods.splice(foodIdx, 1);
+  // Recalculate totals
+  meal.totals = {
+    calories:  parseFloat(meal.foods.reduce((s,f)=>s+f.calories,0).toFixed(1)),
+    protein_g: parseFloat(meal.foods.reduce((s,f)=>s+f.protein_g,0).toFixed(1)),
+    carbs_g:   parseFloat(meal.foods.reduce((s,f)=>s+f.carbs_g,0).toFixed(1)),
+    fat_g:     parseFloat(meal.foods.reduce((s,f)=>s+f.fat_g,0).toFixed(1)),
+    fiber_g:   parseFloat(meal.foods.reduce((s,f)=>s+f.fiber_g,0).toFixed(1)),
+    sodium_mg: parseFloat(meal.foods.reduce((s,f)=>s+(f.sodium_mg||0),0).toFixed(1)),
+  };
+  meal.actual_kcal = meal.totals.calories;
+  showDay(dayIdx);
+  st('plan');
+}
+
+function closeSwapModal(e){
+  // Allow calling directly (cancel btn) or via bg click
+  if(e && e.target && e.target !== document.getElementById('swapModalBg')) return;
+  document.getElementById('swapModalBg').classList.add('off');
+  _swapCtx = null;
+}
+
 function renderIns(ins){document.getElementById('ilist').innerHTML=ins.map(i=>`<div class="iitem fade-in">${i}</div>`).join('');}
 function renderTips(tips){document.getElementById('tlist').innerHTML=tips.map(t=>`<div class="titem fade-in"><span class="tico">→</span><span>${t}</span></div>`).join('');}
 
@@ -795,6 +1276,22 @@ function st(name){
   document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('active',t.textContent.toLowerCase().includes(name.slice(0,3).toLowerCase())));
   document.querySelectorAll('.tc').forEach(tc=>tc.classList.toggle('active',tc.id==='tc-'+name));
 }
+
+
+
+
 </script>
+
+<!-- Swap Food Modal -->
+<div class="swap-modal-bg off" id="swapModalBg" onclick="closeSwapModal(event)">
+  <div class="swap-modal">
+    <h3>🔄 Swap Food</h3>
+    <div class="swap-sub" id="swapModalSub">Choose a replacement with similar nutrition</div>
+    <div class="swap-options" id="swapOptions">
+      <div class="swap-loading"><span class="spinner"></span> Loading alternatives...</div>
+    </div>
+    <button class="swap-close" onclick="closeSwapModal()">✕ Cancel</button>
+  </div>
+</div>
 </body>
 </html>
