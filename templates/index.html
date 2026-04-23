@@ -231,11 +231,14 @@ select option{background:var(--s2)}
 .wt tr.tgt td{color:var(--mu);font-size:10px}
 
 /* Day plan */
-.dnav{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:18px}
-.db{padding:6px 14px;border-radius:7px;border:1px solid var(--bd);background:none;
-  color:var(--mu);cursor:pointer;font-size:11px;transition:.2s}
-.db:hover{border-color:var(--a1);color:var(--tx)}
+.dnav{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px}
+.db{padding:10px 16px;border-radius:9px;border:1px solid var(--bd);background:none;
+  color:var(--mu);cursor:pointer;font-size:12px;transition:.2s;text-align:center;min-width:90px}
+.db:hover{border-color:var(--a1);color:var(--tx);background:rgba(59,130,246,.06)}
 .db.active{background:rgba(59,130,246,.13);border-color:var(--a1);color:var(--a6)}
+.db-dayname{font-weight:700;font-size:12px;margin-bottom:3px}
+.db-kcal{font-size:10px;color:var(--a6);font-family:monospace;font-weight:600}
+.db-kcal-target{color:var(--mu);font-weight:400}
 
 .mcard{background:var(--card);border:1px solid var(--bd);border-radius:12px;margin-bottom:12px;overflow:hidden;transition:.2s}
 .mcard:hover{border-color:var(--bd2)}
@@ -467,6 +470,79 @@ select option{background:var(--s2)}
   color:#fff;font-size:13px;font-weight:700;cursor:pointer;transition:.2s;
 }
 .remove-confirm-btn:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(239,68,68,.4)}
+/* Profile dropdown */
+.profile-btn{display:flex;align-items:center;gap:8px;padding:6px 14px;
+  background:var(--s2);border:1px solid var(--bd);border-radius:22px;
+  font-size:12px;cursor:pointer;transition:.2s;color:var(--tx);position:relative}
+.profile-btn:hover{border-color:var(--a1)}
+.profile-av{width:26px;height:26px;border-radius:50%;
+  background:linear-gradient(135deg,var(--a1),var(--a5));
+  display:flex;align-items:center;justify-content:center;
+  font-size:11px;font-weight:700;color:#fff;flex-shrink:0}
+.profile-caret{font-size:9px;color:var(--mu);margin-left:2px}
+.profile-dropdown{
+  position:absolute;top:calc(100% + 8px);right:0;
+  background:var(--surface);border:1px solid var(--bd2);
+  border-radius:14px;padding:0;min-width:280px;
+  box-shadow:0 16px 48px rgba(0,0,0,.6);z-index:300;
+  display:none;overflow:hidden;
+}
+.profile-dropdown.open{display:block}
+.pd-header{
+  background:linear-gradient(135deg,rgba(59,130,246,.12),rgba(139,92,246,.08));
+  border-bottom:1px solid var(--bd);padding:16px 18px;
+}
+.pd-uid-row{display:flex;align-items:center;gap:8px;margin-bottom:4px}
+.pd-uid-badge{font-family:monospace;font-size:1rem;font-weight:800;color:var(--a2)}
+.pd-uid-label{font-size:10px;color:var(--mu);text-transform:uppercase;letter-spacing:.06em}
+.pd-warn{font-size:10px;color:var(--a3);margin-top:2px}
+.pd-name{font-size:13px;font-weight:700;margin-top:8px}
+.pd-sub{font-size:11px;color:var(--mu);margin-top:1px}
+.pd-body{padding:14px 18px;display:flex;flex-direction:column;gap:9px}
+.pd-row{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.pd-field{display:flex;flex-direction:column;gap:2px}
+.pd-lbl{font-size:9px;color:var(--mu);text-transform:uppercase;letter-spacing:.05em;font-weight:600}
+.pd-val{font-size:12px;font-weight:600;color:var(--tx)}
+.pd-footer{padding:12px 18px;border-top:1px solid var(--bd)}
+.pd-signout{width:100%;padding:9px;border:1px solid rgba(239,68,68,.35);
+  border-radius:8px;background:rgba(239,68,68,.08);color:var(--a4);
+  font-size:12px;font-weight:600;cursor:pointer;transition:.2s}
+.pd-signout:hover{background:rgba(239,68,68,.18)}
+/* Regenerate button state */
+.btn-regen{background:linear-gradient(135deg,var(--a3),#d97706)!important;animation:regenPulse 2s ease-in-out infinite}
+@keyframes regenPulse{0%,100%{box-shadow:0 0 0 0 rgba(245,158,11,.4)}50%{box-shadow:0 0 0 6px rgba(245,158,11,0)}}
+
+/* ── Profile Edit button ── */
+.pd-edit{width:100%;padding:9px;border:1px solid var(--bd2);border-radius:8px;
+  background:rgba(59,130,246,.08);color:var(--a1);font-size:12px;font-weight:600;
+  cursor:pointer;transition:.2s;margin-bottom:8px}
+.pd-edit:hover{background:rgba(59,130,246,.18);border-color:var(--a1)}
+/* ── Edit Profile Modal ── */
+.edit-modal-bg{position:fixed;inset:0;background:rgba(8,12,20,.88);backdrop-filter:blur(8px);
+  z-index:600;display:flex;align-items:center;justify-content:center}
+.edit-modal-bg.off{display:none}
+.edit-modal{background:var(--surface);border:1px solid var(--bd2);border-radius:16px;
+  padding:0;width:min(440px,95vw);max-height:90vh;overflow-y:auto;
+  box-shadow:0 24px 64px rgba(0,0,0,.7)}
+.edit-modal-hdr{padding:18px 22px 16px;border-bottom:1px solid var(--bd);
+  background:linear-gradient(135deg,rgba(59,130,246,.1),rgba(139,92,246,.06));
+  display:flex;justify-content:space-between;align-items:center}
+.edit-modal-hdr h3{font-size:1rem;margin:0}
+.edit-modal-close-x{background:none;border:none;color:var(--mu);cursor:pointer;
+  font-size:18px;line-height:1;padding:4px}
+.edit-modal-close-x:hover{color:var(--a4)}
+.edit-modal-body{padding:20px 22px;display:flex;flex-direction:column;gap:14px}
+.edit-modal-footer{padding:14px 22px 18px;border-top:1px solid var(--bd);display:flex;gap:10px}
+.btn-save-profile{flex:1;padding:10px;border:none;border-radius:9px;
+  background:linear-gradient(135deg,var(--a1),#6366f1);color:#fff;
+  font-size:13px;font-weight:700;cursor:pointer;transition:.2s}
+.btn-save-profile:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(59,130,246,.4)}
+.btn-save-profile:disabled{opacity:.5;cursor:not-allowed;transform:none;box-shadow:none}
+.btn-cancel-edit{padding:10px 18px;border:1px solid var(--bd);border-radius:9px;
+  background:none;color:var(--mu);font-size:13px;cursor:pointer}
+.btn-cancel-edit:hover{border-color:var(--bd2);color:var(--tx)}
+.save-status{font-size:11px;text-align:center;margin-top:6px;min-height:16px}
+.save-status.ok{color:var(--a2)}.save-status.err{color:var(--a4)}
 </style>
 </head>
 <body>
@@ -483,7 +559,7 @@ select option{background:var(--s2)}
 <div class="shell">
 <nav class="nav">
   <div class="logo"><div class="logo-dot"></div>NutriAI</div>
-  <div class="nav-user" id="navUser">
+  <div class="nav-user" id="navUser" style="position:relative">
     <button class="nbtn" onclick="switchAuth('new')">Register</button>
     <button class="nbtn p" onclick="switchAuth('ret')">Sign In</button>
   </div>
@@ -491,17 +567,6 @@ select option{background:var(--s2)}
 
 <div class="content">
 <aside class="sidebar">
-  <div class="uidb" id="uidBanner">
-    <div class="uid-ico">🎫</div>
-    <div>
-      <div class="uid-lbl">Your User ID</div>
-      <div class="uid-val" id="uidVal">—</div>
-      <div class="uid-warn">⚠ Save this for future sign-ins</div>
-    </div>
-    <button class="btn btn-sm" onclick="signOut()" style="margin-left:auto;background:rgba(239,68,68,.15);color:var(--a4);border:1px solid rgba(239,68,68,.3);cursor:pointer;padding:5px 10px;border-radius:7px;font-size:11px">Sign out</button>
-  </div>
-
-
   <div class="auth-screen" id="authScreen">
     <div>
       <h2 class="auth-title">Start Your<br>Nutrition Journey</h2>
@@ -533,23 +598,14 @@ select option{background:var(--s2)}
   </div>
 
   <div class="fscreen" id="fscreen">
-    <div class="div" style="margin-bottom:14px">Personal Info</div>
-    <div class="fr2" style="margin-bottom:10px">
-      <div class="fg"><label>Name</label><input type="text" id="fn"></div>
-      <div class="fg"><label>Age</label><input type="number" id="fa" min="5" max="100" oninput="if(this.value>100)this.value=100"></div>
-    </div>
-    <div class="fr2" style="margin-bottom:10px">
-      <div class="fg"><label>Sex</label><select id="fs"><option value="male">Male</option><option value="female">Female</option><option value="other">Other</option></select></div>
-      <div class="fg"><label>Weight (kg)</label><input type="number" id="fw" min="20" max="300" oninput="if(this.value>300)this.value=300"></div>
-    </div>
-    <div class="fr2" style="margin-bottom:14px">
-      <div class="fg"><label>Height (cm)</label><input type="number" id="fh" min="100" max="250"></div>
-      <div class="fg"><label>Diet Pref</label><select id="fd"><option value="none">None</option><option value="vegetarian">Vegetarian</option><option value="vegan">Vegan</option><option value="jain">Jain</option><option value="halal">Halal</option></select></div>
-    </div>
-
+    <!-- Hidden personal info fields populated by onLogin, read by gen() -->
+    <input type="hidden" id="fn"><input type="hidden" id="fa">
+    <input type="hidden" id="fs" value="male"><input type="hidden" id="fw">
+    <input type="hidden" id="fh">
+    <select id="fd" style="display:none"><option value="none">None</option><option value="vegetarian">Vegetarian</option><option value="vegan">Vegan</option><option value="jain">Jain</option><option value="halal">Halal</option></select>
     <div class="div" style="margin-bottom:14px">Goal & Activity</div>
     <div class="fg" style="margin-bottom:10px"><label>Your Goal</label>
-      <select id="fg2">
+      <select id="fg2" onchange="markChanged()">
         <option value="weight_loss_aggressive">Aggressive Weight Loss (~0.7kg/wk)</option>
         <option value="weight_loss">Weight Loss (~0.5 kg/wk)</option>
         <option value="weight_loss_mild">Mild Weight Loss (~0.25 kg/wk)</option>
@@ -560,7 +616,7 @@ select option{background:var(--s2)}
       </select>
     </div>
     <div class="fg" style="margin-bottom:10px"><label>Activity Level</label>
-      <select id="fact">
+      <select id="fact" onchange="markChanged()">
         <option value="sedentary">Sedentary (desk job)</option>
         <option value="lightly_active">Lightly Active (1-3 days/wk)</option>
         <option value="moderately_active" selected>Moderately Active (3-5 days/wk)</option>
@@ -569,7 +625,7 @@ select option{background:var(--s2)}
       </select>
     </div>
     <div class="fg" style="margin-bottom:16px"><label>Meals per Day</label>
-      <select id="fml">
+      <select id="fml" onchange="markChanged()">
         <option value="3">3 meals — Breakfast · Lunch · Dinner</option>
         <option value="4" selected>4 meals — + Mid-Morning snack</option>
         <option value="5">5 meals — + Evening snack</option>
@@ -765,21 +821,69 @@ async function doLogin(){
   }
 }
 
+function buildProfileDropdown(){
+  const cu = CU;
+  const dietLabels = {none:'None',vegetarian:'Vegetarian',vegan:'Vegan',jain:'Jain',halal:'Halal'};
+  const navUser = document.getElementById('navUser');
+  navUser.innerHTML = `
+    <button class="profile-btn" id="profileBtn" onclick="toggleProfileDropdown(event)">
+      <div class="profile-av">${(cu.name||'U')[0].toUpperCase()}</div>
+      <span>${cu.name||cu.user_id}</span>
+      <span class="profile-caret">▾</span>
+    </button>
+    <div class="profile-dropdown" id="profileDropdown">
+      <div class="pd-header">
+        <div class="pd-uid-label">Your User ID</div>
+        <div class="pd-uid-row">
+          <span class="pd-uid-badge">${cu.user_id}</span>
+        </div>
+        <div class="pd-warn">⚠ Save this ID for future sign-ins</div>
+        <div class="pd-name">${cu.name||'—'}</div>
+        <div class="pd-sub">${cu.sex||''} · ${cu.age||'—'} yrs</div>
+      </div>
+      <div class="pd-body">
+        <div class="pd-row">
+          <div class="pd-field"><div class="pd-lbl">Weight</div><div class="pd-val">${cu.weight_kg||'—'} kg</div></div>
+          <div class="pd-field"><div class="pd-lbl">Height</div><div class="pd-val">${cu.height_cm||'—'} cm</div></div>
+        </div>
+        <div class="pd-row">
+          <div class="pd-field"><div class="pd-lbl">Diet Pref</div><div class="pd-val">${dietLabels[cu.dietary_preference||'none']||'None'}</div></div>
+          <div class="pd-field"><div class="pd-lbl">BMI</div><div class="pd-val">${LR&&LR.metrics?LR.metrics.bmi:'—'}</div></div>
+        </div>
+      </div>
+      <div class="pd-footer">
+        <button class="pd-edit" onclick="openEditProfile();toggleProfileDropdown(event)">✏️ Edit Profile</button>
+        <button class="pd-signout" onclick="signOut()">Sign Out</button>
+      </div>
+    </div>`;
+  // Close dropdown on outside click
+  document.addEventListener('click', function pdClose(e){
+    const dd = document.getElementById('profileDropdown');
+    if(dd && !e.target.closest('#navUser')){ dd.classList.remove('open'); }
+  });
+}
+
+function toggleProfileDropdown(e){
+  e.stopPropagation();
+  const dd = document.getElementById('profileDropdown');
+  if(dd) dd.classList.toggle('open');
+}
+
 function onLogin(hasLastPlan){
   // Switch sidebar from auth to form
   document.getElementById('authScreen').style.display='none';
   document.getElementById('fscreen').style.display='block';
-  document.getElementById('sfooter').style.display='block';
-  document.getElementById('uidBanner').style.display='flex';
-  document.getElementById('uidVal').textContent=CU.user_id;
+  // Returning user with plan: hide generate btn until they change something
+  // New user (no plan): show it immediately
+  document.getElementById('sfooter').style.display = hasLastPlan ? 'none' : 'block';
 
-  // Fill personal info
-  document.getElementById('fn').value=CU.name||'';
-  document.getElementById('fa').value=CU.age||'';
-  document.getElementById('fs').value=CU.sex||'male';
-  document.getElementById('fw').value=CU.weight_kg||'';
-  document.getElementById('fh').value=CU.height_cm||'';
-  if(CU.dietary_preference)document.getElementById('fd').value=CU.dietary_preference;
+  // (Personal info fields are still in DOM for gen() to read, just not visible in sidebar)
+  document.getElementById('fn') && (document.getElementById('fn').value=CU.name||'');
+  document.getElementById('fa') && (document.getElementById('fa').value=CU.age||'');
+  document.getElementById('fs') && (document.getElementById('fs').value=CU.sex||'male');
+  document.getElementById('fw') && (document.getElementById('fw').value=CU.weight_kg||'');
+  document.getElementById('fh') && (document.getElementById('fh').value=CU.height_cm||'');
+  if(document.getElementById('fd') && CU.dietary_preference) document.getElementById('fd').value=CU.dietary_preference;
 
   // Pre-fill goal / activity / meals / region from last plan if available
   if(LR){
@@ -807,9 +911,8 @@ function onLogin(hasLastPlan){
     });
   }
 
-  // Update nav badge
-  document.getElementById('navUser').innerHTML=
-    `<div class="ubadge"><div class="uav">${(CU.name||'U')[0].toUpperCase()}</div><span>${CU.name||CU.user_id}</span></div>`;
+  // Build profile dropdown in nav
+  buildProfileDropdown();
 
   // Pre-fill chip selections from saved user profile
   if(CU.allergies && CU.allergies.length)   SEL.a = [...CU.allergies];
@@ -826,7 +929,6 @@ function signOut(){
   document.getElementById('authScreen').style.display='flex';
   document.getElementById('fscreen').style.display='none';
   document.getElementById('sfooter').style.display='none';
-  document.getElementById('uidBanner').style.display='none';
   document.getElementById('navUser').innerHTML=`
     <button class="nbtn" onclick="switchAuth('new')">Register</button>
     <button class="nbtn p" onclick="switchAuth('ret')">Sign In</button>
@@ -835,7 +937,21 @@ function signOut(){
   document.getElementById('welcome').style.display='flex';
 }
 
-function selR(el){document.querySelectorAll('.rcard').forEach(c=>c.classList.remove('sel'));el.classList.add('sel');ZONE=el.dataset.zone;}
+function markChanged(){
+  if(!CU) return;
+  const sfooter = document.getElementById('sfooter');
+  const btn = document.getElementById('genBtn');
+  sfooter.style.display = 'block';
+  btn.textContent = '✦ Regenerate My Diet Plan';
+  btn.classList.add('btn-regen');
+}
+
+function selR(el){
+  document.querySelectorAll('.rcard').forEach(c=>c.classList.remove('sel'));
+  el.classList.add('sel');
+  ZONE=el.dataset.zone;
+  markChanged();
+}
 
 function initCB(key,cbId,cdId){
   const box=document.getElementById(cbId);
@@ -864,6 +980,7 @@ function toggleChip(key,val){
   const i=SEL[key].indexOf(val);
   if(i===-1)SEL[key].push(val);else SEL[key].splice(i,1);
   renderChips(key);renderDD(key,document.getElementById('ci-'+key).value);
+  markChanged();
 }
 
 function renderChips(key){
@@ -910,7 +1027,7 @@ async function gen(){
   }catch(e){showErr('Network error: '+e.message)}
   finally{
     btn.disabled=false;
-    btn.textContent='✦ Generate My Diet Plan';
+    btn.textContent='✦ Generate My Diet Plan'; btn.classList.remove('btn-regen');
     lov.classList.add('off');
     steps.forEach(s=>document.getElementById(s).classList.remove('active'));
   }
@@ -1030,13 +1147,31 @@ function renderGaps(gaps){
 }
 
 function renderPlan(wp){
-  document.getElementById('dnav').innerHTML = wp.map((d,i)=>
-    `<button class="db ${i===0?'active':''}" onclick="showDay(${i})">${d.day_name}</button>`).join('');
+  buildDnav(wp);
   showDay(0);
+}
+
+function buildDnav(wp){
+  if(!wp) return;
+  const order = ['breakfast','mid_morning','lunch','afternoon','evening_snack','dinner'];
+  document.getElementById('dnav').innerHTML = wp.map((d,i)=>{
+    // Build food summary string from current meals
+    const foods = order.flatMap(k=>{
+      const m = d.meals && d.meals[k];
+      return m ? (m.foods||[]).map(f=>f.food_name+(f.portion_g?(' ('+f.portion_g+'g)'):'')) : [];
+    }).join(' + ');
+    const dayKcal = d.totals ? d.totals.calories : 0;
+    const tgtKcal = (d.targets && d.targets.calories) ? d.targets.calories : 0;
+    return `<button class="db ${i===0?'active':''}" onclick="showDay(${i})">
+      <div class="db-dayname">${d.day_name}</div>
+      <div class="db-kcal">${dayKcal} <span class="db-kcal-target">/ ${tgtKcal} kcal</span></div>
+    </button>`;
+  }).join('');
 }
 
 function showDay(idx){
   if(!LR) return;
+  buildDnav(LR.weekly_plan);
   document.querySelectorAll('.db').forEach((b,i)=>b.classList.toggle('active',i===idx));
   const day = LR.weekly_plan[idx];
   const order = ['breakfast','mid_morning','lunch','afternoon','evening_snack','dinner'];
@@ -1055,7 +1190,7 @@ function showDay(idx){
           ${hindi}
           <div class="fsub">${f.category || ''} ${cuisine}</div>
           <div class="food-actions">
-            <button class="btn-swap" onclick="openSwap(${idx},'${slot}',${fi},'${f.food_id}',${JSON.stringify(safeIds).replace(/'/g,'\'')})">⇄ Swap</button>
+            <button class="btn-swap" data-fid="${f.food_id}" ${_noSwapIds.has(f.food_id)?'disabled style="opacity:0.35;cursor:not-allowed"':''} onclick="if(!_noSwapIds.has('${f.food_id}'))openSwap(${idx},'${slot}',${fi},'${f.food_id}',${JSON.stringify(safeIds).replace(/'/g,"'")})">${_noSwapIds.has(f.food_id)?'No swap':'⇄ Swap'}</button>
             <button class="btn-remove" onclick="removeFood(${idx},'${slot}',${fi})">✕ Remove</button>
           </div>
         </td>
@@ -1079,7 +1214,7 @@ function showDay(idx){
           <span class="mnm">${ic} ${meal.slot_label||slot.replace(/_/g,' ').replace(/\b\w/g,c=>c.toUpperCase())}</span>
           ${desc}
         </div>
-        <span class="mkcal">${(meal.actual_kcal||0).toFixed ? meal.actual_kcal.toFixed(0) : Math.round(meal.actual_kcal||0)} / ${meal.target_kcal||0} kcal</span>
+        <span class="mkcal" title="Actual calories in plan / Target calories for this meal">${(meal.actual_kcal||0).toFixed ? meal.actual_kcal.toFixed(0) : Math.round(meal.actual_kcal||0)} <span style='color:var(--mu);font-size:9px'>actual</span> / ${meal.target_kcal||0} <span style='color:var(--mu);font-size:9px'>target kcal</span></span>
       </div>
       <table class="ftbl">
         <thead><tr><th>Food</th><th>Role</th><th style="text-align:right">Qty</th><th style="text-align:right">kcal</th><th style="text-align:right">Prot</th><th style="text-align:right">Carbs</th><th style="text-align:right">Fat</th><th style="text-align:right">Fiber</th></tr></thead>
@@ -1094,6 +1229,7 @@ function showDay(idx){
 
 // ── SWAP / REMOVE FOOD ─────────────────────────────────────────────────────────
 let _swapCtx = null; // { dayIdx, slot, foodIdx, foodId }
+const _noSwapIds = new Set(); // food_ids confirmed to have no alternatives
 let _swapOptions = [];
 let _selectedSwapOpt = null;
 
@@ -1118,6 +1254,14 @@ function openSwap(dayIdx, slot, foodIdx, foodId, safeIds){
   const food = LR.weekly_plan[dayIdx].meals[slot].foods[foodIdx];
   _swapCtx = {dayIdx, slot, foodIdx, foodId};
   document.getElementById('swapModalSub').textContent = 'Finding alternatives for: ' + food.food_name;
+  document.getElementById('swapConfirmBtn').style.display='none';
+  _selectedSwapOpt = null;
+  // If already confirmed no alternatives, show that immediately without network call
+  if(_noSwapIds.has(foodId)){
+    document.getElementById('swapOptions').innerHTML='<div class="swap-none">No suitable alternatives found for this food.</div>';
+    document.getElementById('swapModalBg').classList.remove('off');
+    return;
+  }
   document.getElementById('swapOptions').innerHTML = '<div class="swap-loading"><span class="spinner"></span> Loading...</div>';
   document.getElementById('swapModalBg').classList.remove('off');
 
@@ -1138,7 +1282,11 @@ function openSwap(dayIdx, slot, foodIdx, foodId, safeIds){
   .then(r=>r.json())
   .then(data=>{
     if(data.error){ document.getElementById('swapOptions').innerHTML=`<div class="swap-none">⚠ ${data.error}</div>`; return; }
-    if(!data.options || !data.options.length){ document.getElementById('swapOptions').innerHTML='<div class="swap-none">No suitable alternatives found for this food.</div>'; return; }
+    if(!data.options || !data.options.length){
+      document.getElementById('swapOptions').innerHTML='<div class="swap-none">No suitable alternatives found for this food.</div>';
+      _noSwapIds.add(foodId);
+      return;
+    }
     document.getElementById('swapModalSub').textContent = data.options.length + ' alternative' + (data.options.length>1?'s':'') + ' found — select one, then confirm';
     _swapOptions = data.options;
     _selectedSwapOpt = null;
@@ -1157,6 +1305,39 @@ function openSwap(dayIdx, slot, foodIdx, foodId, safeIds){
     }).join('');
   })
   .catch(e=>{ document.getElementById('swapOptions').innerHTML=`<div class="swap-none">Network error: ${e.message}</div>`; });
+}
+
+// ── Persist plan changes to MongoDB ──────────────────────────────────────────
+async function savePlanToServer(){
+  if(!CU || !LR) return;
+  try{
+    // Update timestamp to reflect last modification
+    LR.timestamp = new Date().toISOString();
+    await fetch('/api/plan/update', {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({user_id: CU.user_id, plan: LR})
+    });
+    // Refresh the plan timestamp shown in header
+    const planTs = new Date(LR.timestamp).toLocaleString('en-IN',{day:'numeric',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'});
+    const titleEl = document.getElementById('oh-title');
+    if(titleEl){
+      const userName = (LR.user && LR.user.name) ? LR.user.name : (CU && CU.name) || 'Your';
+      titleEl.innerHTML = userName + "'s Diet Plan" + ' <span style="font-size:11px;font-weight:400;color:var(--mu);margin-left:10px">\u{1F550} ' + planTs + '</span>';
+    }
+  } catch(e){ console.warn('Plan save failed:', e.message); }
+}
+
+function _rebuildMealDesc(meal){
+  // Rebuild the meal_description string from current foods (called after swap/remove)
+  meal.meal_description = (meal.foods||[]).map(f=>{
+    if(f.serving_unit && f.serving_unit !== 'gram' && f.qty_display){
+      return f.qty_display + ' ' + f.food_name;
+    }
+    return f.food_name + ' (' + (f.portion_g||100) + 'g)';
+  }).join(' + ');
+  // Also update actual_kcal
+  meal.actual_kcal = (meal.totals && meal.totals.calories) ? meal.totals.calories : meal.actual_kcal;
 }
 
 function doSwap(newFoodId, newFoodData){
@@ -1205,10 +1386,12 @@ function doSwap(newFoodId, newFoodData){
     sodium_mg: parseFloat(meal.foods.reduce((s,f)=>s+(f.sodium_mg||0),0).toFixed(1)),
   };
   meal.actual_kcal = meal.totals.calories;
+  _rebuildMealDesc(meal);   // update meal description after swap
 
   closeSwapModal();
-  showDay(dayIdx);       // re-render the day
-  st('plan');            // switch to plan tab
+  showDay(dayIdx);
+  st('plan');
+  savePlanToServer();
 }
 
 let _removeCtx = null;
@@ -1246,9 +1429,12 @@ function confirmRemoveFood(){
     sodium_mg: parseFloat(meal.foods.reduce((s,f)=>s+(f.sodium_mg||0),0).toFixed(1)),
   };
   meal.actual_kcal = meal.totals.calories;
+  _rebuildMealDesc(meal);   // update meal description after remove
+
   closeRemoveModal();
   showDay(dayIdx);
   st('plan');
+  savePlanToServer();
 }
 
 function closeRemoveModal(e){
@@ -1262,6 +1448,104 @@ function closeSwapModal(e){
   if(e && e.target && e.target !== document.getElementById('swapModalBg')) return;
   document.getElementById('swapModalBg').classList.add('off');
   _swapCtx = null;
+}
+
+
+// ── Edit Profile Functions ─────────────────────────────────────────────────────
+
+function openEditProfile(){
+  if(!CU) return;
+  // Pre-fill modal with current user data
+  document.getElementById('ep-name').value = CU.name || '';
+  document.getElementById('ep-age').value  = CU.age  || '';
+  document.getElementById('ep-sex').value  = CU.sex  || 'male';
+  document.getElementById('ep-wt').value   = CU.weight_kg  || '';
+  document.getElementById('ep-ht').value   = CU.height_cm  || '';
+  document.getElementById('ep-diet').value = CU.dietary_preference || 'none';
+  document.getElementById('editSaveStatus').textContent = '';
+  document.getElementById('editSaveStatus').className = 'save-status';
+  document.getElementById('saveProfileBtn').disabled = false;
+  document.getElementById('editProfileBg').classList.remove('off');
+}
+
+function closeEditProfileModal(e){
+  if(e && e.target !== document.getElementById('editProfileBg')) return;
+  document.getElementById('editProfileBg').classList.add('off');
+}
+
+async function saveEditProfile(){
+  if(!CU) return;
+  const btn    = document.getElementById('saveProfileBtn');
+  const status = document.getElementById('editSaveStatus');
+
+  const name  = document.getElementById('ep-name').value.trim();
+  const age   = document.getElementById('ep-age').value.trim();
+  const sex   = document.getElementById('ep-sex').value;
+  const wt    = document.getElementById('ep-wt').value.trim();
+  const ht    = document.getElementById('ep-ht').value.trim();
+  const diet  = document.getElementById('ep-diet').value;
+
+  if(!name || !age || !wt || !ht){
+    status.textContent = '⚠ Please fill in all fields.';
+    status.className = 'save-status err';
+    return;
+  }
+
+  btn.disabled = true;
+  btn.textContent = 'Saving...';
+
+  try {
+    const res = await fetch('/api/user/update_meta', {
+      method: 'POST',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({
+        user_id: CU.user_id,
+        name, age, sex,
+        weight_kg: wt,
+        height_cm: ht,
+        dietary_preference: diet
+      })
+    });
+    const d = await res.json();
+
+    if(!res.ok || d.error){
+      status.textContent = '⚠ ' + (d.error || 'Save failed.');
+      status.className = 'save-status err';
+      return;
+    }
+
+    // Update local CU object
+    CU.name               = name;
+    CU.age                = age;
+    CU.sex                = sex;
+    CU.weight_kg          = wt;
+    CU.height_cm          = ht;
+    CU.dietary_preference = diet;
+
+    // Sync hidden form fields used by gen()
+    const hf = {fn:name, fa:age, fs:sex, fw:wt, fh:ht};
+    Object.entries(hf).forEach(([id,val])=>{const el=document.getElementById(id);if(el)el.value=val;});
+    const fdEl = document.getElementById('fd'); if(fdEl) fdEl.value = diet;
+
+    // Rebuild nav dropdown to show updated name
+    buildProfileDropdown();
+
+    status.textContent = '✔ Profile saved! Click "Regenerate" to apply changes to your plan.';
+    status.className = 'save-status ok';
+
+    // Show the regenerate button since personal info changed
+    markChanged();
+
+    // Auto-close after 1.8s
+    setTimeout(()=>{ document.getElementById('editProfileBg').classList.add('off'); }, 1800);
+
+  } catch(e){
+    status.textContent = '⚠ Network error: ' + e.message;
+    status.className = 'save-status err';
+  } finally {
+    btn.disabled = false;
+    btn.textContent = 'Save Changes';
+  }
 }
 
 function renderIns(ins){document.getElementById('ilist').innerHTML=ins.map(i=>`<div class="iitem fade-in">${i}</div>`).join('');}
@@ -1303,6 +1587,49 @@ function st(name){
     </div>
     <button id="removeConfirmBtn" class="remove-confirm-btn" onclick="confirmRemoveFood()">🗑 Yes, Remove</button>
     <button class="swap-close" onclick="closeRemoveModal()">✕ Cancel</button>
+  </div>
+</div>
+
+<!-- ── Edit Profile Modal ───────────────────────────────────────── -->
+<div class="edit-modal-bg off" id="editProfileBg" onclick="closeEditProfileModal(event)">
+  <div class="edit-modal">
+    <div class="edit-modal-hdr">
+      <h3>✏️ Edit Personal Info</h3>
+      <button class="edit-modal-close-x" onclick="closeEditProfileModal()">✕</button>
+    </div>
+    <div class="edit-modal-body">
+      <div class="fr2">
+        <div class="fg"><label>Full Name</label><input type="text" id="ep-name" placeholder="Your name"></div>
+        <div class="fg"><label>Age (years)</label><input type="number" id="ep-age" min="5" max="100"></div>
+      </div>
+      <div class="fr2">
+        <div class="fg"><label>Sex</label>
+          <select id="ep-sex">
+            <option value="male">Male</option>
+            <option value="female">Female</option>
+            <option value="other">Other</option>
+          </select>
+        </div>
+        <div class="fg"><label>Weight (kg)</label><input type="number" id="ep-wt" min="20" max="300"></div>
+      </div>
+      <div class="fr2">
+        <div class="fg"><label>Height (cm)</label><input type="number" id="ep-ht" min="100" max="250"></div>
+        <div class="fg"><label>Dietary Preference</label>
+          <select id="ep-diet">
+            <option value="none">No preference</option>
+            <option value="vegetarian">Vegetarian</option>
+            <option value="vegan">Vegan</option>
+            <option value="jain">Jain</option>
+            <option value="halal">Halal</option>
+          </select>
+        </div>
+      </div>
+      <div class="save-status" id="editSaveStatus"></div>
+    </div>
+    <div class="edit-modal-footer">
+      <button class="btn-cancel-edit" onclick="closeEditProfileModal()">Cancel</button>
+      <button class="btn-save-profile" id="saveProfileBtn" onclick="saveEditProfile()">Save Changes</button>
+    </div>
   </div>
 </div>
 </body>

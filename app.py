@@ -52,7 +52,6 @@ def _gen_uid():
     duplicates never happen even after re-migrations.
     """
     _require_mongo()
-    # One-time sync: ensure counter >= highest existing NRS number
     last_user = mdb.users_col.find_one(
         {}, sort=[("user_id", -1)], projection={"user_id": 1}
     )
@@ -66,7 +65,6 @@ def _gen_uid():
         except Exception:
             pass
 
-    # Atomically get next number, retry up to 20 times if collision
     for _ in range(20):
         r = mdb.db["counters"].find_one_and_update(
             {"_id": "user_id"},
@@ -77,8 +75,120 @@ def _gen_uid():
         uid = f"NRS{r.get('seq', 1):04d}"
         if not mdb.users_col.find_one({"user_id": uid}):
             return uid
-        # uid already taken — loop increments counter again on next try
     raise RuntimeError("Could not generate a unique User ID. Please try again.")
+
+
+# ── Real-world meal slot rules ─────────────────────────────────────────────────
+# These enforce logical, culturally appropriate Indian meal patterns.
+# The recommender is guided to respect these when building each day's plan.
+
+SLOT_RULES = {
+    "breakfast": {
+        "description": "Morning meal (7–9 AM) — should be filling, warm, and energy-giving",
+        "ideal_roles": ["staple", "protein", "beverage"],
+        "avoid_roles": ["dessert"],
+        "notes": (
+            "Include one staple (roti/paratha/idli/poha/upma/dosa), "
+            "one protein (egg/dal/paneer/curd/sprouts), "
+            "and optionally a warm beverage (chai/milk/lassi). "
+            "Avoid heavy fried items unless region-specific (e.g. puri for North Indian). "
+            "Real examples: Poha + Chai, Idli-Sambar, Paratha + Curd + Pickle, "
+            "Dosa + Chutney, Upma + Coffee, Bread-Omelette, Besan Chilla + Mint Chutney."
+        ),
+    },
+    "mid_morning": {
+        "description": "Light snack (10:30–11:30 AM) — bridge between breakfast and lunch",
+        "ideal_roles": ["fruit", "snack", "beverage"],
+        "avoid_roles": ["staple", "dessert"],
+        "notes": (
+            "Keep it light: one seasonal fruit, handful of nuts/seeds, "
+            "buttermilk, coconut water, or a small healthy snack. "
+            "Real examples: Banana, Apple, Buttermilk (Chaas), "
+            "Roasted Makhana, Mixed Nuts, Coconut Water, Seasonal Fruit Bowl."
+        ),
+    },
+    "lunch": {
+        "description": "Main midday meal (1–2 PM) — largest and most complete meal of the day",
+        "ideal_roles": ["staple", "protein", "vegetable", "accompaniment"],
+        "avoid_roles": [],
+        "notes": (
+            "Full thali-style: one or two staples (rice/roti/chapati), "
+            "one dal or protein curry, one sabzi (vegetable dish), "
+            "curd/raita, and small salad. "
+            "Real examples: Rice + Dal Tadka + Aloo Gobi + Curd, "
+            "Roti + Rajma + Bhindi Sabzi + Salad, "
+            "Pulao + Chana Masala + Raita, "
+            "Paratha + Paneer Curry + Dal + Pickle."
+        ),
+    },
+    "afternoon": {
+        "description": "Afternoon snack (4–5 PM) — light pick-me-up before dinner",
+        "ideal_roles": ["snack", "beverage", "fruit"],
+        "avoid_roles": ["staple"],
+        "notes": (
+            "Light and refreshing: chai with a small snack, fruit, "
+            "or a light protein bite. "
+            "Real examples: Chai + Marie Biscuits, Samosa (1 pc), "
+            "Roasted Chana, Poha (small bowl), Fruit Chaat, "
+            "Green Tea + Handful Nuts, Dhokla (2 pcs)."
+        ),
+    },
+    "evening_snack": {
+        "description": "Early evening (6–7 PM) — optional depending on meal count",
+        "ideal_roles": ["snack", "fruit", "beverage"],
+        "avoid_roles": ["staple"],
+        "notes": (
+            "Only included for 5+ meal plans. Light snack or small protein. "
+            "Real examples: Sprout Chaat, Roasted Corn, Fruit, "
+            "Makhana, Yogurt, Lemon Water."
+        ),
+    },
+    "dinner": {
+        "description": "Evening meal (8–9 PM) — lighter than lunch, easy to digest",
+        "ideal_roles": ["staple", "protein", "vegetable"],
+        "avoid_roles": ["fried", "heavy_dessert"],
+        "notes": (
+            "Lighter than lunch. 2 rotis/phulkas or small rice, "
+            "one protein (dal/sabzi/egg), one vegetable dish. "
+            "Avoid heavy fried food at night for better digestion. "
+            "Real examples: Roti + Dal + Palak Paneer, "
+            "Khichdi + Ghee + Papad, "
+            "Roti + Chicken Curry + Salad, "
+            "Rice + Sambar + Stir-fry Vegetables, "
+            "Chapati + Mixed Dal + Raita."
+        ),
+    },
+}
+
+def _get_slot_guidance(meal_count: int) -> str:
+    """Build a clear natural-language instruction block for the recommender."""
+    slots = ["breakfast", "mid_morning", "lunch", "afternoon", "dinner"]
+    if meal_count >= 5:
+        slots = ["breakfast", "mid_morning", "lunch", "afternoon", "evening_snack", "dinner"]
+
+    lines = [
+        "REAL-WORLD INDIAN MEAL STRUCTURE — follow these slot rules strictly:",
+        "",
+    ]
+    for slot in slots:
+        r = SLOT_RULES[slot]
+        lines.append(f"[{slot.upper()}] {r['description']}")
+        lines.append(f"  → {r['notes']}")
+        lines.append("")
+
+    lines += [
+        "GENERAL RULES:",
+        "• Breakfast and lunch should be the most calorie-dense meals.",
+        "• Dinner should be 15–20% lighter than lunch in calories.",
+        "• Mid-morning and afternoon snacks should each be under 200 kcal.",
+        "• Every meal should feel like something a real Indian household actually cooks.",
+        "• Avoid recommending exotic or rarely-eaten combinations.",
+        "• Pair foods logically: dal with rice OR roti, not both in excess.",
+        "• Always include at least one vegetable dish at lunch and dinner.",
+        "• Regional cuisine preferences must be respected across all slots.",
+    ]
+    return "\n".join(lines)
+
 
 @app.route("/")
 def index(): return render_template("index.html")
@@ -160,19 +270,14 @@ def set_password():
         ph=u.get("password_hash","")
         if ph and not _check_pw(ph,cur): return jsonify({"error":"Current password incorrect."}),401
         mdb.users_col.update_one({"user_id":uid},{"$set":{"password_hash":_hash_pw(nw)}})
-        return jsonify({"status":"ok","message":"Password updated."})
+        return jsonify({"status":"ok"})
     except RuntimeError as e: return jsonify({"error":str(e)}),503
     except Exception as e: traceback.print_exc(); return jsonify({"error":str(e)}),500
 
-@app.route("/api/options", methods=["GET"])
-def get_options():
+@app.route("/api/options")
+def options():
     return jsonify({
-        "dietary_preferences":[{"value":"none","label":"No preference"},{"value":"vegetarian","label":"Vegetarian"},{"value":"vegan","label":"Vegan"},{"value":"jain","label":"Jain"},{"value":"halal","label":"Halal"}],
-        "goals":[{"value":"weight_loss_aggressive","label":"Aggressive Weight Loss (~0.7 kg/week)"},{"value":"weight_loss","label":"Weight Loss (~0.5 kg/week)"},{"value":"weight_loss_mild","label":"Mild Weight Loss (~0.25 kg/week)"},{"value":"maintain","label":"Maintain Current Weight"},{"value":"weight_gain_mild","label":"Mild Weight Gain (~0.25 kg/week)"},{"value":"weight_gain","label":"Weight Gain (~0.5 kg/week)"},{"value":"muscle_gain","label":"Muscle Gain (Lean Bulk)"}],
-        "activity_levels":[{"value":"sedentary","label":"Sedentary (desk job, no exercise)"},{"value":"lightly_active","label":"Lightly Active (1-3 days/week)"},{"value":"moderately_active","label":"Moderately Active (3-5 days/week)"},{"value":"very_active","label":"Very Active (6-7 days/week)"},{"value":"extra_active","label":"Extra Active (athlete/physical job)"}],
-        "region_zones":[{"value":"any","label":"No preference (Pan-Indian)"},{"value":"north","label":"North India"},{"value":"south","label":"South India"},{"value":"east","label":"East India"},{"value":"west","label":"West India"},{"value":"central","label":"Central India"}],
-        "meal_counts":[3,4,5,6],
-        "allergies":["gluten","wheat","celiac","dairy","milk","lactose","nuts","tree nuts","peanuts","eggs","shellfish","fish","seafood","soy","sesame","sulfites","histamine","fodmap","fructose"],
+        "allergies":["Peanuts","Tree Nuts","Milk / Dairy","Eggs","Wheat / Gluten","Soy","Fish","Shellfish","Sesame","Mustard","Sulfites","Corn","Gelatin","MSG"],
         "diseases":["Type 2 Diabetes","Type 1 Diabetes","Hypertension","Heart Disease","Kidney Disease","Gout","PCOS","Hypothyroidism","Hyperthyroidism","Anemia","Celiac Disease","IBD","GERD","Fatty Liver Disease","Obesity","Osteoporosis","High Cholesterol","Lactose Intolerance","Cancer","Thyroid Cancer"],
         "dislikes":["Seafood","Red Meat","Eggs","Dairy Products","Mushrooms","Nuts & Seeds","Legumes / Beans","Bitter Gourd (Karela)","Bottle Gourd (Lauki)","Onion & Garlic","Leafy Greens","Spicy Foods","Bitter Foods","Fried Foods","Tofu / Soy Products","Sprouts","Jain Diet","No Beef","No Pork","vegan","vegetarian"],
     })
@@ -189,8 +294,17 @@ def recommend():
                  "allergies":_ls(d,"allergies"),"diseases":_ls(d,"diseases"),"dislikes":_ls(d,"dislikes")}
         ri={"goal":_s(d,"goal","maintain"),"activity_level":_s(d,"activity_level","moderately_active"),
             "meal_count":_i(d,"meal_count",3),"region_zone":_s(d,"region_zone","any")}
+
+        # Inject real-world slot guidance into the context so the recommender can use it
+        slot_guidance = _get_slot_guidance(ri["meal_count"])
+
         fr=_pipeline.run(profile)
         safe_df=fr["safe_food_list"]; ctx=fr["recommendation_context"]
+
+        # Attach slot guidance to recommendation context
+        ctx["slot_guidance"] = slot_guidance
+        ctx["meal_slot_rules"] = SLOT_RULES
+
         if len(safe_df)<8:
             return jsonify({"error":f"Only {len(safe_df)} safe foods after filtering.","safe_food_count":len(safe_df)}),400
         rec=_recommender.run(safe_foods_df=safe_df,recommendation_context=ctx,
@@ -213,7 +327,7 @@ def recommend():
                 "vitamin_d_iu":m.vitamin_d_iu,"potassium_mg":m.potassium_mg,
                 "protein_kcal":round(m.protein_kcal,0),"carbs_kcal":round(m.carbs_kcal,0),
                 "fat_kcal":round(m.fat_kcal,0),"meal_calories":m.meal_calories},
-            "recommendation_context":{k:v for k,v in ctx.items() if k!="safe_food_ids"},
+            "recommendation_context":{k:v for k,v in ctx.items() if k not in ("safe_food_ids","slot_guidance","meal_slot_rules")},
             "weekly_plan":rec["weekly_plan"],"weekly_avg":rec["weekly_avg"],
             "nutritional_gaps":rec["nutritional_gaps"],"insights":rec["insights"],"tips":rec["tips"],
             "goal_label":rec["goal_label"],"activity_label":rec["activity_label"],
@@ -243,15 +357,61 @@ def recommend():
     except Exception as e: traceback.print_exc(); return jsonify({"error":str(e)}),500
 
 
+# ── Plan Update API (swap/remove persistence) ──────────────────────────────────
+@app.route("/api/plan/update", methods=["POST"])
+def plan_update():
+    """
+    Saves the modified weekly plan back to MongoDB after a swap or remove action.
+    The frontend sends the full LR object with the in-memory changes already applied.
+    """
+    try:
+        _require_mongo()
+        d = request.get_json(force=True)
+        uid  = _s(d, "user_id", "").upper()
+        plan = d.get("plan")
+
+        if not uid:
+            return jsonify({"error": "user_id required"}), 400
+        if not plan:
+            return jsonify({"error": "plan payload required"}), 400
+
+        # Update timestamp in the payload to reflect when the edit was made
+        plan["timestamp"] = datetime.now(timezone.utc).isoformat()
+
+        # Upsert the plan document for this user
+        res = mdb.plans_col.find_one_and_replace(
+            {"user_id": uid},
+            {"user_id": uid, "created_at": datetime.now(timezone.utc), "payload": plan},
+            upsert=True,
+            return_document=True,
+        )
+        plan_oid = res["_id"]
+
+        # Keep last_plan_id pointer on the user document in sync
+        mdb.users_col.update_one(
+            {"user_id": uid},
+            {"$set": {"last_plan_id": plan_oid, "last_run": plan["timestamp"]}}
+        )
+
+        return jsonify({"status": "ok", "timestamp": plan["timestamp"]})
+
+    except RuntimeError as e:
+        return jsonify({"error": str(e)}), 503
+    except Exception as e:
+        traceback.print_exc()
+        return jsonify({"error": str(e)}), 500
+
+
 # ── Food Swap API ──────────────────────────────────────────────────────────────
 @app.route("/api/food/swap_options", methods=["POST"])
 def swap_options():
     """Return top swap alternatives for a given food_id, filtered to safe foods only."""
     try:
+        import pandas as pd
         from utils.data_loader import get_food_df
         d        = request.get_json(force=True)
         food_id  = _s(d, "food_id", "")
-        safe_ids = set(d.get("safe_food_ids", []))  # list of food_ids still safe for user
+        safe_ids = set(d.get("safe_food_ids", []))
 
         full_df = get_food_df()
         row = full_df[full_df["food_id"] == food_id]
@@ -267,33 +427,27 @@ def swap_options():
         target_fiber  = float(row.get("fiber_g",    0))
         target_region = row.get("region_zone", "pan_indian")
         target_veg    = row.get("is_vegetarian", True)
-        target_vegan  = row.get("is_vegan", False)
 
         # Filter candidates: same meal_role, exclude self, only safe foods
         cands = full_df[
             (full_df["meal_role"] == target_role) &
             (full_df["food_id"]   != food_id) &
-            (full_df["food_id"].isin(safe_ids) if safe_ids else pd.Series([True]*len(full_df)))
+            (full_df["food_id"].isin(safe_ids) if safe_ids else pd.Series([True]*len(full_df), index=full_df.index))
         ].copy()
 
         if cands.empty:
             return jsonify({"options": []})
 
         def calc_match(r):
-            # Score based on nutritional similarity (0–100%)
-            cal_sim    = max(0, 1 - abs(float(r.get("calories_per_100g",100)) - target_cal)  / max(target_cal,   1) * 1.5)
-            prot_sim   = max(0, 1 - abs(float(r.get("protein_g",  0)) - target_prot)  / max(target_prot+1, 1) * 2.0)
-            carbs_sim  = max(0, 1 - abs(float(r.get("carbs_g",    0)) - target_carbs) / max(target_carbs+1,1) * 1.5)
-            fat_sim    = max(0, 1 - abs(float(r.get("fat_g",       0)) - target_fat)   / max(target_fat+1,  1) * 1.5)
-            fiber_sim  = max(0, 1 - abs(float(r.get("fiber_g",    0)) - target_fiber)  / max(target_fiber+1,1))
-            # Bonus for same region
+            cal_sim   = max(0, 1 - abs(float(r.get("calories_per_100g",100)) - target_cal)  / max(target_cal,   1) * 1.5)
+            prot_sim  = max(0, 1 - abs(float(r.get("protein_g",  0)) - target_prot)  / max(target_prot+1, 1) * 2.0)
+            carbs_sim = max(0, 1 - abs(float(r.get("carbs_g",    0)) - target_carbs) / max(target_carbs+1,1) * 1.5)
+            fat_sim   = max(0, 1 - abs(float(r.get("fat_g",       0)) - target_fat)   / max(target_fat+1,  1) * 1.5)
+            fiber_sim = max(0, 1 - abs(float(r.get("fiber_g",    0)) - target_fiber)  / max(target_fiber+1,1))
             region_bonus = 0.08 if r.get("region_zone") == target_region else 0
-            # Bonus for same dietary classification
             veg_bonus    = 0.05 if r.get("is_vegetarian") == target_veg else -0.05
-            # Weighted match
             score = (cal_sim*0.30 + prot_sim*0.25 + carbs_sim*0.20 + fat_sim*0.15 + fiber_sim*0.10)
-            score = min(1.0, score + region_bonus + veg_bonus)
-            return round(score * 100, 1)
+            return round(min(1.0, score + region_bonus + veg_bonus) * 100, 1)
 
         cands["_match"] = cands.apply(calc_match, axis=1)
         cands = cands[cands["_match"] >= 35].nlargest(6, "_match")
@@ -307,21 +461,21 @@ def swap_options():
             if not hindi or str(hindi).lower() in ("nan","none",""):
                 hindi = ""
             options.append({
-                "food_id":         r["food_id"],
-                "food_name":       r["food_name"],
-                "food_name_hindi": hindi,
-                "category":        r.get("category",""),
-                "cuisine_type":    r.get("cuisine_type",""),
-                "meal_role":       r.get("meal_role",""),
+                "food_id":           r["food_id"],
+                "food_name":         r["food_name"],
+                "food_name_hindi":   hindi,
+                "category":          r.get("category",""),
+                "cuisine_type":      r.get("cuisine_type",""),
+                "meal_role":         r.get("meal_role",""),
                 "calories_per_100g": float(r.get("calories_per_100g",0)),
-                "protein_g":       float(r.get("protein_g",0)),
-                "carbs_g":         float(r.get("carbs_g",0)),
-                "fat_g":           float(r.get("fat_g",0)),
-                "fiber_g":         float(r.get("fiber_g",0)),
-                "serving_unit":    r.get("serving_unit","gram"),
-                "piece_weight_g":  float(r.get("piece_weight_g",100)),
-                "match_pct":       r["_match"],
-                "disease_score":   float(r.get("disease_score",50)),
+                "protein_g":         float(r.get("protein_g",0)),
+                "carbs_g":           float(r.get("carbs_g",0)),
+                "fat_g":             float(r.get("fat_g",0)),
+                "fiber_g":           float(r.get("fiber_g",0)),
+                "serving_unit":      r.get("serving_unit","gram"),
+                "piece_weight_g":    float(r.get("piece_weight_g",100)),
+                "match_pct":         r["_match"],
+                "disease_score":     float(r.get("disease_score",50)),
             })
 
         return jsonify({"original_food": food_id, "options": options})
