@@ -126,7 +126,9 @@ class DietRecommender:
         # ── Build 7-day meal plan ──────────────────────────────────────────────
         from recommendation_model.meal_planner import filter_by_region
         regional_df = filter_by_region(safe_foods_df, region_zone)
-        weekly_plan = build_weekly_plan(regional_df, metrics, seed=42, preferred_region=region_zone)
+        festive_mode = ctx.get("festive_mode", None)
+        diet_pref    = ctx.get("dietary_preference", "none") or "none"
+        weekly_plan = build_weekly_plan(regional_df, metrics, seed=42, preferred_region=region_zone, festive_mode=festive_mode, diet_pref=diet_pref)
 
         # ── Nutritional gap analysis ───────────────────────────────────────────
         day1_gaps    = check_nutritional_gaps(weekly_plan[0], metrics)

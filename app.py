@@ -293,7 +293,8 @@ def recommend():
                  "dietary_preference":_s(d,"dietary_preference","none"),
                  "allergies":_ls(d,"allergies"),"diseases":_ls(d,"diseases"),"dislikes":_ls(d,"dislikes")}
         ri={"goal":_s(d,"goal","maintain"),"activity_level":_s(d,"activity_level","moderately_active"),
-            "meal_count":_i(d,"meal_count",3),"region_zone":_s(d,"region_zone","any")}
+            "meal_count":_i(d,"meal_count",3),"region_zone":_s(d,"region_zone","any"),
+            "festive_mode":_s(d,"festive_mode","")}
 
         # Inject real-world slot guidance into the context so the recommender can use it
         slot_guidance = _get_slot_guidance(ri["meal_count"])
@@ -304,6 +305,7 @@ def recommend():
         # Attach slot guidance to recommendation context
         ctx["slot_guidance"] = slot_guidance
         ctx["meal_slot_rules"] = SLOT_RULES
+        if ri.get("festive_mode"): ctx["festive_mode"] = ri["festive_mode"]
 
         if len(safe_df)<8:
             return jsonify({"error":f"Only {len(safe_df)} safe foods after filtering.","safe_food_count":len(safe_df)}),400
@@ -332,6 +334,7 @@ def recommend():
             "nutritional_gaps":rec["nutritional_gaps"],"insights":rec["insights"],"tips":rec["tips"],
             "goal_label":rec["goal_label"],"activity_label":rec["activity_label"],
             "region_zone":ri["region_zone"],"meal_count":ri["meal_count"],
+            "festive_mode":ri.get("festive_mode",""),
         }
         uid=profile["user_id"]
         if uid and uid!="GUEST":
@@ -401,6 +404,39 @@ def plan_update():
         traceback.print_exc()
         return jsonify({"error": str(e)}), 500
 
+
+# ── Meal Rating API ───────────────────────────────────────────────────────────
+@app.route("/api/meal/rate", methods=["POST"])
+def rate_meal():
+    """Store a user's rating (1-5 stars) for a meal slot on a given day."""
+    try:
+        _require_mongo()
+        d       = request.get_json(force=True)
+        uid     = _s(d,"user_id","").upper()
+        day_idx = d.get("day_idx",0)
+        slot    = _s(d,"slot","")
+        rating  = int(d.get("rating",0))
+        note    = _s(d,"note","")
+        if not uid or not slot or rating < 1 or rating > 5:
+            return jsonify({"error":"user_id, slot, and rating 1-5 required"}),400
+        mdb.db["meal_ratings"].update_one(
+            {"user_id":uid,"day_idx":day_idx,"slot":slot},
+            {"$set":{"rating":rating,"note":note,"ts":datetime.now(timezone.utc).isoformat()}},
+            upsert=True
+        )
+        return jsonify({"status":"ok"})
+    except RuntimeError as e: return jsonify({"error":str(e)}),503
+    except Exception as e: traceback.print_exc(); return jsonify({"error":str(e)}),500
+
+@app.route("/api/meal/ratings/<user_id>")
+def get_ratings(user_id):
+    """Get all ratings for a user."""
+    try:
+        _require_mongo()
+        ratings = list(mdb.db["meal_ratings"].find({"user_id":user_id.upper()},{"_id":0}))
+        return jsonify({"ratings":ratings})
+    except RuntimeError as e: return jsonify({"error":str(e)}),503
+    except Exception as e: return jsonify({"error":str(e)}),500
 
 # ── Food Swap API ──────────────────────────────────────────────────────────────
 @app.route("/api/food/swap_options", methods=["POST"])
@@ -483,6 +519,46 @@ def swap_options():
     except Exception as e:
         traceback.print_exc()
         return jsonify({"error": str(e)}), 500
+
+
+# ── Save current (possibly swapped) plan ──────────────────────────────────────
+@app.route("/api/plan/save", methods=["POST"])
+def save_plan():
+    """
+    Called when user swaps/removes a food item client-side.
+    Overwrites the plan payload in MongoDB for this user.
+    """
+    try:
+        _require_mongo()
+        d       = request.get_json(force=True)
+        uid     = _s(d,"user_id","").upper()
+        payload = d.get("payload")
+
+        if not uid or not payload:
+            return jsonify({"error":"user_id and payload required."}),400
+
+        u = mdb.users_col.find_one({"user_id":uid})
+        if not u:
+            return jsonify({"error":f"User '{uid}' not found."}),404
+
+        mdb.plans_col.update_one(
+            {"user_id": uid},
+            {"$set":{
+                "updated_at": datetime.now(timezone.utc),
+                "payload":    payload,
+            }},
+            upsert=True
+        )
+        mdb.users_col.update_one(
+            {"user_id":uid},
+            {"$set":{"last_run": datetime.now(timezone.utc).isoformat()}}
+        )
+        return jsonify({"status":"ok"})
+
+    except RuntimeError as e: return jsonify({"error":str(e)}),503
+    except Exception as e:
+        traceback.print_exc()
+        return jsonify({"error":str(e)}),500
 
 if __name__=="__main__":
     print("\n"+"="*55+"\n  NutriAI — Open: http://localhost:5000\n"+"="*55+"\n")

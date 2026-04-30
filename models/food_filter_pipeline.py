@@ -37,10 +37,19 @@ class FoodFilteringPipeline:
         dislikes  = [d.strip() for d in user_profile.get("dislikes",  []) if d.strip()]
 
         diet_pref = user_profile.get("dietary_preference", "").strip().lower()
-        if diet_pref == "jain" and "Jain Diet" not in dislikes:
+        # Properly enforce all dietary preferences
+        dl = [d.lower() for d in dislikes]
+        if diet_pref == "jain" and "jain diet" not in dl:
             dislikes = ["Jain Diet"] + dislikes
-        elif diet_pref in ("vegetarian", "vegan") and diet_pref not in [d.lower() for d in dislikes]:
-            dislikes = [diet_pref] + dislikes
+        elif diet_pref == "vegan" and "vegan" not in dl:
+            dislikes = ["vegan"] + dislikes
+        elif diet_pref == "vegetarian" and "vegetarian" not in dl:
+            dislikes = ["vegetarian"] + dislikes
+        elif diet_pref == "halal":
+            # Halal: remove pork, alcohol-based items; keep beef/chicken/lamb if slaughtered halal
+            # We filter out pork specifically via dislike; allow all other meats
+            if "pork" not in dl:
+                dislikes = ["pork"] + dislikes
 
         log = [
             f"Pipeline started — user: {user_id}",
