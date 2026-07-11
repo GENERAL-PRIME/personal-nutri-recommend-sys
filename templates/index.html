@@ -115,7 +115,8 @@
     }
 
     html {
-      scroll-behavior: smooth
+      scroll-behavior: smooth;
+      overflow-x: hidden;
     }
 
     body {
@@ -125,7 +126,9 @@
       font-size: 14px;
       line-height: 1.6;
       min-height: 100vh;
-      transition: background .3s, color .3s
+      transition: background .3s, color .3s;
+      overflow-x: hidden;
+      width: 100%;
     }
 
     h1,
@@ -638,7 +641,9 @@
 
     /* Right panel */
     .panel {
-      overflow-y: auto
+      overflow-y: auto;
+      min-width: 0;
+      overflow-x: hidden;
     }
 
     .welcome {
@@ -2793,10 +2798,7 @@
         padding: 5px 6px
       }
 
-      .ftbl th:nth-child(n+5),
-      .ftbl td:nth-child(n+5) {
-        display: none
-      }
+
     }
 
     .fade-in {
