@@ -28,27 +28,29 @@ if _PROJECT_ROOT not in sys.path:
 
 from recommendation_model.calculator import calculate_all, bmi_advice, HealthMetrics
 from recommendation_model.meal_planner import (
-    build_weekly_plan, build_daily_plan, check_nutritional_gaps
+    build_weekly_plan,
+    build_daily_plan,
+    check_nutritional_gaps,
 )
+from recommendation_model.feedback import compute_adaptive_temperature
 from utils.helpers import output_path, export_json, timestamp_str
-
 
 GOAL_LABELS = {
     "weight_loss_aggressive": "Aggressive Weight Loss (~0.7 kg/week)",
-    "weight_loss":            "Weight Loss (~0.5 kg/week)",
-    "weight_loss_mild":       "Mild Weight Loss (~0.25 kg/week)",
-    "maintain":               "Maintain Current Weight",
-    "weight_gain_mild":       "Mild Weight Gain (~0.25 kg/week)",
-    "weight_gain":            "Weight Gain (~0.5 kg/week)",
-    "muscle_gain":            "Muscle Gain (Lean Bulk)",
+    "weight_loss": "Weight Loss (~0.5 kg/week)",
+    "weight_loss_mild": "Mild Weight Loss (~0.25 kg/week)",
+    "maintain": "Maintain Current Weight",
+    "weight_gain_mild": "Mild Weight Gain (~0.25 kg/week)",
+    "weight_gain": "Weight Gain (~0.5 kg/week)",
+    "muscle_gain": "Muscle Gain (Lean Bulk)",
 }
 
 ACTIVITY_LABELS = {
-    "sedentary":         "Sedentary (desk job, little/no exercise)",
-    "lightly_active":    "Lightly Active (light exercise 1-3 days/week)",
+    "sedentary": "Sedentary (desk job, little/no exercise)",
+    "lightly_active": "Lightly Active (light exercise 1-3 days/week)",
     "moderately_active": "Moderately Active (moderate exercise 3-5 days/week)",
-    "very_active":       "Very Active (hard exercise 6-7 days/week)",
-    "extra_active":      "Extra Active (very hard exercise + physical job)",
+    "very_active": "Very Active (hard exercise 6-7 days/week)",
+    "extra_active": "Extra Active (very hard exercise + physical job)",
 }
 
 
@@ -59,13 +61,13 @@ class DietRecommender:
 
     def run(
         self,
-        safe_foods_df:          pd.DataFrame,
+        safe_foods_df: pd.DataFrame,
         recommendation_context: Dict,
-        goal:                   str,
-        activity_level:         str,
-        meal_count:             int = 3,
-        region_zone:            str = 'any',
-        seed:                   int = 42,
+        goal: str,
+        activity_level: str,
+        meal_count: int = 3,
+        region_zone: str = "any",
+        seed: int = 42,
     ) -> Dict:
         """
         Main entry point.
@@ -87,88 +89,103 @@ class DietRecommender:
 
         # ── Parse user bio ─────────────────────────────────────────────────────
         try:
-            age        = float(ctx.get("age", 30))
+            age = float(ctx.get("age", 30))
         except (ValueError, TypeError):
-            age        = 30.0
+            age = 30.0
         try:
-            weight_kg  = float(ctx.get("weight_kg", 70))
+            weight_kg = float(ctx.get("weight_kg", 70))
         except (ValueError, TypeError):
-            weight_kg  = 70.0
+            weight_kg = 70.0
         try:
-            height_cm  = float(ctx.get("height_cm", 170))
+            height_cm = float(ctx.get("height_cm", 170))
         except (ValueError, TypeError):
-            height_cm  = 170.0
+            height_cm = 170.0
 
-        sex            = str(ctx.get("sex", "male")).strip().lower()
-        user_id        = ctx.get("user_id", "anonymous")
-        name           = ctx.get("name", "User")
+        sex = str(ctx.get("sex", "male")).strip().lower()
+        user_id = ctx.get("user_id", "anonymous")
+        name = ctx.get("name", "User")
 
         # ── Run calculations ───────────────────────────────────────────────────
         metrics = calculate_all(
-            age            = age,
-            weight_kg      = weight_kg,
-            height_cm      = height_cm,
-            sex            = sex,
-            activity_level = activity_level,
-            goal           = goal,
-            meal_count     = meal_count,
-            has_diabetes       = bool(ctx.get("has_diabetes", False)),
-            has_hypertension   = bool(ctx.get("has_hypertension", False)),
-            has_kidney_disease = bool(ctx.get("has_kidney_disease", False)),
-            has_heart_disease  = bool(ctx.get("has_heart_disease", False)),
-            has_pcos           = bool(ctx.get("has_pcos", False)),
-            has_obesity        = bool(ctx.get("has_obesity", False)),
-            has_anemia         = bool(ctx.get("has_anemia", False)),
-            is_vegetarian      = bool(ctx.get("is_vegetarian", False)),
-            is_vegan           = bool(ctx.get("is_vegan", False)),
+            age=age,
+            weight_kg=weight_kg,
+            height_cm=height_cm,
+            sex=sex,
+            activity_level=activity_level,
+            goal=goal,
+            meal_count=meal_count,
+            has_diabetes=bool(ctx.get("has_diabetes", False)),
+            has_hypertension=bool(ctx.get("has_hypertension", False)),
+            has_kidney_disease=bool(ctx.get("has_kidney_disease", False)),
+            has_heart_disease=bool(ctx.get("has_heart_disease", False)),
+            has_pcos=bool(ctx.get("has_pcos", False)),
+            has_obesity=bool(ctx.get("has_obesity", False)),
+            has_anemia=bool(ctx.get("has_anemia", False)),
+            is_vegetarian=bool(ctx.get("is_vegetarian", False)),
+            is_vegan=bool(ctx.get("is_vegan", False)),
         )
 
         # ── Build 7-day meal plan ──────────────────────────────────────────────
         from recommendation_model.meal_planner import filter_by_region
+
         regional_df = filter_by_region(safe_foods_df, region_zone)
         festive_mode = ctx.get("festive_mode", None)
-        diet_pref    = ctx.get("dietary_preference", "none") or "none"
+        diet_pref = ctx.get("dietary_preference", "none") or "none"
         # Seed based on user_id + today's date → different plan each day, reproducible per day
         _seed_str = f"{user_id}{datetime.now().strftime('%Y-%m-%d')}"
         import hashlib as _hl
+
         _seed = int(_hl.md5(_seed_str.encode()).hexdigest(), 16) % (2**31)
-        weekly_plan = build_weekly_plan(regional_df, metrics, seed=_seed, preferred_region=region_zone, festive_mode=festive_mode, diet_pref=diet_pref)
+        # Adaptive temperature: falls back to 12.0 automatically if there's
+        # no MongoDB handle, no user_id, or fewer than 5 past ratings.
+        try:
+            from utils import db as mdb
+
+            adaptive_temp = compute_adaptive_temperature(user_id, mdb.db)
+        except Exception:
+            adaptive_temp = 12.0
+
+        weekly_plan = build_weekly_plan(
+            regional_df,
+            metrics,
+            seed=_seed,
+            preferred_region=region_zone,
+            festive_mode=festive_mode,
+            diet_pref=diet_pref,
+            temperature=adaptive_temp,
+        )
 
         # ── Nutritional gap analysis ───────────────────────────────────────────
-        day1_gaps    = check_nutritional_gaps(weekly_plan[0], metrics)
+        day1_gaps = check_nutritional_gaps(weekly_plan[0], metrics)
         overall_gaps = self._avg_gaps(weekly_plan, metrics)
 
         # ── Health insights ────────────────────────────────────────────────────
         insights = self._generate_insights(metrics, ctx)
-        tips     = self._generate_tips(metrics, ctx, goal)
+        tips = self._generate_tips(metrics, ctx, goal)
 
         # ── Weekly nutrition summary ───────────────────────────────────────────
         weekly_avg = self._weekly_average(weekly_plan)
 
         return {
-            "user_id":          user_id,
-            "name":             name,
-            "timestamp":        datetime.now().isoformat(),
-            "goal":             goal,
-            "region_zone":       region_zone,
-            "goal_label":       GOAL_LABELS.get(goal, goal),
-            "activity_level":   activity_level,
-            "activity_label":   ACTIVITY_LABELS.get(activity_level, activity_level),
-            "meal_count":       meal_count,
-
+            "user_id": user_id,
+            "name": name,
+            "timestamp": datetime.now().isoformat(),
+            "goal": goal,
+            "region_zone": region_zone,
+            "goal_label": GOAL_LABELS.get(goal, goal),
+            "activity_level": activity_level,
+            "activity_label": ACTIVITY_LABELS.get(activity_level, activity_level),
+            "meal_count": meal_count,
             # All health calculations
-            "metrics":          metrics,
-
+            "metrics": metrics,
             # 7-day plan
-            "weekly_plan":      weekly_plan,
-
+            "weekly_plan": weekly_plan,
             # Analysis
-            "weekly_avg":       weekly_avg,
+            "weekly_avg": weekly_avg,
             "nutritional_gaps": overall_gaps,
-            "day1_gaps":        day1_gaps,
-            "insights":         insights,
-            "tips":             tips,
-
+            "day1_gaps": day1_gaps,
+            "insights": insights,
+            "tips": tips,
             # Input context (for reference)
             "recommendation_context": ctx,
         }
@@ -179,11 +196,11 @@ class DietRecommender:
         """Check average daily gaps across the week."""
         avg_plan = {
             "totals": {
-                "calories":  sum(d["totals"]["calories"]  for d in weekly_plan) / 7,
+                "calories": sum(d["totals"]["calories"] for d in weekly_plan) / 7,
                 "protein_g": sum(d["totals"]["protein_g"] for d in weekly_plan) / 7,
-                "carbs_g":   sum(d["totals"]["carbs_g"]   for d in weekly_plan) / 7,
-                "fat_g":     sum(d["totals"]["fat_g"]     for d in weekly_plan) / 7,
-                "fiber_g":   sum(d["totals"]["fiber_g"]   for d in weekly_plan) / 7,
+                "carbs_g": sum(d["totals"]["carbs_g"] for d in weekly_plan) / 7,
+                "fat_g": sum(d["totals"]["fat_g"] for d in weekly_plan) / 7,
+                "fiber_g": sum(d["totals"]["fiber_g"] for d in weekly_plan) / 7,
                 "sodium_mg": sum(d["totals"]["sodium_mg"] for d in weekly_plan) / 7,
             },
             "targets": weekly_plan[0]["targets"],
@@ -193,38 +210,39 @@ class DietRecommender:
     def _weekly_average(self, weekly_plan: List[Dict]) -> Dict:
         """Compute average daily totals across 7 days."""
         keys = ["calories", "protein_g", "carbs_g", "fat_g", "fiber_g", "sodium_mg"]
-        return {
-            k: round(sum(d["totals"][k] for d in weekly_plan) / 7, 1)
-            for k in keys
-        }
+        return {k: round(sum(d["totals"][k] for d in weekly_plan) / 7, 1) for k in keys}
 
     def _generate_insights(self, metrics: HealthMetrics, ctx: Dict) -> List[str]:
         """Generate rich, personalised health insights from all available metrics."""
         ins = []
-        w   = metrics.weight_kg
-        h   = metrics.height_cm / 100
+        w = metrics.weight_kg
+        h = metrics.height_cm / 100
         bmi = metrics.bmi
         ibw = metrics.ibw_kg
         sex = metrics.sex.lower()
 
         # ── 1. BMI with clinical context ─────────────────────────────────────
         wt_gap = round(w - ibw, 1)
-        gap_str = (f" That is {abs(wt_gap)} kg {'above' if wt_gap > 0 else 'below'} "
-                   f"your ideal weight of {ibw} kg." if abs(wt_gap) > 1 else
-                   " You are very close to your ideal weight — great work!")
+        gap_str = (
+            f" That is {abs(wt_gap)} kg {'above' if wt_gap > 0 else 'below'} "
+            f"your ideal weight of {ibw} kg."
+            if abs(wt_gap) > 1
+            else " You are very close to your ideal weight — great work!"
+        )
         ins.append(
-            f"📊 BMI: {bmi} ({metrics.bmi_category}).{gap_str} "
-            + bmi_advice(metrics)
+            f"📊 BMI: {bmi} ({metrics.bmi_category}).{gap_str} " + bmi_advice(metrics)
         )
 
         # ── 2. Energy balance explained simply ───────────────────────────────
         deficit = round(metrics.target_calories - metrics.tdee, 0)
         deficit_str = (
             f"a deficit of {abs(deficit):.0f} kcal/day (≈ {abs(deficit)/7700*7:.2f} kg/week loss)"
-            if deficit < -50 else
-            f"a surplus of {deficit:.0f} kcal/day (≈ {deficit/7700*7:.2f} kg/week gain)"
-            if deficit > 50 else
-            "maintenance — matching your energy expenditure exactly"
+            if deficit < -50
+            else (
+                f"a surplus of {deficit:.0f} kcal/day (≈ {deficit/7700*7:.2f} kg/week gain)"
+                if deficit > 50
+                else "maintenance — matching your energy expenditure exactly"
+            )
         )
         ins.append(
             f"🔥 Energy Balance: BMR {metrics.bmr:.0f} kcal (at rest) → "
@@ -248,9 +266,12 @@ class DietRecommender:
         prot_per_kg = round(metrics.protein_g / w, 2)
         prot_verdict = (
             "✅ Excellent — supports muscle repair and satiety."
-            if prot_per_kg >= 1.6 else
-            "✅ Adequate for general health." if prot_per_kg >= 1.0 else
-            "⚠ Slightly low — aim to include a protein source at every meal."
+            if prot_per_kg >= 1.6
+            else (
+                "✅ Adequate for general health."
+                if prot_per_kg >= 1.0
+                else "⚠ Slightly low — aim to include a protein source at every meal."
+            )
         )
         ins.append(
             f"💪 Protein adequacy: {metrics.protein_g}g/day = "
@@ -267,10 +288,12 @@ class DietRecommender:
 
         # ── 6. Micronutrient focus ─────────────────────────────────────────────
         micros = []
-        if ctx.get("has_anemia") or (sex not in ("male","m") and metrics.iron_mg > 18):
+        if ctx.get("has_anemia") or (sex not in ("male", "m") and metrics.iron_mg > 18):
             micros.append(f"iron {metrics.iron_mg:.0f} mg (pair with vitamin C foods)")
         if metrics.calcium_mg > 1000:
-            micros.append(f"calcium {metrics.calcium_mg:.0f} mg (curd, ragi, til seeds)")
+            micros.append(
+                f"calcium {metrics.calcium_mg:.0f} mg (curd, ragi, til seeds)"
+            )
         if ctx.get("is_vegan") or ctx.get("is_vegetarian"):
             micros.append("vitamin B12 (supplement recommended for vegans)")
         if micros:
@@ -342,13 +365,11 @@ class DietRecommender:
 
         return ins
 
-    def _generate_tips(
-        self, metrics: HealthMetrics, ctx: Dict, goal: str
-    ) -> List[str]:
+    def _generate_tips(self, metrics: HealthMetrics, ctx: Dict, goal: str) -> List[str]:
         """Generate specific, science-backed, actionable daily tips."""
         tips = []
         sex = metrics.sex.lower()
-        w   = metrics.weight_kg
+        w = metrics.weight_kg
 
         # ── Goal-specific tips ────────────────────────────────────────────────
         if "weight_loss" in goal:
@@ -430,19 +451,14 @@ class DietRecommender:
             f"🌾 Fibre goal: {metrics.fiber_g}g/day. Practical guide: "
             "1 katori dal = 6g, 1 medium apple = 4g, 1 cup cooked sabzi = 3–5g. "
             "Spread across all meals.",
-
             f"💧 Hydration: {metrics.water_ml/1000:.1f}L/day. "
             "Urine colour check: pale straw = hydrated, dark yellow = drink more.",
-
             "🥦 Eat at least 3 different vegetable colours daily — "
             "each colour indicates different protective phytonutrients.",
-
             "🛒 Read nutrition labels: reject products with more than 5g added sugar "
             "or 'hydrogenated oil' / 'vanaspati' in the first 3 ingredients.",
-
             "🍱 Meal prep Sunday: cook dals, cut vegetables, portion grains. "
             "Prepared food reduces impulsive eating by 60%.",
-
             "📵 No screens while eating — distracted eating increases meal size by 10–25%. "
             "Mindful eating improves satiety and reduces bingeing.",
         ]
@@ -472,9 +488,9 @@ class DietRecommender:
         """
         import os as _os
 
-        uid       = result["user_id"]
+        uid = result["user_id"]
         json_file = output_path(f"{uid}_diet_plan.json")
-        csv_file  = output_path(f"{uid}_diet_plan.csv")
+        csv_file = output_path(f"{uid}_diet_plan.csv")
         is_update = _os.path.exists(json_file)
 
         # ── Build flat CSV: one row per meal per day ──────────────────────────
@@ -483,19 +499,21 @@ class DietRecommender:
             day_name = day.get("day_name", f"Day {day['day']}")
             for slot, meal_data in day["meals"].items():
                 for food in meal_data["foods"]:
-                    rows.append({
-                        "day":         day_name,
-                        "meal_slot":   slot,
-                        "food_name":   food["food_name"],
-                        "category":    food["category"],
-                        "portion_g":   food["portion_g"],
-                        "calories":    food["calories"],
-                        "protein_g":   food["protein_g"],
-                        "carbs_g":     food["carbs_g"],
-                        "fat_g":       food["fat_g"],
-                        "fiber_g":     food["fiber_g"],
-                        "sodium_mg":   food["sodium_mg"],
-                    })
+                    rows.append(
+                        {
+                            "day": day_name,
+                            "meal_slot": slot,
+                            "food_name": food["food_name"],
+                            "category": food["category"],
+                            "portion_g": food["portion_g"],
+                            "calories": food["calories"],
+                            "protein_g": food["protein_g"],
+                            "carbs_g": food["carbs_g"],
+                            "fat_g": food["fat_g"],
+                            "fiber_g": food["fiber_g"],
+                            "sodium_mg": food["sodium_mg"],
+                        }
+                    )
 
         csv_df = pd.DataFrame(rows)
         csv_df.to_csv(csv_file, index=False)
@@ -503,41 +521,41 @@ class DietRecommender:
         # ── Build JSON ────────────────────────────────────────────────────────
         metrics = result["metrics"]
         json_payload = {
-            "user_id":       result["user_id"],
-            "name":          result["name"],
-            "timestamp":     result["timestamp"],
-            "goal":          result["goal_label"],
-            "activity":      result["activity_label"],
-            "meal_count":    result["meal_count"],
+            "user_id": result["user_id"],
+            "name": result["name"],
+            "timestamp": result["timestamp"],
+            "goal": result["goal_label"],
+            "activity": result["activity_label"],
+            "meal_count": result["meal_count"],
             "metrics": {
-                "bmi":             metrics.bmi,
-                "bmi_category":    metrics.bmi_category,
-                "bmr_kcal":        metrics.bmr,
-                "tdee_kcal":       metrics.tdee,
-                "target_kcal":     metrics.target_calories,
-                "ibw_kg":          metrics.ibw_kg,
-                "protein_g":       metrics.protein_g,
-                "carbs_g":         metrics.carbs_g,
-                "fat_g":           metrics.fat_g,
-                "fiber_g":         metrics.fiber_g,
-                "sodium_mg":       metrics.sodium_mg,
-                "water_ml":        metrics.water_ml,
-                "calcium_mg":      metrics.calcium_mg,
-                "iron_mg":         metrics.iron_mg,
-                "vitamin_c_mg":    metrics.vitamin_c_mg,
-                "vitamin_d_iu":    metrics.vitamin_d_iu,
-                "potassium_mg":    metrics.potassium_mg,
+                "bmi": metrics.bmi,
+                "bmi_category": metrics.bmi_category,
+                "bmr_kcal": metrics.bmr,
+                "tdee_kcal": metrics.tdee,
+                "target_kcal": metrics.target_calories,
+                "ibw_kg": metrics.ibw_kg,
+                "protein_g": metrics.protein_g,
+                "carbs_g": metrics.carbs_g,
+                "fat_g": metrics.fat_g,
+                "fiber_g": metrics.fiber_g,
+                "sodium_mg": metrics.sodium_mg,
+                "water_ml": metrics.water_ml,
+                "calcium_mg": metrics.calcium_mg,
+                "iron_mg": metrics.iron_mg,
+                "vitamin_c_mg": metrics.vitamin_c_mg,
+                "vitamin_d_iu": metrics.vitamin_d_iu,
+                "potassium_mg": metrics.potassium_mg,
             },
-            "weekly_plan":       result["weekly_plan"],
-            "weekly_avg":        result["weekly_avg"],
-            "nutritional_gaps":  result["nutritional_gaps"],
-            "insights":          result["insights"],
-            "tips":              result["tips"],
+            "weekly_plan": result["weekly_plan"],
+            "weekly_avg": result["weekly_avg"],
+            "nutritional_gaps": result["nutritional_gaps"],
+            "insights": result["insights"],
+            "tips": result["tips"],
         }
         export_json(json_payload, json_file)
 
         return {
-            "json":      json_file,
-            "csv":       csv_file,
+            "json": json_file,
+            "csv": csv_file,
             "is_update": is_update,
         }
