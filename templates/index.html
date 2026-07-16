@@ -1010,14 +1010,27 @@
 
     /* Day plan */
     .dnav {
+      /* Existing properties */
       display: flex;
       gap: 6px;
       flex-wrap: nowrap;
       overflow-x: auto;
       margin-bottom: 20px;
-      padding-bottom: 4px;
       scrollbar-width: thin;
-      scrollbar-color: var(--accent) transparent
+      scrollbar-color: var(--accent) transparent;
+
+      /* New Sticky Properties */
+      position: sticky;
+      top: 125px;
+      /* Height of the sticky .ohdr above it */
+      z-index: 45;
+      /* Lower than .ohdr (50) but higher than meal cards */
+      background: var(--bg);
+      /* Solid background prevents text overlapping */
+
+      /* Added padding so the bar has breathing room when stuck */
+      padding-top: 10px;
+      padding-bottom: 10px;
     }
 
     .dnav::-webkit-scrollbar {
@@ -2520,7 +2533,16 @@
       }
 
       .dnav {
-        gap: 5px
+        position: -webkit-sticky;
+        /* Safari support */
+        position: sticky;
+        top: 120px;
+        /* Increased to clear the tablet header */
+        z-index: 45;
+        background: var(--bg);
+        gap: 5px;
+        padding-top: 10px;
+        padding-bottom: 10px;
       }
 
       .db {
@@ -2643,8 +2665,17 @@
       }
 
       .dnav {
+        position: -webkit-sticky;
+        /* Safari support */
+        position: sticky;
+        top: 145px;
+        /* Increased further to clear wrapping tags */
+        z-index: 45;
+        background: var(--bg);
         gap: 4px;
-        margin-bottom: 14px
+        margin-bottom: 14px;
+        padding-top: 10px;
+        padding-bottom: 10px;
       }
 
       .db {
@@ -2789,7 +2820,16 @@
       }
 
       .dnav {
-        gap: 3px
+        position: -webkit-sticky;
+        /* Safari support */
+        position: sticky;
+        top: 143px;
+        /* Increased to account for extra header wrapping */
+        z-index: 45;
+        background: var(--bg);
+        gap: 3px;
+        padding-top: 10px;
+        padding-bottom: 10px;
       }
 
       .db {
