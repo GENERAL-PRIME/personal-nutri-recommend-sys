@@ -1,12 +1,15 @@
 """
 app.py — NutriAI  (MongoDB-only, no local file storage)
 """
+
 import os, sys, traceback
+
 _HERE = os.path.dirname(os.path.abspath(__file__))
 if _HERE not in sys.path:
     sys.path.insert(0, _HERE)
 
 from dotenv import load_dotenv
+
 load_dotenv()
 
 from flask import Flask, render_template, request, jsonify
@@ -15,6 +18,7 @@ from bson.objectid import ObjectId
 
 from utils import db as mdb
 
+
 def _require_mongo():
     if mdb.users_col is None or mdb.plans_col is None:
         raise RuntimeError(
@@ -22,14 +26,24 @@ def _require_mongo():
             "0.0.0.0/0 in MongoDB Atlas → Network Access."
         )
 
-def _hash_pw(p): return p
-def _check_pw(stored, candidate): return stored == candidate
+
+def _hash_pw(p):
+    return p
+
+
+def _check_pw(stored, candidate):
+    return stored == candidate
+
 
 print("Loading pipeline from MongoDB datasets...")
 from models.food_filter_pipeline import FoodFilteringPipeline
 from recommendation_model.recommender import DietRecommender
-from recommendation_model.calculator import (calculate_plan_duration, recalculate_weeks_remaining)
-_pipeline    = FoodFilteringPipeline()
+from recommendation_model.calculator import (
+    calculate_plan_duration,
+    recalculate_weeks_remaining,
+)
+
+_pipeline = FoodFilteringPipeline()
 _recommender = DietRecommender()
 print("Ready — http://localhost:5000")
 
@@ -38,6 +52,7 @@ app = Flask(__name__, template_folder="templates", static_folder="static")
 # ── NaN-safe JSON: replace NaN/Inf with null so browsers can parse response ──
 import math as _math, json as _json_mod
 from bson import ObjectId as _ObjectId
+
 
 def _sanitize_nan(obj):
     """Recursively replace NaN/Infinity float values with None (JSON null),
@@ -54,12 +69,15 @@ def _sanitize_nan(obj):
         return [_sanitize_nan(v) for v in obj]
     return obj
 
+
 try:
     # Flask >= 2.2 uses app.json.provider
     from flask.json.provider import DefaultJSONProvider
+
     class _NaNSafeProvider(DefaultJSONProvider):
         def dumps(self, obj, **kw):
             return super().dumps(_sanitize_nan(obj), **kw)
+
     app.json_provider_class = _NaNSafeProvider
     app.json = _NaNSafeProvider(app)
 except ImportError:
@@ -68,25 +86,43 @@ except ImportError:
 try:
     # Flask < 2.2 uses JSONEncoder
     from flask.json import JSONEncoder as _JE
+
     class _NaNSafeEncoder(_JE):
         def default(self, obj):
             if isinstance(obj, float) and (_math.isnan(obj) or _math.isinf(obj)):
                 return None
             return super().default(obj)
+
     app.json_encoder = _NaNSafeEncoder
 except Exception:
     pass
 
-def _ls(d,k):
-    v=d.get(k,[]);
-    if isinstance(v,str): v=[x.strip() for x in v.split(",") if x.strip()]
+
+def _ls(d, k):
+    v = d.get(k, [])
+    if isinstance(v, str):
+        v = [x.strip() for x in v.split(",") if x.strip()]
     return [x for x in v if x]
-def _s(d,k,df=""): return str(d.get(k,df)).strip()
-def _i(d,k,df=3):
-    try: return int(d.get(k,df))
-    except: return df
+
+
+def _s(d, k, df=""):
+    return str(d.get(k, df)).strip()
+
+
+def _i(d, k, df=3):
+    try:
+        return int(d.get(k, df))
+    except:
+        return df
+
+
 def _safe(doc):
-    return {k:(str(v) if isinstance(v,ObjectId) else v) for k,v in doc.items() if k!="password_hash"}
+    return {
+        k: (str(v) if isinstance(v, ObjectId) else v)
+        for k, v in doc.items()
+        if k != "password_hash"
+    }
+
 
 def _gen_uid():
     """
@@ -203,11 +239,19 @@ SLOT_RULES = {
     },
 }
 
+
 def _get_slot_guidance(meal_count: int) -> str:
     """Build a clear natural-language instruction block for the recommender."""
     slots = ["breakfast", "mid_morning", "lunch", "afternoon", "dinner"]
     if meal_count >= 5:
-        slots = ["breakfast", "mid_morning", "lunch", "afternoon", "evening_snack", "dinner"]
+        slots = [
+            "breakfast",
+            "mid_morning",
+            "lunch",
+            "afternoon",
+            "evening_snack",
+            "dinner",
+        ]
 
     lines = [
         "REAL-WORLD INDIAN MEAL STRUCTURE — follow these slot rules strictly:",
@@ -234,96 +278,228 @@ def _get_slot_guidance(meal_count: int) -> str:
 
 
 @app.route("/")
-def index(): return render_template("index.html")
+def index():
+    return render_template("index.html")
+
 
 @app.route("/api/user/new", methods=["POST"])
 def new_user():
     try:
         _require_mongo()
-        d=request.get_json(force=True)
-        pw=_s(d,"password","")
-        if not pw: return jsonify({"error":"Password is required."}),400
-        if len(pw)<6: return jsonify({"error":"Password must be at least 6 characters."}),400
-        uid=_gen_uid()
-        doc={"user_id":uid,"name":_s(d,"name","User"),"age":_s(d,"age","30"),
-             "sex":_s(d,"sex","male"),"weight_kg":_s(d,"weight_kg","70"),
-             "height_cm":_s(d,"height_cm","170"),
-             "dietary_preference":_s(d,"dietary_preference","none"),
-             "allergies":_ls(d,"allergies"),"diseases":_ls(d,"diseases"),
-             "dislikes":_ls(d,"dislikes"),"password_hash":_hash_pw(pw),
-             "registered_at":datetime.now(timezone.utc).isoformat(),
-             "last_run":None,"last_plan_id":None}
+        d = request.get_json(force=True)
+        pw = _s(d, "password", "")
+        if not pw:
+            return jsonify({"error": "Password is required."}), 400
+        if len(pw) < 6:
+            return jsonify({"error": "Password must be at least 6 characters."}), 400
+        uid = _gen_uid()
+        doc = {
+            "user_id": uid,
+            "name": _s(d, "name", "User"),
+            "age": _s(d, "age", "30"),
+            "sex": _s(d, "sex", "male"),
+            "weight_kg": _s(d, "weight_kg", "70"),
+            "height_cm": _s(d, "height_cm", "170"),
+            "dietary_preference": _s(d, "dietary_preference", "none"),
+            "allergies": _ls(d, "allergies"),
+            "diseases": _ls(d, "diseases"),
+            "dislikes": _ls(d, "dislikes"),
+            "password_hash": _hash_pw(pw),
+            "registered_at": datetime.now(timezone.utc).isoformat(),
+            "last_run": None,
+            "last_plan_id": None,
+        }
         mdb.users_col.insert_one(doc)
-        return jsonify({"status":"ok","user_id":uid,"name":doc["name"]})
-    except RuntimeError as e: return jsonify({"error":str(e)}),503
-    except Exception as e: traceback.print_exc(); return jsonify({"error":str(e)}),500
+        return jsonify({"status": "ok", "user_id": uid, "name": doc["name"]})
+    except RuntimeError as e:
+        return jsonify({"error": str(e)}), 503
+    except Exception as e:
+        traceback.print_exc()
+        return jsonify({"error": str(e)}), 500
+
 
 @app.route("/api/user/login", methods=["POST"])
 def login_user():
     try:
         _require_mongo()
-        d=request.get_json(force=True)
-        uid=_s(d,"user_id","").upper()
-        pw=_s(d,"password","")
-        if not uid: return jsonify({"error":"User ID is required."}),400
-        u=mdb.users_col.find_one({"user_id":uid})
-        if not u: return jsonify({"error":f"User ID '{uid}' not found."}),404
-        ph=u.get("password_hash","")
+        d = request.get_json(force=True)
+        uid = _s(d, "user_id", "").upper()
+        pw = _s(d, "password", "")
+        if not uid:
+            return jsonify({"error": "User ID is required."}), 400
+        u = mdb.users_col.find_one({"user_id": uid})
+        if not u:
+            return jsonify({"error": f"User ID '{uid}' not found."}), 404
+        ph = u.get("password_hash", "")
         if ph:
-            if not pw: return jsonify({"error":"Password required."}),401
-            if not _check_pw(ph,pw): return jsonify({"error":"Incorrect password."}),401
+            if not pw:
+                return jsonify({"error": "Password required."}), 401
+            if not _check_pw(ph, pw):
+                return jsonify({"error": "Incorrect password."}), 401
         else:
-            if pw: return jsonify({"error":"This account has no password set. Leave password blank."}),401
-        safe=_safe(u)
-        last_plan=None
-        pid=u.get("last_plan_id")
+            if pw:
+                return (
+                    jsonify(
+                        {
+                            "error": "This account has no password set. Leave password blank."
+                        }
+                    ),
+                    401,
+                )
+        safe = _safe(u)
+        last_plan = None
+        pid = u.get("last_plan_id")
         if pid and mdb.plans_col is not None:
             try:
-                p=mdb.plans_col.find_one({"_id":ObjectId(str(pid)) if not isinstance(pid,ObjectId) else pid})
-                if p: last_plan=p.get("payload")
-            except: traceback.print_exc()
-        return jsonify({"status":"ok","user":safe,"last_plan":_sanitize_nan(last_plan)})
-    except RuntimeError as e: return jsonify({"error":str(e)}),503
-    except Exception as e: traceback.print_exc(); return jsonify({"error":str(e)}),500
+                p = mdb.plans_col.find_one(
+                    {
+                        "_id": (
+                            ObjectId(str(pid)) if not isinstance(pid, ObjectId) else pid
+                        )
+                    }
+                )
+                if p:
+                    last_plan = p.get("payload")
+            except:
+                traceback.print_exc()
+        return jsonify(
+            {"status": "ok", "user": safe, "last_plan": _sanitize_nan(last_plan)}
+        )
+    except RuntimeError as e:
+        return jsonify({"error": str(e)}), 503
+    except Exception as e:
+        traceback.print_exc()
+        return jsonify({"error": str(e)}), 500
+
 
 @app.route("/api/user/update_meta", methods=["POST"])
 def update_meta():
     try:
         _require_mongo()
-        d=request.get_json(force=True)
-        uid=_s(d,"user_id","").upper()
-        upd={k:d[k] for k in ("name","age","sex","weight_kg","height_cm","dietary_preference","allergies","diseases","dislikes") if k in d}
-        if upd: mdb.users_col.update_one({"user_id":uid},{"$set":upd})
-        return jsonify({"status":"ok"})
-    except RuntimeError as e: return jsonify({"error":str(e)}),503
-    except Exception as e: traceback.print_exc(); return jsonify({"error":str(e)}),500
+        d = request.get_json(force=True)
+        uid = _s(d, "user_id", "").upper()
+        upd = {
+            k: d[k]
+            for k in (
+                "name",
+                "age",
+                "sex",
+                "weight_kg",
+                "height_cm",
+                "dietary_preference",
+                "allergies",
+                "diseases",
+                "dislikes",
+            )
+            if k in d
+        }
+        if upd:
+            mdb.users_col.update_one({"user_id": uid}, {"$set": upd})
+        return jsonify({"status": "ok"})
+    except RuntimeError as e:
+        return jsonify({"error": str(e)}), 503
+    except Exception as e:
+        traceback.print_exc()
+        return jsonify({"error": str(e)}), 500
+
 
 @app.route("/api/user/set_password", methods=["POST"])
 def set_password():
     try:
         _require_mongo()
-        d=request.get_json(force=True)
-        uid=_s(d,"user_id","").upper()
-        cur=_s(d,"current_password","")
-        nw=_s(d,"new_password","")
-        if not uid or not nw: return jsonify({"error":"user_id and new_password required."}),400
-        if len(nw)<6: return jsonify({"error":"Password must be at least 6 characters."}),400
-        u=mdb.users_col.find_one({"user_id":uid})
-        if not u: return jsonify({"error":f"User '{uid}' not found."}),404
-        ph=u.get("password_hash","")
-        if ph and not _check_pw(ph,cur): return jsonify({"error":"Current password incorrect."}),401
-        mdb.users_col.update_one({"user_id":uid},{"$set":{"password_hash":_hash_pw(nw)}})
-        return jsonify({"status":"ok"})
-    except RuntimeError as e: return jsonify({"error":str(e)}),503
-    except Exception as e: traceback.print_exc(); return jsonify({"error":str(e)}),500
+        d = request.get_json(force=True)
+        uid = _s(d, "user_id", "").upper()
+        cur = _s(d, "current_password", "")
+        nw = _s(d, "new_password", "")
+        if not uid or not nw:
+            return jsonify({"error": "user_id and new_password required."}), 400
+        if len(nw) < 6:
+            return jsonify({"error": "Password must be at least 6 characters."}), 400
+        u = mdb.users_col.find_one({"user_id": uid})
+        if not u:
+            return jsonify({"error": f"User '{uid}' not found."}), 404
+        ph = u.get("password_hash", "")
+        if ph and not _check_pw(ph, cur):
+            return jsonify({"error": "Current password incorrect."}), 401
+        mdb.users_col.update_one(
+            {"user_id": uid}, {"$set": {"password_hash": _hash_pw(nw)}}
+        )
+        return jsonify({"status": "ok"})
+    except RuntimeError as e:
+        return jsonify({"error": str(e)}), 503
+    except Exception as e:
+        traceback.print_exc()
+        return jsonify({"error": str(e)}), 500
+
 
 @app.route("/api/options")
 def options():
-    return jsonify({
-        "allergies":["Peanuts","Tree Nuts","Milk / Dairy","Eggs","Wheat / Gluten","Soy","Fish","Shellfish","Sesame","Mustard","Sulfites","Corn","Gelatin","MSG"],
-        "diseases":["Type 2 Diabetes","Type 1 Diabetes","Hypertension","Heart Disease","Kidney Disease","Gout","PCOS","Hypothyroidism","Hyperthyroidism","Anemia","Celiac Disease","IBD","GERD","Fatty Liver Disease","Obesity","Osteoporosis","High Cholesterol","Lactose Intolerance","Cancer","Thyroid Cancer"],
-        "dislikes":["Seafood","Red Meat","Eggs","Dairy Products","Mushrooms","Nuts & Seeds","Legumes / Beans","Bitter Gourd (Karela)","Bottle Gourd (Lauki)","Onion & Garlic","Leafy Greens","Spicy Foods","Bitter Foods","Fried Foods","Tofu / Soy Products","Sprouts","Jain Diet","No Beef","No Pork","vegan","vegetarian"],
-    })
+    return jsonify(
+        {
+            "allergies": [
+                "Peanuts",
+                "Tree Nuts",
+                "Milk / Dairy",
+                "Eggs",
+                "Wheat / Gluten",
+                "Soy",
+                "Fish",
+                "Shellfish",
+                "Sesame",
+                "Mustard",
+                "Sulfites",
+                "Corn",
+                "Gelatin",
+                "MSG",
+            ],
+            "diseases": [
+                "Type 2 Diabetes",
+                "Type 1 Diabetes",
+                "Hypertension",
+                "Heart Disease",
+                "Kidney Disease",
+                "Gout",
+                "PCOS",
+                "Hypothyroidism",
+                "Hyperthyroidism",
+                "Anemia",
+                "Celiac Disease",
+                "IBD",
+                "GERD",
+                "Fatty Liver Disease",
+                "Obesity",
+                "Osteoporosis",
+                "High Cholesterol",
+                "Lactose Intolerance",
+                "Cancer",
+                "Thyroid Cancer",
+            ],
+            "dislikes": [
+                "Seafood",
+                "Red Meat",
+                "Eggs",
+                "Dairy Products",
+                "Mushrooms",
+                "Nuts & Seeds",
+                "Legumes / Beans",
+                "Bitter Gourd (Karela)",
+                "Bottle Gourd (Lauki)",
+                "Onion & Garlic",
+                "Leafy Greens",
+                "Spicy Foods",
+                "Bitter Foods",
+                "Fried Foods",
+                "Tofu / Soy Products",
+                "Sprouts",
+                "Jain Diet",
+                "No Beef",
+                "No Pork",
+                "vegan",
+                "vegetarian",
+            ],
+        }
+    )
+
 
 @app.route("/api/user/countdown/<user_id>")
 def user_countdown(user_id):
@@ -339,8 +515,11 @@ def user_countdown(user_id):
             return jsonify({"error": "No active plan found"}), 404
         countdown = recalculate_weeks_remaining(plan_start, int(plan_weeks))
         return jsonify({"status": "ok", **countdown})
-    except RuntimeError as e: return jsonify({"error": str(e)}), 503
-    except Exception as e: traceback.print_exc(); return jsonify({"error": str(e)}), 500
+    except RuntimeError as e:
+        return jsonify({"error": str(e)}), 503
+    except Exception as e:
+        traceback.print_exc()
+        return jsonify({"error": str(e)}), 500
 
 
 @app.route("/api/user/checkin", methods=["POST"])
@@ -351,27 +530,37 @@ def user_checkin():
     """
     try:
         _require_mongo()
-        d      = request.get_json(force=True)
-        uid    = _s(d, "user_id", "").upper()
-        week   = int(d.get("week_num", 1))
+        d = request.get_json(force=True)
+        uid = _s(d, "user_id", "").upper()
+        week = int(d.get("week_num", 1))
         new_wt = float(d.get("weight_kg", 0))
-        waist  = float(d.get("waist_cm", 0)) if d.get("waist_cm") else None
-        note   = _s(d, "note", "")
+        waist = float(d.get("waist_cm", 0)) if d.get("waist_cm") else None
+        note = _s(d, "note", "")
         if not uid or new_wt <= 0:
             return jsonify({"error": "user_id and weight_kg required"}), 400
         entry = {
-            "user_id": uid, "week_num": week,
-            "weight_kg": new_wt, "waist_cm": waist,
-            "note": note, "ts": datetime.now(timezone.utc).isoformat()
+            "user_id": uid,
+            "week_num": week,
+            "weight_kg": new_wt,
+            "waist_cm": waist,
+            "note": note,
+            "ts": datetime.now(timezone.utc).isoformat(),
         }
         mdb.db["weekly_checkins"].insert_one(entry)
         # Update current weight on user doc
-        mdb.users_col.update_one({"user_id": uid},
-            {"$set": {"weight_kg": str(new_wt), "last_checkin": entry["ts"]}})
-        entry.pop("_id", None)  # insert_one() mutates entry, injecting a non-JSON-serializable ObjectId
+        mdb.users_col.update_one(
+            {"user_id": uid},
+            {"$set": {"weight_kg": str(new_wt), "last_checkin": entry["ts"]}},
+        )
+        entry.pop(
+            "_id", None
+        )  # insert_one() mutates entry, injecting a non-JSON-serializable ObjectId
         return jsonify({"status": "ok", "recorded": entry})
-    except RuntimeError as e: return jsonify({"error": str(e)}), 503
-    except Exception as e: traceback.print_exc(); return jsonify({"error": str(e)}), 500
+    except RuntimeError as e:
+        return jsonify({"error": str(e)}), 503
+    except Exception as e:
+        traceback.print_exc()
+        return jsonify({"error": str(e)}), 500
 
 
 @app.route("/api/user/checkins/<user_id>")
@@ -379,12 +568,16 @@ def get_checkins(user_id):
     """Return all weekly check-in entries for a user."""
     try:
         _require_mongo()
-        rows = list(mdb.db["weekly_checkins"].find(
-            {"user_id": user_id.upper()}, {"_id": 0}
-        ).sort("week_num", 1))
+        rows = list(
+            mdb.db["weekly_checkins"]
+            .find({"user_id": user_id.upper()}, {"_id": 0})
+            .sort("week_num", 1)
+        )
         return jsonify({"checkins": rows})
-    except RuntimeError as e: return jsonify({"error": str(e)}), 503
-    except Exception as e: return jsonify({"error": str(e)}), 500
+    except RuntimeError as e:
+        return jsonify({"error": str(e)}), 503
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 
 @app.route("/api/user/before_after", methods=["POST"])
@@ -395,11 +588,11 @@ def before_after():
     """
     try:
         _require_mongo()
-        d        = request.get_json(force=True)
-        uid      = _s(d, "user_id", "").upper()
-        new_wt   = float(d.get("new_weight_kg", 0))
-        new_ht   = float(d.get("new_height_cm", 0)) if d.get("new_height_cm") else None
-        new_waist= float(d.get("new_waist_cm", 0)) if d.get("new_waist_cm") else None
+        d = request.get_json(force=True)
+        uid = _s(d, "user_id", "").upper()
+        new_wt = float(d.get("new_weight_kg", 0))
+        new_ht = float(d.get("new_height_cm", 0)) if d.get("new_height_cm") else None
+        new_waist = float(d.get("new_waist_cm", 0)) if d.get("new_waist_cm") else None
         new_goal = _s(d, "new_goal", "")
         if not uid or new_wt <= 0:
             return jsonify({"error": "user_id and new_weight_kg required"}), 400
@@ -411,30 +604,40 @@ def before_after():
         # Retrieve original measurements
         try:
             orig_wt = float(u.get("weight_kg", new_wt))
-        except: orig_wt = new_wt
+        except:
+            orig_wt = new_wt
         try:
             orig_ht = float(u.get("height_cm", new_ht or 170))
-        except: orig_ht = new_ht or 170.0
+        except:
+            orig_ht = new_ht or 170.0
 
-        orig_bmi = round(orig_wt / ((orig_ht/100)**2), 1)
+        orig_bmi = round(orig_wt / ((orig_ht / 100) ** 2), 1)
         new_ht_v = new_ht or orig_ht
-        new_bmi  = round(new_wt / ((new_ht_v/100)**2), 1)
-        wt_change= round(new_wt - orig_wt, 1)
-        bmi_chg  = round(new_bmi - orig_bmi, 1)
+        new_bmi = round(new_wt / ((new_ht_v / 100) ** 2), 1)
+        wt_change = round(new_wt - orig_wt, 1)
+        bmi_chg = round(new_bmi - orig_bmi, 1)
 
         def bmi_cat(b):
-            if b<16: return "Severely Underweight"
-            if b<18.5: return "Underweight"
-            if b<25: return "Normal"
-            if b<30: return "Overweight"
-            if b<35: return "Obese I"
-            if b<40: return "Obese II"
+            if b < 16:
+                return "Severely Underweight"
+            if b < 18.5:
+                return "Underweight"
+            if b < 25:
+                return "Normal"
+            if b < 30:
+                return "Overweight"
+            if b < 35:
+                return "Obese I"
+            if b < 40:
+                return "Obese II"
             return "Obese III"
 
         # Get all checkins for progress chart
-        checkins = list(mdb.db["weekly_checkins"].find(
-            {"user_id": uid}, {"_id": 0}
-        ).sort("week_num", 1))
+        checkins = list(
+            mdb.db["weekly_checkins"]
+            .find({"user_id": uid}, {"_id": 0})
+            .sort("week_num", 1)
+        )
 
         # Auto-suggest next goal
         if new_bmi >= 25 and wt_change < 0:
@@ -448,18 +651,24 @@ def before_after():
 
         summary = {
             "before": {
-                "weight_kg": orig_wt, "bmi": orig_bmi,
-                "bmi_category": bmi_cat(orig_bmi)
+                "weight_kg": orig_wt,
+                "bmi": orig_bmi,
+                "bmi_category": bmi_cat(orig_bmi),
             },
             "after": {
-                "weight_kg": new_wt, "bmi": new_bmi,
+                "weight_kg": new_wt,
+                "bmi": new_bmi,
                 "bmi_category": bmi_cat(new_bmi),
-                "waist_cm": new_waist
+                "waist_cm": new_waist,
             },
             "change": {
                 "weight_kg": wt_change,
                 "bmi_points": bmi_chg,
-                "direction": "lost" if wt_change < 0 else "gained" if wt_change > 0 else "maintained",
+                "direction": (
+                    "lost"
+                    if wt_change < 0
+                    else "gained" if wt_change > 0 else "maintained"
+                ),
             },
             "achievement": _before_after_message(wt_change, orig_bmi, new_bmi),
             "checkin_history": checkins,
@@ -468,30 +677,44 @@ def before_after():
         }
 
         # Update user with new measurements
-        mdb.users_col.update_one({"user_id": uid},
-            {"$set": {
-                "weight_kg": str(new_wt),
-                "height_cm": str(new_ht_v),
-                "plan_start": None, "plan_weeks": None,
-            }})
+        mdb.users_col.update_one(
+            {"user_id": uid},
+            {
+                "$set": {
+                    "weight_kg": str(new_wt),
+                    "height_cm": str(new_ht_v),
+                    "plan_start": None,
+                    "plan_weeks": None,
+                }
+            },
+        )
 
         return jsonify({"status": "ok", "summary": summary})
-    except RuntimeError as e: return jsonify({"error": str(e)}), 503
-    except Exception as e: traceback.print_exc(); return jsonify({"error": str(e)}), 500
+    except RuntimeError as e:
+        return jsonify({"error": str(e)}), 503
+    except Exception as e:
+        traceback.print_exc()
+        return jsonify({"error": str(e)}), 500
 
 
 def _before_after_message(wt_change: float, old_bmi: float, new_bmi: float) -> str:
     abs_c = abs(wt_change)
     if wt_change < -5:
-        return (f"Outstanding! You lost {abs_c:.1f} kg. "
-                "This is clinically significant and reduces your risk of metabolic disease.")
+        return (
+            f"Outstanding! You lost {abs_c:.1f} kg. "
+            "This is clinically significant and reduces your risk of metabolic disease."
+        )
     elif wt_change < -2:
-        return (f"Great progress! {abs_c:.1f} kg lost. "
-                "Even 3–5% body weight loss improves blood sugar, BP, and cholesterol.")
+        return (
+            f"Great progress! {abs_c:.1f} kg lost. "
+            "Even 3–5% body weight loss improves blood sugar, BP, and cholesterol."
+        )
     elif wt_change < -0.5:
         return f"Steady progress — {abs_c:.1f} kg lost. Consistency is the biggest predictor of long-term success."
     elif abs(wt_change) <= 0.5:
-        return "Weight maintained successfully. Maintenance is genuinely hard — well done."
+        return (
+            "Weight maintained successfully. Maintenance is genuinely hard — well done."
+        )
     elif wt_change > 3:
         return f"Strong gain of {wt_change:.1f} kg! Pair this with strength training to maximise muscle ratio."
     else:
@@ -502,68 +725,127 @@ def _before_after_message(wt_change: float, old_bmi: float, new_bmi: float) -> s
 def recommend():
     try:
         _require_mongo()
-        d=request.get_json(force=True)
-        profile={"user_id":_s(d,"user_id","GUEST"),"name":_s(d,"name","User"),
-                 "age":_s(d,"age","30"),"sex":_s(d,"sex","male"),
-                 "weight_kg":_s(d,"weight_kg","70"),"height_cm":_s(d,"height_cm","170"),
-                 "dietary_preference":_s(d,"dietary_preference","none"),
-                 "allergies":_ls(d,"allergies"),"diseases":_ls(d,"diseases"),"dislikes":_ls(d,"dislikes")}
-        ri={"goal":_s(d,"goal","maintain"),"activity_level":_s(d,"activity_level","moderately_active"),
-            "meal_count":_i(d,"meal_count",3),"region_zone":_s(d,"region_zone","any"),
-            "festive_mode":_s(d,"festive_mode","")}
+        d = request.get_json(force=True)
+        profile = {
+            "user_id": _s(d, "user_id", "GUEST"),
+            "name": _s(d, "name", "User"),
+            "age": _s(d, "age", "30"),
+            "sex": _s(d, "sex", "male"),
+            "weight_kg": _s(d, "weight_kg", "70"),
+            "height_cm": _s(d, "height_cm", "170"),
+            "dietary_preference": _s(d, "dietary_preference", "none"),
+            "allergies": _ls(d, "allergies"),
+            "diseases": _ls(d, "diseases"),
+            "dislikes": _ls(d, "dislikes"),
+        }
+        ri = {
+            "goal": _s(d, "goal", "maintain"),
+            "activity_level": _s(d, "activity_level", "moderately_active"),
+            "meal_count": _i(d, "meal_count", 3),
+            "region_zone": _s(d, "region_zone", "any"),
+            "festive_mode": _s(d, "festive_mode", ""),
+        }
 
         # Inject real-world slot guidance into the context so the recommender can use it
         slot_guidance = _get_slot_guidance(ri["meal_count"])
 
-        fr=_pipeline.run(profile)
-        safe_df=fr["safe_food_list"]; ctx=fr["recommendation_context"]
+        fr = _pipeline.run(profile)
+        safe_df = fr["safe_food_list"]
+        ctx = fr["recommendation_context"]
 
         # Attach slot guidance to recommendation context
         ctx["slot_guidance"] = slot_guidance
         ctx["meal_slot_rules"] = SLOT_RULES
-        if ri.get("festive_mode"): ctx["festive_mode"] = ri["festive_mode"]
+        if ri.get("festive_mode"):
+            ctx["festive_mode"] = ri["festive_mode"]
 
-        if len(safe_df)<8:
-            return jsonify({"error":f"Only {len(safe_df)} safe foods after filtering.","safe_food_count":len(safe_df)}),400
-        rec=_recommender.run(safe_foods_df=safe_df,recommendation_context=ctx,
-            goal=ri["goal"],activity_level=ri["activity_level"],
-            meal_count=ri["meal_count"],region_zone=ri["region_zone"])
-        m=rec["metrics"]
+        if len(safe_df) < 8:
+            return (
+                jsonify(
+                    {
+                        "error": f"Only {len(safe_df)} safe foods after filtering.",
+                        "safe_food_count": len(safe_df),
+                    }
+                ),
+                400,
+            )
+        rec = _recommender.run(
+            safe_foods_df=safe_df,
+            recommendation_context=ctx,
+            goal=ri["goal"],
+            activity_level=ri["activity_level"],
+            meal_count=ri["meal_count"],
+            region_zone=ri["region_zone"],
+        )
+        m = rec["metrics"]
         _dur = calculate_plan_duration(
             m,
-            has_diabetes=ctx.get("has_diabetes",False),
-            has_hypertension=ctx.get("has_hypertension",False),
-            has_kidney_disease=ctx.get("has_kidney_disease",False),
+            has_diabetes=ctx.get("has_diabetes", False),
+            has_hypertension=ctx.get("has_hypertension", False),
+            has_kidney_disease=ctx.get("has_kidney_disease", False),
         )
-        payload={
-            "user":{"name":profile["name"],"user_id":profile["user_id"]},
-            "timestamp":datetime.now(timezone.utc).isoformat(),
-            "filter_summary":{"total_foods":1352,"safe_food_count":len(safe_df),
-                "allergy_removed":fr["stage_reports"]["allergy"].get("total_removed",0),
-                "disease_removed":fr["stage_reports"]["disease"].get("total_removed",0),
-                "dislike_removed":fr["stage_reports"]["dislike"].get("total_removed",0),
-                "severity_warnings":fr["severity_warnings"]},
-            "metrics":{"bmi":m.bmi,"bmi_category":m.bmi_category,"bmr":round(m.bmr,0),"tdee":round(m.tdee,0),
-                "target_calories":round(m.target_calories,0),"ibw_kg":m.ibw_kg,
-                "protein_g":m.protein_g,"carbs_g":m.carbs_g,"fat_g":m.fat_g,
-                "fiber_g":m.fiber_g,"sodium_mg":m.sodium_mg,"water_ml":m.water_ml,
-                "calcium_mg":m.calcium_mg,"iron_mg":m.iron_mg,"vitamin_c_mg":m.vitamin_c_mg,
-                "vitamin_d_iu":m.vitamin_d_iu,"potassium_mg":m.potassium_mg,
-                "protein_kcal":round(m.protein_kcal,0),"carbs_kcal":round(m.carbs_kcal,0),
-                "fat_kcal":round(m.fat_kcal,0),"meal_calories":m.meal_calories},
-            "recommendation_context":{k:v for k,v in ctx.items() if k not in ("safe_food_ids","slot_guidance","meal_slot_rules")},
-            "weekly_plan":rec["weekly_plan"],"weekly_avg":rec["weekly_avg"],
-            "nutritional_gaps":rec["nutritional_gaps"],"insights":rec["insights"],"tips":rec["tips"],
-            "goal_label":rec["goal_label"],"activity_label":rec["activity_label"],
-            "region_zone":ri["region_zone"],"meal_count":ri["meal_count"],
-            "festive_mode":ri.get("festive_mode",""),
-            "plan_duration":_dur,
+        payload = {
+            "user": {"name": profile["name"], "user_id": profile["user_id"]},
+            "timestamp": datetime.now(timezone.utc).isoformat(),
+            "filter_summary": {
+                "total_foods": 1352,
+                "safe_food_count": len(safe_df),
+                "allergy_removed": fr["stage_reports"]["allergy"].get(
+                    "total_removed", 0
+                ),
+                "disease_removed": fr["stage_reports"]["disease"].get(
+                    "total_removed", 0
+                ),
+                "dislike_removed": fr["stage_reports"]["dislike"].get(
+                    "total_removed", 0
+                ),
+                "severity_warnings": fr["severity_warnings"],
+            },
+            "metrics": {
+                "bmi": m.bmi,
+                "bmi_category": m.bmi_category,
+                "bmr": round(m.bmr, 0),
+                "tdee": round(m.tdee, 0),
+                "target_calories": round(m.target_calories, 0),
+                "ibw_kg": m.ibw_kg,
+                "protein_g": m.protein_g,
+                "carbs_g": m.carbs_g,
+                "fat_g": m.fat_g,
+                "fiber_g": m.fiber_g,
+                "sodium_mg": m.sodium_mg,
+                "water_ml": m.water_ml,
+                "calcium_mg": m.calcium_mg,
+                "iron_mg": m.iron_mg,
+                "vitamin_c_mg": m.vitamin_c_mg,
+                "vitamin_d_iu": m.vitamin_d_iu,
+                "potassium_mg": m.potassium_mg,
+                "protein_kcal": round(m.protein_kcal, 0),
+                "carbs_kcal": round(m.carbs_kcal, 0),
+                "fat_kcal": round(m.fat_kcal, 0),
+                "meal_calories": m.meal_calories,
+            },
+            "recommendation_context": {
+                k: v
+                for k, v in ctx.items()
+                if k not in ("safe_food_ids", "slot_guidance", "meal_slot_rules")
+            },
+            "weekly_plan": rec["weekly_plan"],
+            "weekly_avg": rec["weekly_avg"],
+            "nutritional_gaps": rec["nutritional_gaps"],
+            "insights": rec["insights"],
+            "tips": rec["tips"],
+            "goal_label": rec["goal_label"],
+            "activity_label": rec["activity_label"],
+            "region_zone": ri["region_zone"],
+            "meal_count": ri["meal_count"],
+            "festive_mode": ri.get("festive_mode", ""),
+            "plan_duration": _dur,
         }
-        uid=profile["user_id"]
-        if uid and uid!="GUEST":
+        uid = profile["user_id"]
+        if uid and uid != "GUEST":
             try:
                 now = datetime.now(timezone.utc)
-                plan_doc = {"user_id":uid,"created_at":now,"payload":payload}
+                plan_doc = {"user_id": uid, "created_at": now, "payload": payload}
                 res = mdb.plans_col.find_one_and_replace(
                     {"user_id": uid},
                     plan_doc,
@@ -571,17 +853,34 @@ def recommend():
                     return_document=True,
                 )
                 plan_oid = res["_id"]
-                mdb.users_col.update_one({"user_id":uid},{"$set":{
-                    "last_plan_id":plan_oid,"last_run":now.isoformat(),
-                    "allergies":profile["allergies"],"diseases":profile["diseases"],
-                    "dislikes":profile["dislikes"],"dietary_preference":profile["dietary_preference"],
-                    "weight_kg":profile["weight_kg"],"height_cm":profile["height_cm"],
-                    "age":profile["age"],"sex":profile["sex"],"name":profile["name"],
-                    "plan_start":_dur["plan_start"],"plan_weeks":_dur["weeks_recommended"]}})
-            except: traceback.print_exc()
-        return jsonify({"status":"ok",**_sanitize_nan(payload)})
-    except RuntimeError as e: return jsonify({"error":str(e)}),503
-    except Exception as e: traceback.print_exc(); return jsonify({"error":str(e)}),500
+                mdb.users_col.update_one(
+                    {"user_id": uid},
+                    {
+                        "$set": {
+                            "last_plan_id": plan_oid,
+                            "last_run": now.isoformat(),
+                            "allergies": profile["allergies"],
+                            "diseases": profile["diseases"],
+                            "dislikes": profile["dislikes"],
+                            "dietary_preference": profile["dietary_preference"],
+                            "weight_kg": profile["weight_kg"],
+                            "height_cm": profile["height_cm"],
+                            "age": profile["age"],
+                            "sex": profile["sex"],
+                            "name": profile["name"],
+                            "plan_start": _dur["plan_start"],
+                            "plan_weeks": _dur["weeks_recommended"],
+                        }
+                    },
+                )
+            except:
+                traceback.print_exc()
+        return jsonify({"status": "ok", **_sanitize_nan(payload)})
+    except RuntimeError as e:
+        return jsonify({"error": str(e)}), 503
+    except Exception as e:
+        traceback.print_exc()
+        return jsonify({"error": str(e)}), 500
 
 
 # ── Plan Update API (swap/remove persistence) ──────────────────────────────────
@@ -594,7 +893,7 @@ def plan_update():
     try:
         _require_mongo()
         d = request.get_json(force=True)
-        uid  = _s(d, "user_id", "").upper()
+        uid = _s(d, "user_id", "").upper()
         plan = d.get("plan")
 
         if not uid:
@@ -617,7 +916,7 @@ def plan_update():
         # Keep last_plan_id pointer on the user document in sync
         mdb.users_col.update_one(
             {"user_id": uid},
-            {"$set": {"last_plan_id": plan_oid, "last_run": plan["timestamp"]}}
+            {"$set": {"last_plan_id": plan_oid, "last_run": plan["timestamp"]}},
         )
 
         return jsonify({"status": "ok", "timestamp": plan["timestamp"]})
@@ -635,32 +934,47 @@ def rate_meal():
     """Store a user's rating (1-5 stars) for a meal slot on a given day."""
     try:
         _require_mongo()
-        d       = request.get_json(force=True)
-        uid     = _s(d,"user_id","").upper()
-        day_idx = d.get("day_idx",0)
-        slot    = _s(d,"slot","")
-        rating  = int(d.get("rating",0))
-        note    = _s(d,"note","")
+        d = request.get_json(force=True)
+        uid = _s(d, "user_id", "").upper()
+        day_idx = d.get("day_idx", 0)
+        slot = _s(d, "slot", "")
+        rating = int(d.get("rating", 0))
+        note = _s(d, "note", "")
         if not uid or not slot or rating < 1 or rating > 5:
-            return jsonify({"error":"user_id, slot, and rating 1-5 required"}),400
+            return jsonify({"error": "user_id, slot, and rating 1-5 required"}), 400
         mdb.db["meal_ratings"].update_one(
-            {"user_id":uid,"day_idx":day_idx,"slot":slot},
-            {"$set":{"rating":rating,"note":note,"ts":datetime.now(timezone.utc).isoformat()}},
-            upsert=True
+            {"user_id": uid, "day_idx": day_idx, "slot": slot},
+            {
+                "$set": {
+                    "rating": rating,
+                    "note": note,
+                    "ts": datetime.now(timezone.utc).isoformat(),
+                }
+            },
+            upsert=True,
         )
-        return jsonify({"status":"ok"})
-    except RuntimeError as e: return jsonify({"error":str(e)}),503
-    except Exception as e: traceback.print_exc(); return jsonify({"error":str(e)}),500
+        return jsonify({"status": "ok"})
+    except RuntimeError as e:
+        return jsonify({"error": str(e)}), 503
+    except Exception as e:
+        traceback.print_exc()
+        return jsonify({"error": str(e)}), 500
+
 
 @app.route("/api/meal/ratings/<user_id>")
 def get_ratings(user_id):
     """Get all ratings for a user."""
     try:
         _require_mongo()
-        ratings = list(mdb.db["meal_ratings"].find({"user_id":user_id.upper()},{"_id":0}))
-        return jsonify({"ratings":ratings})
-    except RuntimeError as e: return jsonify({"error":str(e)}),503
-    except Exception as e: return jsonify({"error":str(e)}),500
+        ratings = list(
+            mdb.db["meal_ratings"].find({"user_id": user_id.upper()}, {"_id": 0})
+        )
+        return jsonify({"ratings": ratings})
+    except RuntimeError as e:
+        return jsonify({"error": str(e)}), 503
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
 
 # ── Food Swap API ──────────────────────────────────────────────────────────────
 @app.route("/api/food/swap_options", methods=["POST"])
@@ -669,8 +983,9 @@ def swap_options():
     try:
         import pandas as pd
         from utils.data_loader import get_food_df
-        d        = request.get_json(force=True)
-        food_id  = _s(d, "food_id", "")
+
+        d = request.get_json(force=True)
+        food_id = _s(d, "food_id", "")
         safe_ids = set(d.get("safe_food_ids", []))
 
         full_df = get_food_df()
@@ -679,34 +994,73 @@ def swap_options():
             return jsonify({"error": "Food not found"}), 404
         row = row.iloc[0]
 
-        target_role   = row.get("meal_role",  "other")
-        target_cal    = float(row.get("calories_per_100g", 100))
-        target_prot   = float(row.get("protein_g",  0))
-        target_carbs  = float(row.get("carbs_g",    0))
-        target_fat    = float(row.get("fat_g",       0))
-        target_fiber  = float(row.get("fiber_g",    0))
+        target_role = row.get("meal_role", "other")
+        target_cal = float(row.get("calories_per_100g", 100))
+        target_prot = float(row.get("protein_g", 0))
+        target_carbs = float(row.get("carbs_g", 0))
+        target_fat = float(row.get("fat_g", 0))
+        target_fiber = float(row.get("fiber_g", 0))
         target_region = row.get("region_zone", "pan_indian")
-        target_veg    = row.get("is_vegetarian", True)
+        target_veg = row.get("is_vegetarian", True)
 
         # Filter candidates: same meal_role, exclude self, only safe foods
         cands = full_df[
-            (full_df["meal_role"] == target_role) &
-            (full_df["food_id"]   != food_id) &
-            (full_df["food_id"].isin(safe_ids) if safe_ids else pd.Series([True]*len(full_df), index=full_df.index))
+            (full_df["meal_role"] == target_role)
+            & (full_df["food_id"] != food_id)
+            & (
+                full_df["food_id"].isin(safe_ids)
+                if safe_ids
+                else pd.Series([True] * len(full_df), index=full_df.index)
+            )
         ].copy()
 
         if cands.empty:
             return jsonify({"options": []})
 
         def calc_match(r):
-            cal_sim   = max(0, 1 - abs(float(r.get("calories_per_100g",100)) - target_cal)  / max(target_cal,   1) * 1.5)
-            prot_sim  = max(0, 1 - abs(float(r.get("protein_g",  0)) - target_prot)  / max(target_prot+1, 1) * 2.0)
-            carbs_sim = max(0, 1 - abs(float(r.get("carbs_g",    0)) - target_carbs) / max(target_carbs+1,1) * 1.5)
-            fat_sim   = max(0, 1 - abs(float(r.get("fat_g",       0)) - target_fat)   / max(target_fat+1,  1) * 1.5)
-            fiber_sim = max(0, 1 - abs(float(r.get("fiber_g",    0)) - target_fiber)  / max(target_fiber+1,1))
+            cal_sim = max(
+                0,
+                1
+                - abs(float(r.get("calories_per_100g", 100)) - target_cal)
+                / max(target_cal, 1)
+                * 1.5,
+            )
+            prot_sim = max(
+                0,
+                1
+                - abs(float(r.get("protein_g", 0)) - target_prot)
+                / max(target_prot + 1, 1)
+                * 2.0,
+            )
+            carbs_sim = max(
+                0,
+                1
+                - abs(float(r.get("carbs_g", 0)) - target_carbs)
+                / max(target_carbs + 1, 1)
+                * 1.5,
+            )
+            fat_sim = max(
+                0,
+                1
+                - abs(float(r.get("fat_g", 0)) - target_fat)
+                / max(target_fat + 1, 1)
+                * 1.5,
+            )
+            fiber_sim = max(
+                0,
+                1
+                - abs(float(r.get("fiber_g", 0)) - target_fiber)
+                / max(target_fiber + 1, 1),
+            )
             region_bonus = 0.08 if r.get("region_zone") == target_region else 0
-            veg_bonus    = 0.05 if r.get("is_vegetarian") == target_veg else -0.05
-            score = (cal_sim*0.30 + prot_sim*0.25 + carbs_sim*0.20 + fat_sim*0.15 + fiber_sim*0.10)
+            veg_bonus = 0.05 if r.get("is_vegetarian") == target_veg else -0.05
+            score = (
+                cal_sim * 0.30
+                + prot_sim * 0.25
+                + carbs_sim * 0.20
+                + fat_sim * 0.15
+                + fiber_sim * 0.10
+            )
             return round(min(1.0, score + region_bonus + veg_bonus) * 100, 1)
 
         cands["_match"] = cands.apply(calc_match, axis=1)
@@ -717,26 +1071,28 @@ def swap_options():
 
         options = []
         for _, r in cands.iterrows():
-            hindi = r.get("food_name_hindi","")
-            if not hindi or str(hindi).lower() in ("nan","none",""):
+            hindi = r.get("food_name_hindi", "")
+            if not hindi or str(hindi).lower() in ("nan", "none", ""):
                 hindi = ""
-            options.append({
-                "food_id":           r["food_id"],
-                "food_name":         r["food_name"],
-                "food_name_hindi":   hindi,
-                "category":          r.get("category",""),
-                "cuisine_type":      r.get("cuisine_type",""),
-                "meal_role":         r.get("meal_role",""),
-                "calories_per_100g": float(r.get("calories_per_100g",0)),
-                "protein_g":         float(r.get("protein_g",0)),
-                "carbs_g":           float(r.get("carbs_g",0)),
-                "fat_g":             float(r.get("fat_g",0)),
-                "fiber_g":           float(r.get("fiber_g",0)),
-                "serving_unit":      r.get("serving_unit","gram"),
-                "piece_weight_g":    float(r.get("piece_weight_g",100)),
-                "match_pct":         r["_match"],
-                "disease_score":     float(r.get("disease_score",50)),
-            })
+            options.append(
+                {
+                    "food_id": r["food_id"],
+                    "food_name": r["food_name"],
+                    "food_name_hindi": hindi,
+                    "category": r.get("category", ""),
+                    "cuisine_type": r.get("cuisine_type", ""),
+                    "meal_role": r.get("meal_role", ""),
+                    "calories_per_100g": float(r.get("calories_per_100g", 0)),
+                    "protein_g": float(r.get("protein_g", 0)),
+                    "carbs_g": float(r.get("carbs_g", 0)),
+                    "fat_g": float(r.get("fat_g", 0)),
+                    "fiber_g": float(r.get("fiber_g", 0)),
+                    "serving_unit": r.get("serving_unit", "gram"),
+                    "piece_weight_g": float(r.get("piece_weight_g", 100)),
+                    "match_pct": r["_match"],
+                    "disease_score": float(r.get("disease_score", 50)),
+                }
+            )
 
         return jsonify({"original_food": food_id, "options": options})
 
@@ -754,36 +1110,46 @@ def save_plan():
     """
     try:
         _require_mongo()
-        d       = request.get_json(force=True)
-        uid     = _s(d,"user_id","").upper()
+        d = request.get_json(force=True)
+        uid = _s(d, "user_id", "").upper()
         payload = d.get("payload")
 
         if not uid or not payload:
-            return jsonify({"error":"user_id and payload required."}),400
+            return jsonify({"error": "user_id and payload required."}), 400
 
-        u = mdb.users_col.find_one({"user_id":uid})
+        u = mdb.users_col.find_one({"user_id": uid})
         if not u:
-            return jsonify({"error":f"User '{uid}' not found."}),404
+            return jsonify({"error": f"User '{uid}' not found."}), 404
 
         mdb.plans_col.update_one(
             {"user_id": uid},
-            {"$set":{
-                "updated_at": datetime.now(timezone.utc),
-                "payload":    payload,
-            }},
-            upsert=True
+            {
+                "$set": {
+                    "updated_at": datetime.now(timezone.utc),
+                    "payload": payload,
+                }
+            },
+            upsert=True,
         )
         mdb.users_col.update_one(
-            {"user_id":uid},
-            {"$set":{"last_run": datetime.now(timezone.utc).isoformat()}}
+            {"user_id": uid},
+            {"$set": {"last_run": datetime.now(timezone.utc).isoformat()}},
         )
-        return jsonify({"status":"ok"})
+        return jsonify({"status": "ok"})
 
-    except RuntimeError as e: return jsonify({"error":str(e)}),503
+    except RuntimeError as e:
+        return jsonify({"error": str(e)}), 503
     except Exception as e:
         traceback.print_exc()
-        return jsonify({"error":str(e)}),500
+        return jsonify({"error": str(e)}), 500
 
-if __name__=="__main__":
-    print("\n"+"="*55+"\n  NutriAI — Open: http://localhost:5000\n"+"="*55+"\n")
-    app.run(debug=False,port=5000,host="0.0.0.0")
+
+if __name__ == "__main__":
+    print(
+        "\n"
+        + "=" * 55
+        + "\n  NutriAI — Open: http://localhost:5000\n"
+        + "=" * 55
+        + "\n"
+    )
+    app.run(debug=False, port=5000, host="0.0.0.0")

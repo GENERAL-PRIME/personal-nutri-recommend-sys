@@ -4,6 +4,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <link rel="manifest" href="/static/manifest.json">
+  <meta name="theme-color" content="#0B1E3D">
+  <link rel="apple-touch-icon" href="/static/icons/icon-192.png">
   <title>NutriAI — Personalised Diet Planner</title>
   <style>
     /* ── LIGHT MODE ── */
@@ -4651,6 +4654,13 @@
       if (goalSel && s.suggested_next_goal) goalSel.value = s.suggested_next_goal;
     }
 
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/static/sw.js')
+          .then(reg => console.log('SW registered:', reg))
+          .catch(err => console.error('SW registration failed:', err));
+      });
+    }
   </script>
 
   <!-- Swap Food Modal -->
